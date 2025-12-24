@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CinePath Admin - İçerik Ekle</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+   
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    <style>
+        body { background-color: #0b0b0c; color: #fff; font-family: 'Inter', sans-serif; padding: 40px; max-width: 900px; margin: 0 auto; }
+        h1, h2 { color: #e50914; margin-top: 0; }
+        .panel-container { display: grid; gap: 30px; }
+        .form-section { background: #18181b; padding: 30px; border-radius: 16px; border: 1px solid #333; }
+        .badge { background: #333; color: #aaa; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; margin-bottom: 10px; display: inline-block; }
+        .badge-green { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+        .upload-area { border: 2px dashed #444; padding: 40px; text-align: center; border-radius: 12px; transition: 0.3s; background: rgba(255,255,255,0.02); }
+        .upload-area:hover { border-color: #e50914; background: rgba(229, 9, 20, 0.05); }
+        .file-input { display: none; }
+        .upload-label { display: inline-block; padding: 12px 24px; background: #fff; color: #000; border-radius: 8px; cursor: pointer; font-weight: 600; margin-top: 10px; }
+        .preview-box { margin-top: 20px; max-height: 300px; overflow-y: auto; background: #000; padding: 15px; border-radius: 8px; border: 1px solid #333; display: none; font-family: monospace; font-size: 12px; color: #0f0; }
+        .btn { padding: 12px 24px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 15px; }
+        .btn-save { background: #e50914; color: white; width: 100%; }
+        .btn-save:hover { background: #b20710; }
+        .btn-save:disabled { opacity: 0.5; cursor: not-allowed; }
+        .status-msg { margin-top: 20px; padding: 15px; border-radius: 8px; display: none; text-align: center; }
+        
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: #aaa; font-size: 14px; }
+        input, select, textarea { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; }
+        input:focus { border-color: #e50914; outline: none; }
+        .location-item { background: #222; padding: 10px; border-radius: 8px; margin-bottom: 10px; display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 10px; }
+        .btn-add { background: #333; color: #fff; width: 100%; margin-bottom: 20px; }
+        .btn-del { background: #b91c1c; color: white; padding: 8px; }
+    </style>
+</head>
+<body>
+
+    <h1>🎬 CinePath İçerik Yöneticisi</h1>
+    
+    <div class="panel-container">
+        
+        
+        <div class="form-section">
+            <span class="badge badge-green">GÜNCELLENDİ (Tv Show / Movie) ✨</span>
+            <h2>Toplu Yükleme (Excel)</h2>
+            <p style="color:#888; font-size:14px; margin-bottom:20px;">
+                <strong>Desteklenen Başlıklar:</strong> Movie/Series Title, Type, Poster, Location Name (English), LatLng (veya Lat, Lng).<br>
+                <em>* Başlık boş bırakılan satırlar, bir üstteki filme ait sayılır (Fill-Down).</em>
+            </p>
+
+            <div class="upload-area" id="dropZone">
+                <p>Excel dosyasını buraya sürükleyin veya seçin</p>
+                <label for="excelFile" class="upload-label">Dosya Seç (.xlsx)</label>
+                <input type="file" id="excelFile" class="file-input" accept=".xlsx, .xls, .csv">
+            </div>
+
+            <div id="jsonPreview" class="preview-box"></div>
+            
+            <button id="bulkUploadBtn" class="btn btn-save" style="margin-top:20px; display:none;" onclick="uploadBulkData()">
+                TÜM VERİLERİ YÜKLE 🚀
+            </button>
+            <div id="bulkStatus" class="status-msg"></div>
+        </div>
+
+        
+        <div class="form-section">
+            <span class="badge">MANUEL</span>
+            <h2>Tekil İçerik Ekle</h2>
+            <div class="form-group"><label>Başlık</label><input type="text" id="title"></div>
+            <div class="form-group"><label>Tür</label>
+                <select id="type">
+                    <option value="Movie">Film (Movie)</option>
+                    <option value="Tv Show">Dizi (Tv Show)</option>
+                </select>
+            </div>
+            <div class="form-group"><label>Poster URL</label><input type="text" id="poster"></div>
+            <div class="form-group"><label>Spotify Albüm Linki</label><input type="text" id="spotify" placeholder="https://open.spotify.com/album/..."></div>
+            <div class="form-group"><label>Açıklama</label><textarea id="description" rows="3"></textarea></div>
+            <div id="locationsContainer"></div>
+            <button class="btn btn-add" onclick="addLocationField()">+ Lokasyon Ekle</button>
+            <button class="btn btn-save" onclick="saveManualContent()">KAYDET</button>
+            <div id="manualStatus" class="status-msg"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { CONFIG } from './config.js';
+       
+        const firebaseConfig = CONFIG.FIREBASE;
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; const dLat = (lat2 - lat1) * Math.PI / 180; const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        }
+
+        function optimizeRoute(locations) {
+            if (!locations || locations.length < 2) return locations;
+            let sorted = [locations[0]];
+            let remaining = locations.slice(1);
+            while (remaining.length > 0) {
+                const current = sorted[sorted.length - 1];
+                let nearestIndex = 0, minDist = Infinity;
+                for (let i = 0; i < remaining.length; i++) {
+                    const dist = calculateDistance(current.lat, current.lng, remaining[i].lat, remaining[i].lng);
+                    if (dist < minDist) { minDist = dist; nearestIndex = i; }
+                }
+                sorted.push(remaining[nearestIndex]);
+                remaining.splice(nearestIndex, 1);
+            }
+            return sorted.map((loc, index) => ({ ...loc, order: index + 1 }));
+        }
+
+        let bulkData = [];
+
+        document.getElementById('excelFile').addEventListener('change', handleFileSelect);
+
+        function handleFileSelect(evt) {
+            const file = evt.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, {type: 'array'});
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+                const rawData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
+                processExcelData(rawData);
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        
+        function getVal(row, keys) {
+            if (!row || typeof row !== 'object') return undefined;
+            const rowKeys = Object.keys(row);
+            for (let k of keys) {
+                const found = rowKeys.find(rk => {
+                    const cleanRK = rk.toLowerCase().replace(/[^a-z0-9]/g, '');
+                    const cleanK = k.toLowerCase().replace(/[^a-z0-9]/g, '');
+                    return cleanRK === cleanK;
+                });
+                if (found) return row[found];
+            }
+            return undefined;
+        }
+
+        function parseCoord(val) {
+            if (val === undefined || val === null || val === "") return NaN;
+            if (typeof val === 'number') return val;
+            const cleanStr = String(val).replace(/,/g, '.').trim();
+            return parseFloat(cleanStr);
+        }
+
+        function processExcelData(rawData) {
+            const grouped = {};
+            let lastTitle = null;
+
+            rawData.forEach((row) => {
+                
+                let title = getVal(row, ["Movie/Series Title", "Movie Title", "Title", "Baslik", "Ad", "Film Adi"]);
+                title = title ? String(title).trim() : "";
+
+                if (!title && lastTitle) title = lastTitle;
+                else if (title) lastTitle = title;
+                else return;
+
+                if (!grouped[title]) {
+                    const typeRaw = getVal(row, ["Type", "Tur"]) || "Movie";
+                    
+                    
+                    let finalType = "Movie";
+                    const typeStr = String(typeRaw).toLowerCase();
+                    if (typeStr.includes("dizi") || typeStr.includes("series") || typeStr.includes("show") || typeStr.includes("tv")) {
+                        finalType = "Tv Show";
+                    }
+
+                    const spotify = getVal(row, ["Spotify", "Music"]) || "";
+                    const rating = getVal(row, ["Rating", "IMDB", "Puan"]) || "";
+                    const year = getVal(row, ["Year", "Yil", "Date"]) || "";
+                    const desc = getVal(row, ["Description", "Aciklama"]) || "";
+                    
+                    grouped[title] = {
+                        title: title,
+                        type: finalType, 
+                        poster: getVal(row, ["Poster", "Resim", "Image"]) || "",
+                        description: desc,
+                        spotify: spotify,
+                        rating: rating,
+                        year: year,
+                        locations: [],
+                        createdAt: new Date()
+                    };
+                }
+
+               
+                const locName = getVal(row, ["Location Name (English)", "Location Name", "LocationName", "Mekan", "Yer"]) || "Konum " + (grouped[title].locations.length + 1);
+                
+                let latRaw = getVal(row, ["Lat", "Latitude", "Enlem"]);
+                let lngRaw = getVal(row, ["Lng", "Longitude", "Boylam"]);
+
+                
+                if (!latRaw && !lngRaw) {
+                    const combinedLoc = getVal(row, ["LatLng", "Lat Lng", "locations", "Coordinates", "Koordinat"]);
+                    if (combinedLoc && typeof combinedLoc === 'string') {
+                        const parts = combinedLoc.split(/[\t,\s]+/); 
+                        const cleanParts = parts.filter(p => p.trim() !== "");
+                        if (cleanParts.length >= 2) {
+                            latRaw = cleanParts[0]; 
+                            lngRaw = cleanParts[1];
+                        }
+                    }
+                }
+
+                const lat = parseCoord(latRaw);
+                const lng = parseCoord(lngRaw);
+
+                if (!isNaN(lat) && !isNaN(lng)) {
+                    grouped[title].locations.push({ name: locName, lat: lat, lng: lng, order: 0 });
+                }
+            });
+
+            
+            Object.keys(grouped).forEach(key => {
+                grouped[key].locations = optimizeRoute(grouped[key].locations);
+            });
+
+            bulkData = Object.values(grouped);
+            
+            const preview = document.getElementById('jsonPreview');
+            preview.style.display = 'block';
+            let summary = "";
+            bulkData.forEach(m => { summary += `🎬 ${m.title} [${m.type}] (${m.locations.length} Lokasyon)\n`; });
+            preview.innerText = summary + "\n--- JSON ---\n" + JSON.stringify(bulkData, null, 2);
+            
+            const btn = document.getElementById('bulkUploadBtn');
+            btn.style.display = 'block';
+            btn.textContent = `${bulkData.length} İÇERİK HAZIR - YÜKLEMEYİ BAŞLAT 🚀`;
+        }
+
+        window.uploadBulkData = async function() {
+            if (bulkData.length === 0) return;
+            const btn = document.getElementById('bulkUploadBtn');
+            const status = document.getElementById('bulkStatus');
+            btn.disabled = true;
+            btn.textContent = "Veritabanına Yazılıyor...";
+
+            let success = 0;
+            for (const item of bulkData) {
+                try {
+                    await addDoc(collection(db, "contents"), item);
+                    success++;
+                } catch (e) { console.error(e); }
+            }
+
+            status.style.display = "block";
+            status.style.background = "#10b981";
+            status.textContent = `✅ İşlem Tamam! ${success} adet içerik veritabanına eklendi.`;
+            btn.textContent = "YÜKLEME BİTTİ";
+        };
+
+        
+        window.addLocationField = function() {
+            const c = document.getElementById('locationsContainer');
+            const d = document.createElement('div');
+            d.className = 'location-item';
+            d.innerHTML = `<input type="text" placeholder="Mekan" class="loc-name"><input type="number" step="any" placeholder="Lat" class="loc-lat"><input type="number" step="any" placeholder="Lng" class="loc-lng"><button class="btn btn-del" onclick="this.parentElement.remove()">Sil</button>`;
+            c.appendChild(d);
+        };
+        
+        window.saveManualContent = async function() {
+            const title = document.getElementById('title').value;
+            if(!title) return alert("Başlık giriniz");
+            
+            let locs = [];
+            document.querySelectorAll('.location-item').forEach((el, i) => {
+                const lat = parseFloat(el.querySelector('.loc-lat').value);
+                const lng = parseFloat(el.querySelector('.loc-lng').value);
+                const name = el.querySelector('.loc-name').value;
+                if(!isNaN(lat)) locs.push({order:0, name, lat, lng});
+            });
+
+            locs = optimizeRoute(locs);
+
+            try {
+                await addDoc(collection(db, "contents"), {
+                    title, 
+                    type: document.getElementById('type').value,
+                    poster: document.getElementById('poster').value,
+                    spotify: document.getElementById('spotify').value,
+                    description: document.getElementById('description').value,
+                    locations: locs, createdAt: new Date()
+                });
+                alert("Kaydedildi!");
+                location.reload();
+            } catch(e) { alert(e.message); }
+        };
+        addLocationField();
+    </script>
+</body>
+</html>

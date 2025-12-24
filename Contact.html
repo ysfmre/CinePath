@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>İletişim — CinePath</title>
+    <meta name="description" content="CinePath ekibiyle iletişime geçin." />
+    <meta name="theme-color" content="#0b0b0c" />
+    <link rel="icon" href="assets/favicon/favicon.svg" type="image/svg+xml" />
+   
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    
+    
+    <link rel="stylesheet" href="assets/css/styles.css" />
+
+    <style>
+        
+        body { margin: 0; background-color: #0b0b0c; color: #fff; font-family: 'Inter', sans-serif; }
+        
+        
+        main {
+            padding-top: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        
+        .back-home-btn {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 100px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            z-index: 50;
+        }
+
+        .back-home-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #fff;
+            transform: translateX(-4px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .back-home-btn svg {
+            transition: transform 0.3s ease;
+        }
+        
+        .back-home-btn:hover svg {
+            transform: translateX(-2px);
+        }
+
+        
+        @media (max-width: 768px) {
+            .back-home-btn {
+                top: 20px;
+                left: 20px;
+                padding: 10px 16px;
+                font-size: 14px;
+            }
+            .contact-section {
+                padding-top: 100px; 
+            }
+        }
+    </style>
+  </head>
+  <body>
+
+    
+    
+    <a href="index.html" class="back-home-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Return to Home Page
+    </a>
+
+    <main>
+      
+      <section id="contact" class="contact-section">
+        <div class="contact-bg-glow"></div>
+        <div class="container">
+          <div class="contact-wrapper">
+            
+            
+            <div class="contact-info">
+              <span class="contact-badge">CONTACT</span>
+              <h2 class="contact-title">Be part of the story.</h2>
+              <p class="contact-desc">
+                To add a new location to the CinePath platform, report an error, or just say hello, please contact us.
+              </p>
+
+              <div class="contact-details">
+                <div class="contact-item">
+                  
+                  <div>
+                    <h4 class="detail-title">E-mail</h4>
+                    <a href="mailto:hello@cinepath.com" class="detail-link">cinepathcontact@gmail.com</a>
+                  </div>
+                </div>
+                
+              </div>
+
+              <div class="social-links">
+                
+                <a href="https://www.instagram.com/cinepathofficial?igsh=NnRxeWswMjVjMnF0&utm_source=qr" class="social-btn">Instagram</a>
+                
+              </div>
+            </div>
+
+            
+            <div class="contact-form-container">
+              <form class="contact-form" id="contactForm">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label for="name">Name Surname</label>
+                    <input type="text" id="name" name="name" required placeholder="Name Surname">
+                  </div>
+                  <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" required placeholder="example@email.com">
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="subject">Topic</label>
+                  <select id="subject" name="subject">
+                    <option value="suggestion">Location suggestion</option>
+                    <option value="bug">Error Report</option>
+                    <option value="partnership">Collaboration</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="message">Your message</label>
+                  <textarea id="message" name="message" rows="4" required placeholder="Write your message here..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                  <span>Send</span>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    </main>
+
+    
+     <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand brand-sm"><span class="brand-accent">CINE</span>PATH</a>
+          <p style="margin-top: 10px; line-height: 1.6;">Welcome to Turkey's AI-powered location archive, developed for film and TV series enthusiasts.</p>
+        </div>
+        
+        <div class="footer-col">
+          
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="AI.html">CıneAI</a></li>
+            <li><a href="Contact.html">Contact</a></li>
+            <li><a href="https://www.instagram.com/cinepathofficial/">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <p class="copyright">© <span id="year"></span> CinePath. All rights reserved.</p>
+      </div>
+    </footer>
+
+    
+    <script src="contact_script.js"></script>
+  </body>
+</html>

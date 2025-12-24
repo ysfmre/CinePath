@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Route Wizard — CinePath</title>
+    <link rel="icon" href="assets/favicon/favicon.svg" type="image/svg+xml" />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    
+    <!-- Main Style File -->
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    
+    <style>
+        /* --- PAGE SPECIFIC STYLES --- */
+        body { margin: 0; background-color: #0b0b0c; color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        
+        main {
+            padding-top: 80px; /* Space for Header */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+       
+
+        /* AI Section Styles */
+        .ai-section {
+            padding: 40px 20px;
+            background: linear-gradient(180deg, #0b0b0c 0%, #161618 100%);
+            position: relative;
+            overflow: hidden;
+            flex: 1; /* Fill screen */
+            display: flex;
+            align-items: center;
+        }
+        
+        .ai-container {
+            background: rgba(20, 20, 22, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 50px;
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+        }
+
+        .ai-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.1) 0%, transparent 60%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .ai-header { text-align: center; margin-bottom: 50px; }
+        .ai-badge {
+            background: linear-gradient(90deg, #7c3aed, #db2777);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
+            display: inline-block;
+            box-shadow: 0 5px 15px rgba(219, 39, 119, 0.3);
+        }
+        .ai-title { font-size: 42px; font-weight: 900; margin-bottom: 15px; background: linear-gradient(to right, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .ai-desc { color: #888; font-size: 18px; max-width: 600px; margin: 0 auto; line-height: 1.6; }
+
+        /* Form Grid (Fixed Columns) */
+        .ai-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto; /* Type, Genre, Location, Button */
+            gap: 20px;
+            align-items: end;
+            margin-bottom: 30px;
+        }
+
+        .ai-input-group label {
+            display: block;
+            color: #ccc;
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .ai-select {
+            width: 100%;
+            background: #000;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            appearance: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .ai-select:focus { border-color: #7c3aed; outline: none; box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2); }
+
+        .ai-btn {
+            background: linear-gradient(90deg, #7c3aed, #db2777);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            white-space: nowrap;
+            height: 54px;
+        }
+        .ai-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(219, 39, 119, 0.3); }
+        .ai-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+        /* Action Buttons Area */
+        .action-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .ai-btn-secondary {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 18px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            height: 54px;
+        }
+        .ai-btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); }
+
+
+        /* Result Card */
+        .ai-result {
+            margin-top: 40px;
+            background: rgba(20, 20, 22, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            display: none;
+            grid-template-columns: 140px 1fr;
+            gap: 30px;
+            align-items: start;
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .ai-poster {
+            width: 140px;
+            height: 210px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .ai-suggestion-text { font-size: 24px; color: #fff; margin: 0 0 10px 0; font-weight: 700; }
+        .ai-reason { color: #ccc; font-size: 16px; line-height: 1.6; margin-bottom: 25px; }
+        
+        .ai-action-btn {
+            background: #fff;
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .ai-action-btn:hover { background: #eee; transform: translateY(-2px); }
+
+        /* --- MOBILE MENU STYLES --- */
+        .hamburger-btn {
+            display: none;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: #fff;
+            width: 44px; height: 44px;
+            cursor: pointer;
+            z-index: 200;
+            padding: 0;
+            align-items: center; justify-content: center;
+            transition: 0.3s;
+        }
+        .hamburger-btn:hover { background: rgba(255,255,255,0.1); }
+        .hamburger-btn.active { background: #e50914; border-color: #e50914; }
+
+        .mobile-nav-panel {
+            position: fixed; top: 0; right: -100%;
+            width: 280px; height: 100vh;
+            background: #121214; z-index: 199;
+            padding: 80px 20px 20px;
+            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            display: flex; flex-direction: column; gap: 15px;
+            border-left: 1px solid rgba(255,255,255,0.1);
+        }
+        .mobile-nav-panel.open { right: 0; }
+
+        .mobile-link {
+            display: block; padding: 16px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            color: #fff; text-decoration: none;
+            font-weight: 600; font-size: 16px;
+            transition: 0.2s;
+        }
+        .mobile-link:hover { background: rgba(229, 9, 20, 0.1); color: #e50914; border-color: #e50914; }
+
+        .mobile-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(3px); z-index: 198;
+            opacity: 0; visibility: hidden; transition: 0.3s;
+        }
+        .mobile-overlay.active { opacity: 1; visibility: visible; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 900px) {
+            .ai-form { grid-template-columns: 1fr; }
+            .action-area { grid-template-columns: 1fr; }
+            .ai-btn { width: 100%; justify-content: center; }
+            .ai-result { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+        }
+
+        @media (max-width: 768px) {
+            .nav { display: none; } 
+            .hamburger-btn { display: flex; }
+            .back-home-btn { top: 20px; left: 20px; padding: 10px 16px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header (For Mobile Menu) -->
+    <header class="site-header" data-header>
+        <div class="container header-inner">
+            <a href="index.html" class="brand" aria-label="CinePath home page">
+                <span class="brand-accent">CINE</span>PATH
+            </a>
+
+            <!-- Desktop Menu -->
+           <nav class="nav desktop-nav">
+          <ul class="nav-list" data-nav-list>
+            <li><a href="index.html" data-lang-key="nav_home">Home</a></li>
+            <li><a href="about.html" data-lang-key="nav_about">About Us</a></li>
+            <li><a href="explore.html" data-lang-key="nav_collections">Explore</a></li>
+            <li><a href="AI.html" data-lang-key="nav_collections">CıneAI</a></li>
+            <li><a href="contact.html" data-lang-key="nav_contact">Contact</a></li>
+          </ul>
+        </nav>
+            
+            <!-- Hamburger Button -->
+            <button id="hamburgerBtn" class="hamburger-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobileNavPanel" class="mobile-nav-panel">
+        <a href="index.html" class="mobile-link">Home</a>
+        <a href="explore.html" class="mobile-link">Explore & Catalog</a>
+        <a href="about.html" class="mobile-link">About</a>
+        <a href="profile.html" class="mobile-link">My Profile</a>
+        <a href="contact.html" class="mobile-link">Contact</a>
+        <a href="login.html" class="mobile-link" style="border-color: #e50914; color: #e50914;">Login</a>
+    </div>
+    <div id="mobileOverlay" class="mobile-overlay"></div>
+
+    
+
+    <main>
+        <section class="ai-section">
+            <div class="ai-glow"></div>
+            <div class="container ai-container">
+                <div class="ai-header">
+                    <span class="ai-badge">BETA • GEMINI AI POWERED</span>
+                    <h1 class="ai-title">Smart Route Wizard 🪄</h1>
+                    <p class="ai-desc">
+                        Indecisive? Let our AI find the perfect movie route for you from our database in seconds.
+                    </p>
+                </div>
+
+                <div class="ai-content-wrapper">
+                    <!-- AI FORM -->
+                    <div class="ai-form">
+                        <div class="ai-input-group">
+                            <label>What do you want to watch?</label>
+                            <!-- ID GÜVENLİK KONTROLÜ: aiType -->
+                            <select id="aiType" class="ai-select">
+                                <option value="both">Any 🎲</option>
+                                <option value="movie">Movies Only 🎬</option>
+                                <option value="series">Series Only 📺</option>
+                            </select>
+                        </div>
+                        
+                        <div class="ai-input-group">
+                            <label>Mood / Genre</label>
+                            <!-- ID GÜVENLİK KONTROLÜ: aiGenre -->
+                            <select id="aiGenre" class="ai-select">
+                                <option value="comedy">Make Me Laugh (Comedy)</option>
+                                <option value="drama">Prepare Tissues (Drama)</option>
+                                <option value="action"> High Adrenaline (Action)</option>
+                                <option value="romantic"> Heart Flutter (Romance)</option>
+                                <option value="nostalgic"> Nostalgic Classics</option>
+                                <option value="historical"> Historical</option>
+                            </select>
+                        </div>
+
+                        <div class="ai-input-group">
+                            <label>Location</label>
+                            <!-- ID GÜVENLİK KONTROLÜ: aiLocation -->
+                            <select id="aiLocation" class="ai-select">
+                                <option value="Istanbul">Istanbul</option>
+                                <option value="Izmir">Izmir</option>
+                                <option value="Ankara">Ankara</option>
+                                <option value="Cappadocia">Cappadocia</option>
+                                <option value="Mardin">Mardin</option>
+                                <option value="Kars">Kars (Eastern Express)</option>
+                                <option value="Gaziantep">Gaziantep</option>
+                                <option value="Adana">Adana</option>
+                                <option value="Mugla">Mugla (Bodrum)</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Manual Suggestion Button -->
+                        <button id="askAiBtn" class="ai-btn" onclick="getRecommendation('manual')">
+                            <span> Recommend</span>
+                        </button>
+                    </div>
+
+                    <!-- SECONDARY ACTIONS -->
+                    <div class="action-area">
+                         <!-- Hidden placeholder for logic consistency -->
+                         <button id="manualSuggestBtn" style="display:none;"></button>
+                         <button id="personalSuggestBtn" class="ai-btn-secondary" onclick="getRecommendation('personal')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" ><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            Recommend Based on My Data
+                        </button>
+                    </div>
+
+                    <!-- RESULT AREA -->
+                    <div id="aiResult" class="ai-result">
+                        <img id="aiPoster" src="" class="ai-poster" alt="Movie Poster">
+                        <div class="result-content">
+                            <h3 id="aiSuggestionTitle">Suggestion Title</h3>
+                            <p id="aiReason">AI Explanation will go here...</p>
+                            <a id="aiActionLink" href="#" class="ai-action-btn">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M14 10l6.1-6.1M9 21H3v-6M10 14l-6.1 6.1"/></svg>
+                                View Route Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Mobile Menu Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('hamburgerBtn');
+            const menu = document.getElementById('mobileNavPanel');
+            const overlay = document.getElementById('mobileOverlay');
+
+            function toggleMenu() {
+                if (menu && overlay && btn) {
+                    menu.classList.toggle('open');
+                    overlay.classList.toggle('active');
+                    btn.classList.toggle('active');
+                    document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+                }
+            }
+
+            if (btn) {
+                btn.addEventListener('click', toggleMenu);
+                if (overlay) overlay.addEventListener('click', toggleMenu);
+                if (menu) {
+                    menu.querySelectorAll('a').forEach(l => l.addEventListener('click', toggleMenu));
+                }
+            }
+        });
+    </script>
+
+    <!-- GEMINI AI SCRIPTS -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        
+        // Import Config
+        import { CONFIG } from './config.js';
+
+        const firebaseConfig = CONFIG.FIREBASE;
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        
+        const apiKey = CONFIG.GEMINI_API_KEY;
+
+        let allMovies = [];
+        let currentUser = null;
+
+        onAuthStateChanged(auth, (user) => { currentUser = user; });
+
+        // 1. Fetch Movies for Context
+        async function fetchMovies() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "contents"));
+                allMovies = [];
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    allMovies.push({
+                        id: doc.id,
+                        title: data.title,
+                        type: data.type,
+                        description: data.description,
+                        poster: data.poster,
+                        locations: data.locations ? data.locations.map(l => l.name).join(", ") : ""
+                    });
+                });
+            } catch (error) { console.error("Data error:", error); }
+        }
+        fetchMovies();
+
+        // 2. Call Gemini
+        async function callGemini(prompt, isJson = false) {
+            let fullPrompt = prompt;
+            if (isJson) fullPrompt += " Answer ONLY as a valid JSON object. Do not include any other text.";
+
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const payload = { contents: [{ parts: [{ text: fullPrompt }] }] };
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) throw new Error("AI did not respond");
+            const data = await response.json();
+            const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            
+            if (isJson) {
+                const cleanedText = text.replace(/```json/g, '').replace(/```/g, '').trim();
+                return JSON.parse(cleanedText);
+            }
+            return text;
+        }
+
+        
+        window.getRecommendation = async function(mode) {
+            const resultDiv = document.getElementById('aiResult');
+            const manualBtn = document.getElementById('manualSuggestBtn');
+            const personalBtn = document.getElementById('personalSuggestBtn');
+            const askBtn = document.getElementById('askAiBtn');
+
+            
+            resultDiv.style.display = 'none';
+            if(askBtn) {
+                 askBtn.disabled = true;
+                 askBtn.innerHTML = " Thinking...";
+            }
+            if(personalBtn) personalBtn.disabled = true;
+
+            try {
+                if (allMovies.length === 0) throw new Error("Database loading, please wait.");
+
+                const dbContext = JSON.stringify(allMovies.map(m => ({ id: m.id, t: m.title, d: m.description, l: m.locations })));
+                let prompt = "";
+
+                if (mode === 'manual') {
+                    
+                    const genreEl = document.getElementById('aiGenre');
+                    const locationEl = document.getElementById('aiLocation');
+                    const typeEl = document.getElementById('aiType');
+                    
+                    if (!genreEl || !locationEl || !typeEl) {
+                        throw new Error("Form elements not found. Please refresh.");
+                    }
+
+                    const genre = genreEl.value;
+                    const location = locationEl.value;
+                    const type = typeEl.value;
+                    
+                    let typeText = "movie or series";
+                    if(type === 'movie') typeText = "movies only";
+                    if(type === 'series') typeText = "series only";
+
+                    prompt = `Role: Film location guide. Task: Select ONE item from the JSON list below that best fits the user request ('${location}' location, '${genre}' genre, '${typeText}'). Output Format (JSON): { "id": "film_id", "reason": "Why did you choose this? (Short, English description)" }. Database: ${dbContext}`;
+
+                } else if (mode === 'personal') {
+                    if (!currentUser) {
+                        alert("Please login for personal recommendations.");
+                        throw new Error("Login required");
+                    }
+
+                    const userDoc = await getDoc(doc(db, "users", currentUser.uid));
+                    const userData = userDoc.exists() ? userDoc.data() : {};
+                    const favorites = userData.favorites || [];
+                    const userContext = `Favorites (IDs): ${favorites.join(", ")}`;
+
+                    prompt = `Role: Personal film assistant. Task: Based on user's past data (${userContext}), suggest a NEW item from the database (${dbContext}) that THEY WOULD LIKE. Output Format (JSON): { "id": "film_id", "reason": "Based on your tastes..." }`;
+                }
+
+                const aiResponse = await callGemini(prompt, true);
+                const selectedMovie = allMovies.find(m => m.id === aiResponse.id);
+                
+                if (selectedMovie) {
+                    document.getElementById('aiSuggestionTitle').textContent = `Suggestion: ${selectedMovie.title}`;
+                    document.getElementById('aiReason').textContent = aiResponse.reason;
+                    document.getElementById('aiPoster').src = selectedMovie.poster;
+                    document.getElementById('aiPoster').onerror = function() { this.src='https://placehold.co/200x300/111/FFF?text=No+Poster'; };
+                    
+                    document.getElementById('aiActionLink').href = `explore.html?id=${selectedMovie.id}`;
+                    
+                    resultDiv.style.display = 'grid';
+                } else {
+                    alert("AI made a suggestion but I couldn't find it in the database.");
+                }
+
+            } catch (error) {
+                console.error(error);
+                if (error.message !== "Login required") alert("Error: " + error.message);
+            } finally {
+                if(askBtn) {
+                    askBtn.disabled = false;
+                    askBtn.innerHTML = " Recommend";
+                }
+                if(personalBtn) personalBtn.disabled = false;
+            }
+        };
+    </script>
+</body>
+</html>

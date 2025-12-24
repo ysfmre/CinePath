@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CinePath — Discover Film and TV Series Shooting Locations</title>
+    <meta name="description" content="CinePath ile film ve dizi çekim mekanlarını keşfet, favorilerine ekle ve rotalar planla." />
+    <meta name="theme-color" content="#0b0b0c" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="icon" href="assets/favicon/favicon.svg" type="image/svg+xml" />
+  
+   </head>
+  <body>
+    
+    <header class="site-header" data-header>
+      <div class="container header-inner">
+        <a href="index.html" class="brand" aria-label="CinePath ana sayfa">
+          <span class="brand-accent">CINE</span>PATH
+        </a>
+        
+       
+        <nav class="nav desktop-nav">
+          <ul class="nav-list" data-nav-list>
+            <li><a href="index.html" data-lang-key="nav_home">Home</a></li>
+            <li><a href="about.html" data-lang-key="nav_about">About Us</a></li>
+            <li><a href="explore.html" data-lang-key="nav_collections">Explore</a></li>
+            <li><a href="AI.html" data-lang-key="nav_collections">CıneAI</a></li>
+            <li><a href="contact.html" data-lang-key="nav_contact">Contact</a></li>
+          </ul>
+        </nav>
+
+        
+        
+
+            
+
+            <div class="profile" data-profile style="margin-left: 15px;">
+                <button class="avatar-btn" type="button" aria-haspopup="menu" aria-expanded="false" data-profile-btn>
+                    <span class="avatar" data-avatar>👤</span>
+                    <span class="avatar-label" data-avatar-label data-lang-key="login_btn">Log In</span>
+                </button>
+                <div class="profile-menu" role="menu" data-profile-menu>
+                    <a role="menuitem" href="login.html" data-menu-login data-lang-key="menu_login">Log In</a>
+                    <a role="menuitem" href="signup.html" data-menu-signup data-lang-key="menu_signup">Register</a>
+                    <a role="menuitem" href="#logout" data-menu-logout style="display:none" data-lang-key="menu_logout">Log Out</a>
+                </div>
+            </div>
+        </div>
+
+        
+        <button id="hamburgerBtn" class="hamburger-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+
+      </div>
+    </header>
+
+    <!-- MOBİL MENÜ PANELİ -->
+    <div id="mobileNavPanel" class="mobile-nav-panel">
+        <a href="index.html" class="mobile-link">Home</a>
+        <a href="explore.html" class="mobile-link">Explore</a>
+        <a href="about.html" class="mobile-link">About Us</a>
+        <a href="profil.html" class="mobile-link">Profile</a>
+         <a href="AI.html" class="mobile-link">CıneAI</a>
+        <a href="Contact.html" class="mobile-link">Contact</a>
+        <a href="login.html" class="mobile-link" style="border-color: #e50914; color: #e50914;">Log In</a>
+    </div>
+
+    <!-- KARARTMA PERDESİ -->
+    <div id="mobileOverlay" class="mobile-overlay"></div>
+
+    
+    <section class="route-hero" aria-label="Rota kahramanı" style="background: url('assets/istanbul-hero.jpg') center center/cover no-repeat; position: relative;">
+      <div class="container" style="position: relative; z-index: 2;">
+        <h2 class="route-title">THE MOVIE ENDS <span class="highlight">THE STORY BEGINS</span></h2>
+        
+        <div class="chip-row">
+          <div class="chip-card chip-orange" onclick="window.location.href='explore.html'" style="cursor: pointer;">
+           <img class="chip-img" src="assets/chips/muhtesem-yuzyil.jpg" alt="Muhteşem Yüzyıl poster">
+           <span>Muhteşem Yüzyıl</span>
+          </div>
+          <div class="chip-card chip-blue"onclick="window.location.href='explore.html'" style="cursor: pointer;">
+            <img class="chip-img" href="explore.html" src="assets/chips/leyla-ile-mecnun.jpg" alt="Leyla ile Mecnun poster">
+            <span>Leyla ile Mecnun</span>
+          </div>
+          <div class="chip-card chip-red"onclick="window.location.href='explore.html'" style="cursor: pointer;">
+            <img class="chip-img" href="explore.html" src="assets/chips/aski-memnu.jpg" alt="Aşk-ı Memnu poster">
+            <span>Aşk-ı Memnu</span>
+          </div>
+          <div class="chip-card chip-slate"onclick="window.location.href='explore.html'" style="cursor: pointer;">
+            <img class="chip-img" href="explore.html"src="assets/chips/behzatc.jpg" alt="Behzat Ç. poster">
+            <span>Behzat Ç.</span>
+          </div>
+          <div class="chip-card chip-green"onclick="window.location.href='explore.html'" style="cursor: pointer;">
+            <img class="chip-img" href="explore.html"src="assets/chips/ask-tesaduf.jpg" alt="Aşk Tesadüfleri Sever poster">
+            <span>Aşk Tesadüfleri Sever</span>
+          </div>
+          <div class="chip-card chip-navy"onclick="window.location.href='explore.html'" style="cursor: pointer;">
+            <img class="chip-img" href="explore.html"src="assets/chips/ezel.jpg" alt="Ezel poster">
+            <span>Ezel</span>
+          </div><div class="chip-card chip-green"onclick="window.location.href='explore.html'" style="cursor: pointer;">
+            <img class="chip-img" href="explore.html"src="assets/chips/babam-ve-oglum.jpg" alt="Babam ve Oğlum poster">
+            <span>Babam ve Oğlum</span>
+          </div>
+          <div class="chip-card chip-burn"onclick="window.location.href='explore.html'" style="cursor: pointer;">
+            <img class="chip-img" href="explore.html"src="assets/chips/avrupa-yakasi.jpg" alt="Avrupa Yakası poster">
+            <span>Avrupa Yakası</span>
+          </div><div class="chip-card chip-green"onclick="window.location.href='explore.html'" style="cursor: pointer;">
+            <img class="chip-img" href="explore.html"src="assets/chips/issiz-adam.jpg" alt="Issız Adam poster">
+            <span>Issız Adam</span>
+          </div>
+          <div class="chip-card chip-green"onclick="window.location.href='explore.html'" style="cursor: pointer;">
+            <img class="chip-img" href="explore.html"src="assets/chips/kurtlar-vadisi.jpg" alt="Kurtlar Vadisi poster">
+            <span>Kurtlar Vadisi</span>
+          </div>
+          <div class="chip-card chip-green"onclick="window.location.href='explore.html'" style="cursor: pointer;">
+            <img class="chip-img" href="explore.html"src="assets/chips/akasya-duragi.jpg" alt="Akasya Durağı poster">
+            <span>Akasya Durağı</span>
+          </div>
+          <div class="chip-card chip-green"onclick="window.location.href='explore.html'" style="cursor: pointer;">
+            <img class="chip-img" href="explore.html"src="assets/chips/çukur.jpg" alt="Çukur poster">
+            <span>Çukur</span>
+          </div>
+          <div class="chip-card chip-green"onclick="window.location.href='explore.html'" style="cursor: pointer;">
+            <img class="chip-img" href="explore.html"src="assets/chips/Kral-Kaybederse.jpg" alt="Kral Kaybederse poster">
+            <span>Kral Kaybederse</span>
+          </div>
+          <div class="chip-card chip-green"onclick="window.location.href='explore.html'" style="cursor: pointer;">
+            <img class="chip-img" href="explore.html"src="assets/chips/esref-ruya.jpg" alt="Eşref Rüya poster">
+            <span>Eşref Rüya</span>
+          </div>
+          <div class="chip-card chip-green"onclick="window.location.href='explore.html'" style="cursor: pointer;">
+            <img class="chip-img" href="explore.html"src="assets/chips/oyle-bir-gecer-zaman-ki.jpg" alt="Öyle Bir Geçer Zaman Ki poster">
+            <span>Öyle Bir Geçer Zaman Ki</span>
+          </div>
+          <div class="chip-card chip-green"onclick="window.location.href='explore.html'" style="cursor: pointer;">
+            <img class="chip-img" href="explore.html"src="assets/chips/yaprak-dokumu.jpg" alt="Yaprak Dökümü poster">
+            <span>Yaprak Dökümü</span>
+          </div>
+        </div>
+      </div>
+      
+      <div style="position:absolute;inset:0;z-index:1;background:rgba(11,11,12,0.58);pointer-events:none;"></div>
+    </section>
+     
+
+    
+
+    <main id="home">
+      
+      <section class="hero" aria-label="Giriş bölümü">
+        <div class="container">
+          <div style="text-align: center;">
+             <h1 class="hero-title">
+               WHAT YOU SEE IS JUST <span class="highlight"><br>THE BEGINNING...</span>
+             </h1>
+          </div>
+          
+          <div class="tiles-grid">
+            <article class="tile">
+              <div class="tile-icon" aria-hidden="true"></div>
+              <h3 class="tile-title">500+</h3>
+              <p class="tile-sub">CINEMATIC SETS</p>
+              <p class="tile-desc">"Unlock the gates to thousands of real-life sets from Turkey’s most beloved cinema and series."</p>
+            </article>
+            <article class="tile tile-accent">
+              <div class="tile-icon" aria-hidden="true"></div>
+              <h3 class="tile-title">CRAFT YOUR ROUTE</h3>
+              <p class="tile-sub">Lıve Navıgatıon</p>
+              <p class="tile-desc">Real-time directions to iconic sets. Your phone is now your personal film guide.</p>
+            </article>
+            <article class="tile">
+              <div class="tile-icon" aria-hidden="true"></div>
+              <h3 class="tile-title">Details</h3>
+              <p class="tile-sub">Explore The Story</p>
+              <p class="tile-desc">Unveil the untold stories and hidden trivia behind the most iconic shots.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+      
+      
+      <section class="faq" aria-label="Sıkça Sorulan Sorular">
+        <div class="container" style="max-width: 800px;">
+          <h2 class="section-title" style="text-align: center; margin-bottom: 40px;">FAQ</h2>
+          <div class="accordion" data-accordion>
+            <div class="accordion-item">
+              <button class="accordion-btn" type="button">
+                What exactly does CinePath do?
+                <span class="chev">▾</span>
+              </button>
+              <div class="accordion-panel">
+                <p>CinePath is a comprehensive guide that allows you to discover film and TV series shooting locations, add them to your favorites, and create AI-powered routes.</p>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <button class="accordion-btn" type="button">
+                Are the locations current?
+                <span class="chev">▾</span>
+              </button>
+              <div class="accordion-panel">
+                <p>Yes, thanks to our editors, the accuracy of locations is regularly checked.</p>
+              </div>
+            </div>
+             <div class="accordion-item">
+              <button class="accordion-btn" type="button">
+                Is it paid?
+                <span class="chev">▾</span>
+              </button>
+              <div class="accordion-panel">
+                <p>All basic features are free. Premium options for advanced route planning features will be available soon.</p>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <button class="accordion-btn" type="button">
+                Are there only movies from Turkey?
+                <span class="chev">▾</span>
+              </button>
+              <div class="accordion-panel">
+                <p>The current focus of the project is to revitalize national film tourism and promote Turkey's cultural heritage. Therefore, the system focuses on filming locations within Turkey for domestic productions (films and series).</p>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <button class="accordion-btn" type="button">
+                How can I find out exactly where a scene was filmed?
+                <span class="chev">▾</span>
+              </button>
+              <div class="accordion-panel">
+                <p> When you select a movie or TV show, the system shows you the exact location where that scene was filmed on a map (with an accuracy of approximately 30 meters).</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand brand-sm"><span class="brand-accent">CINE</span>PATH</a>
+          <p style="margin-top: 10px; line-height: 1.6;">Welcome to Turkey's AI-powered location archive, developed for film and TV series enthusiasts.</p>
+        </div>
+        
+        <div class="footer-col">
+          
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="AI.html">CıneAI</a></li>
+            <li><a href="Contact.html">Contact</a></li>
+            <li><a href="https://www.instagram.com/cinepathofficial/">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <p class="copyright">© <span id="year"></span> CinePath. All rights reserved.</p>
+      </div>
+    </footer>
+  </div> <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('hamburgerBtn');
+            const menu = document.getElementById('mobileNavPanel');
+            const overlay = document.getElementById('mobileOverlay');
+            
+            function toggleMenu() {
+                menu.classList.toggle('open');
+                overlay.classList.toggle('active');
+                btn.classList.toggle('active');
+                document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+            }
+
+            if(btn && menu && overlay) {
+                btn.addEventListener('click', toggleMenu);
+                overlay.addEventListener('click', toggleMenu);
+                
+                
+                menu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', toggleMenu);
+                });
+            }
+        });
+    </script>
+    <script src="assets/js/app.js"></script>
+    <script type="module">
+  import { initAuthListener } from './auth_manager.js';
+  
+  
+  initAuthListener();
+   
+        let allMoviesForSearch = [];
+
+        
+        async function cacheMoviesForSearch() {
+            try {
+                const q = query(collection(db, "contents"));
+                const querySnapshot = await getDocs(q);
+                querySnapshot.forEach((doc) => {
+                    allMoviesForSearch.push({ id: doc.id, ...doc.data() });
+                });
+            } catch (error) { console.error("Arama verisi çekilemedi:", error); }
+        }
+
+        const searchInput = document.getElementById('mainSearchInput');
+        const resultsBox = document.getElementById('mainSearchResults');
+
+        searchInput.addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase().trim();
+            resultsBox.innerHTML = "";
+
+            if (term.length < 2) {
+                resultsBox.style.display = 'none';
+                return;
+            }
+
+            const filtered = allMoviesForSearch.filter(m => m.title.toLowerCase().includes(term));
+
+            if (filtered.length > 0) {
+                resultsBox.style.display = 'block';
+                filtered.slice(0, 5).forEach(movie => { 
+                    const item = document.createElement('div');
+                    item.className = 'search-result-item';
+                    item.onclick = () => {
+                        window.location.href = `filmler.html?id=${movie.id}`;
+                    };
+                    item.innerHTML = `
+                        <img src="${movie.poster}" class="search-thumb" onerror="this.src='https://placehold.co/50x75/111/FFF?text=No'">
+                        <div class="search-info">
+                            <h4>${movie.title}</h4>
+                            <p>${movie.type === 'movie' ? 'Film' : 'Dizi'} • ${movie.locations ? movie.locations.length : 0} Lokasyon</p>
+                        </div>
+                    `;
+                    resultsBox.appendChild(item);
+                });
+            } else {
+                resultsBox.style.display = 'block';
+                resultsBox.innerHTML = `<div style="padding:15px; color:#888; text-align:center;">Sonuç bulunamadı.</div>`;
+            }
+        });
+
+        
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !resultsBox.contains(e.target)) {
+                resultsBox.style.display = 'none';
+            }
+        });
+
+        loadHeroSlider();
+        cacheMoviesForSearch();
+    </script>
+  </body>
+</html>
