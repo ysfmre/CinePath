@@ -32,6 +32,7 @@ import {
 
 import { CONFIG } from './config.js'; // Başına / koyarak ana dizinden almasını sağla
 
+console.log("Loaded Firebase Config:", CONFIG.FIREBASE);
 const app = initializeApp(CONFIG.FIREBASE);
 const auth = getAuth(app);
 const db = getFirestore(app);
