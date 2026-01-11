@@ -30,9 +30,9 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 
-import { CONFIG } from "./config.js";
+import firebaseConfig from '/config.js'; // Başına / koyarak ana dizinden almasını sağla
 
-const app = initializeApp(CONFIG.FIREBASE);
+const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
