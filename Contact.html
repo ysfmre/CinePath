@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#0a0a0b" />
+    <title>Contact — CinePath</title>
+    <meta name="description" content="Get in touch with the CinePath team." />
+    <link rel="icon" href="assets/favicon/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <style>
+        body { margin: 0; background-color: var(--bg); color: #fff; font-family: 'Inter', sans-serif; }
+        main { padding-top: 0; min-height: 100vh; display: flex; flex-direction: column; }
+        .contact-section { padding-top: 130px; }
+
+        @media (max-width: 1024px) {
+            .contact-section { padding: 110px 0 80px; }
+            .contact-wrapper { gap: 50px; }
+            .contact-title { font-size: 42px; }
+            .contact-form-container { padding: 36px; }
+        }
+
+        @media (max-width: 900px) {
+            .contact-section { padding: 90px 0 60px; }
+            .contact-wrapper { grid-template-columns: 1fr; gap: 50px; }
+            .contact-info { text-align: center; }
+            .contact-desc { max-width: 100%; margin: 0 auto 40px; }
+            .contact-details { align-items: center; }
+            .contact-item { justify-content: center; }
+            .social-links { justify-content: center; }
+            .contact-form-container { max-width: 550px; margin: 0 auto; }
+            .contact-bg-glow { top: 30%; opacity: 0.4; }
+        }
+
+        @media (max-width: 768px) {
+            .contact-section { padding: 100px 0 50px; }
+            .contact-title { font-size: clamp(30px, 8vw, 38px); margin-bottom: 20px; }
+            .contact-badge { font-size: 11px; margin-bottom: 18px; }
+            .contact-desc { font-size: 16px; margin-bottom: 36px; }
+            .contact-details { gap: 26px; margin-bottom: 36px; }
+            .icon-box { width: 46px; height: 46px; font-size: 18px; }
+            .detail-title { font-size: 12px; }
+            .detail-link, .detail-text { font-size: 17px; }
+            .social-btn { padding: 11px 20px; font-size: 14px; }
+            .contact-form-container { padding: 28px 24px; border-radius: 20px; }
+            .form-grid { grid-template-columns: 1fr; gap: 0; }
+            .form-group { margin-bottom: 20px; }
+            .form-group label { font-size: 12px; margin-bottom: 8px; }
+            .form-group input, .form-group select, .form-group textarea { padding: 14px 16px; font-size: 15px; border-radius: 12px; }
+            .submit-btn { padding: 16px; font-size: 16px; border-radius: 12px; }
+        }
+
+        @media (max-width: 480px) {
+            .contact-section { padding: 85px 0 40px; }
+            .contact-title { font-size: clamp(26px, 7vw, 32px); }
+            .contact-badge { font-size: 10px; }
+            .contact-desc { font-size: 15px; }
+            .contact-details { gap: 22px; margin-bottom: 30px; }
+            .icon-box { width: 42px; height: 42px; font-size: 16px; border-radius: 12px; }
+            .detail-link, .detail-text { font-size: 15px; }
+            .social-links { flex-wrap: wrap; gap: 12px; }
+            .social-btn { padding: 10px 18px; font-size: 13px; }
+            .contact-form-container { padding: 22px 18px; border-radius: 16px; }
+            .form-group { margin-bottom: 18px; }
+            .form-group input, .form-group select, .form-group textarea { padding: 13px 14px; font-size: 14px; }
+            .submit-btn { padding: 14px; font-size: 15px; }
+        }
+
+        @media (max-width: 360px) {
+            .contact-title { font-size: 24px; }
+            .contact-desc { font-size: 14px; }
+            .detail-link, .detail-text { font-size: 14px; }
+            .contact-form-container { padding: 18px 16px; }
+            .form-group input, .form-group select, .form-group textarea { padding: 12px; font-size: 13px; }
+            .submit-btn { padding: 13px; font-size: 14px; }
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+            .social-btn:hover { background: transparent; color: inherit; border-color: var(--stroke); }
+            .social-btn:active { background: #fff; color: #000; }
+            .submit-btn:hover { transform: none; }
+            .submit-btn:active { transform: scale(0.98); }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header" data-header>
+        <div class="container header-inner">
+            <a href="index.html" class="brand" aria-label="CinePath Home">
+                <span class="brand-accent">CINE</span>PATH
+            </a>
+            <nav class="nav desktop-nav">
+                <ul class="nav-list" data-nav-list>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="explore.html">Explore</a></li>
+                    <li><a href="AI.html">CineAI</a></li>
+                    <li><a href="Contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="profile" data-profile>
+                <button class="avatar-btn" type="button" aria-haspopup="menu" aria-expanded="false" data-profile-btn>
+                    <span class="avatar" data-avatar>👤</span>
+                    <span class="avatar-label" data-avatar-label>Log In</span>
+                </button>
+                <div class="profile-menu" role="menu" data-profile-menu>
+                    <a role="menuitem" href="login.html" data-menu-login>Log In</a>
+                    <a role="menuitem" href="signup.html" data-menu-signup>Register</a>
+                    <a role="menuitem" href="#logout" data-menu-logout style="display:none">Log Out</a>
+                </div>
+            </div>
+            <button id="hamburgerBtn" class="hamburger-btn" aria-label="Toggle menu">
+                <span class="hamburger-box">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </span>
+            </button>
+        </div>
+    </header>
+
+    <div id="mobileOverlay" class="mobile-overlay"></div>
+    <nav id="mobileNavPanel" class="mobile-nav-panel">
+        <div class="mobile-nav-header">
+            <div class="mobile-nav-brand"><span class="brand-accent">CINE</span>PATH</div>
+              <div class="mobile-nav-tagline">DIscover FIlm LocatIons</div>
+        </div>
+        <a href="index.html" class="mobile-link">
+            
+            <span class="mobile-link-text">
+                <span class="mobile-link-title">Home</span>
+                <span class="mobile-link-subtitle">Back to homepage</span>
+            </span>
+        </a>
+        <a href="explore.html" class="mobile-link">
+            
+            <span class="mobile-link-text">
+                <span class="mobile-link-title">Explore</span>
+                <span class="mobile-link-subtitle">Browse all locations</span>
+            </span>
+        </a>
+        <a href="about.html" class="mobile-link">
+            
+            <span class="mobile-link-text">
+                <span class="mobile-link-title">About Us</span>
+                <span class="mobile-link-subtitle">Learn about CinePath</span>
+            </span>
+        </a>
+        
+        <a href="AI.html" class="mobile-link">
+            
+            <span class="mobile-link-text">
+                <span class="mobile-link-title">CineAI</span>
+                <span class="mobile-link-subtitle">AI recommendations</span>
+            </span>
+        </a>
+        <a href="Contact.html" class="mobile-link">
+            
+            <span class="mobile-link-text">
+                <span class="mobile-link-title">Contact</span>
+                <span class="mobile-link-subtitle">Get in touch</span>
+            </span>
+        </a>
+        
+        <div class="mobile-nav-footer">
+            <p>© 2025 CinePath. All rights reserved.</p>
+        </div>
+    </nav>
+
+    <main>
+        <section id="contact" class="contact-section">
+            <div class="contact-bg-glow"></div>
+            <div class="container">
+                <div class="contact-wrapper">
+                    <div class="contact-info">
+                        <span class="contact-badge">Contact</span>
+                        <h2 class="contact-title">Be part of the story.</h2>
+                        <p class="contact-desc">To add a new location to the CinePath platform, report an error, or just say hello, please contact us.</p>
+                        <div class="contact-details">
+                            <div class="contact-item">
+                                <div>
+                                    <h4 class="detail-title">Email</h4>
+                                    <a href="mailto:cinepathcontact@gmail.com" class="detail-link">cinepathcontact@gmail.com</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="social-links">
+                            <a href="https://www.instagram.com/cinepathofficial" class="social-btn">Instagram</a>
+                        </div>
+                    </div>
+
+                    <div class="contact-form-container">
+                        <form class="contact-form" id="contactForm">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="name">Full Name</label>
+                                    <input type="text" id="name" name="name" required placeholder="Your name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" name="email" required placeholder="you@example.com">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">Subject</label>
+                                <select id="subject" name="subject">
+                                    <option value="suggestion">Location Suggestion</option>
+                                    <option value="bug">Bug Report</option>
+                                    <option value="partnership">Partnership</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" name="message" rows="4" required placeholder="Your message..."></textarea>
+                            </div>
+                            <button type="submit" class="submit-btn">
+                                <span>Send Message</span>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <a href="index.html" class="brand brand-sm"><span class="brand-accent">CINE</span>PATH</a>
+                <p style="margin-top: 14px; line-height: 1.7;">Turkey's AI-powered location archive for film and TV series enthusiasts.</p>
+            </div>
+            <div class="footer-col">
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="explore.html">Explore</a></li>
+                    <li><a href="AI.html">CineAI</a></li>
+                    <li><a href="Contact.html">Contact</a></li>
+                    <li><a href="https://www.instagram.com/cinepathofficial/">Instagram</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <p class="copyright">© <span id="year"></span> CinePath. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('hamburgerBtn');
+            const menu = document.getElementById('mobileNavPanel');
+            const overlay = document.getElementById('mobileOverlay');
+            
+            function toggleMenu() {
+                menu.classList.toggle('open');
+                overlay.classList.toggle('active');
+                btn.classList.toggle('active');
+                document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+            }
+
+            if(btn && menu && overlay) {
+                btn.addEventListener('click', toggleMenu);
+                overlay.addEventListener('click', toggleMenu);
+                menu.querySelectorAll('a').forEach(link => link.addEventListener('click', toggleMenu));
+            }
+            
+            document.getElementById('year').textContent = new Date().getFullYear();
+        });
+    </script>
+    <script src="contact_script.js"></script>
+    <script type="module">
+        import { initAuthListener } from './auth_manager.js';
+        initAuthListener();
+    </script>
+</body>
+</html>

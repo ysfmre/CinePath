@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#050505" />
+    <title>My Profile — CinePath</title>
+    <link rel="icon" href="assets/favicon/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <style>
+        :root { --level-gradient: linear-gradient(90deg, #e50914 0%, #ff5f6d 100%); }
+        body { background-color: var(--bg); color: var(--text); padding-top: 80px; }
+        .profile-banner { height: 250px; background: linear-gradient(to bottom, rgba(5,5,5,0) 0%, rgba(5,5,5,1) 100%), url('https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center; position: relative; margin-bottom: -60px; }
+        .profile-layout { display: grid; grid-template-columns: 350px 1fr; gap: 30px; max-width: 1200px; margin: 0 auto; padding: 0 20px 60px; position: relative; z-index: 2; }
+        .profile-card { background: var(--bg-elev); backdrop-filter: blur(20px); border: 1px solid var(--stroke); border-radius: 20px; padding: 40px 30px; text-align: center; box-shadow: var(--shadow-lg); height: fit-content; }
+        .avatar-container { position: relative; width: 140px; height: 140px; margin: 0 auto 24px; }
+        .profile-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid var(--bg); box-shadow: 0 0 0 2px var(--accent); }
+        .user-name { font-size: 26px; font-weight: 800; margin-bottom: 4px; color: var(--text); }
+        .user-handle { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; font-weight: 500; }
+        .profile-details { border-top: 1px solid var(--stroke); padding-top: 24px; margin-top: 24px; text-align: left; }
+        .detail-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; color: var(--text-muted); font-size: 14px; }
+        .detail-row svg { color: var(--accent); opacity: 0.8; }
+        .level-badge { background: rgba(229, 9, 20, 0.1); border: 1px solid rgba(229, 9, 20, 0.3); padding: 6px 16px; border-radius: 50px; font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
+        .content-area { padding-top: 60px; display: flex; flex-direction: column; gap: 30px; }
+        .gamification-card { background: var(--bg-elev); border: 1px solid var(--stroke); border-radius: 16px; padding: 30px; }
+        .level-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .xp-text { font-size: 14px; color: var(--text-muted); font-weight: 600; }
+        .progress-track { width: 100%; height: 12px; background: rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--level-gradient); width: 0%; transition: width 1s ease-out; border-radius: 10px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .stat-box { background: var(--bg-elev); border: 1px solid var(--stroke); border-radius: 16px; padding: 24px; text-align: center; transition: transform 0.2s; }
+        .stat-box:hover { transform: translateY(-5px); border-color: var(--accent); }
+        .stat-value { font-size: 32px; font-weight: 800; color: var(--text); display: block; margin-bottom: 4px; }
+        .stat-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+        .photo-gallery-section { background: var(--bg-elev); border: 1px solid var(--stroke); border-radius: 16px; padding: 30px; }
+        .gallery-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .gallery-header h3 { margin: 0; color: var(--text); }
+        .add-photo-btn { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
+        .add-photo-btn:hover { background: #b20710; }
+        .photos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
+        .user-photo-card { aspect-ratio: 1; background: #000; border-radius: 12px; overflow: hidden; position: relative; cursor: pointer; border: 1px solid var(--stroke); transition: transform 0.2s; }
+        .user-photo-card:hover { transform: scale(1.05); z-index: 2; border-color: var(--accent); }
+        .user-photo-img { width: 100%; height: 100%; object-fit: cover; }
+        .photo-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); padding: 10px; opacity: 0; transition: opacity 0.2s; }
+        .user-photo-card:hover .photo-overlay { opacity: 1; }
+        .photo-location { color: white; font-size: 11px; font-weight: 600; display: block; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
+        .delete-photo-btn { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.6); color: white; border: none; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; transition: 0.2s; z-index: 10; font-size: 14px; line-height: 1; }
+        .user-photo-card:hover .delete-photo-btn { display: flex; }
+        .delete-photo-btn:hover { background: #e50914; }
+        .upload-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(5px); }
+        .upload-content { background: var(--bg-elev); padding: 30px; border-radius: 16px; border: 1px solid var(--stroke); width: 90%; max-width: 400px; }
+        .upload-content h3 { margin-top: 0; margin-bottom: 20px; color: var(--text); }
+        .file-input-wrapper { border: 2px dashed var(--stroke); padding: 30px; text-align: center; border-radius: 12px; cursor: pointer; margin-bottom: 15px; }
+        .file-input-wrapper:hover { border-color: var(--accent); background: rgba(255,255,255,0.02); }
+        .caption-input { width: 100%; background: var(--bg); border: 1px solid var(--stroke); color: var(--text); padding: 12px; border-radius: 8px; margin-bottom: 15px; box-sizing: border-box; }
+        .upload-actions { display: flex; gap: 10px; }
+        .btn-cancel { flex: 1; background: var(--stroke); color: var(--text); border: none; padding: 12px; border-radius: 8px; cursor: pointer; }
+        .btn-confirm { flex: 1; background: var(--accent); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .btn-confirm:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        @media (max-width: 1024px) {
+            .profile-layout { grid-template-columns: 300px 1fr; gap: 24px; padding: 0 16px 50px; }
+            .profile-card { padding: 32px 24px; }
+            .avatar-container { width: 120px; height: 120px; }
+            .user-name { font-size: 22px; }
+            .gamification-card, .photo-gallery-section { padding: 24px; }
+            .stat-value { font-size: 28px; }
+        }
+
+        @media (max-width: 900px) {
+            body { padding-top: 70px; }
+            .profile-layout { grid-template-columns: 1fr; max-width: 600px; }
+            .profile-banner { height: 200px; margin-bottom: -40px; }
+            .profile-card { margin-top: 0; border-radius: 16px; }
+            .content-area { padding-top: 30px; }
+            .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+            .stat-box { padding: 18px 12px; }
+            .stat-value { font-size: 24px; }
+            .stat-label { font-size: 10px; }
+        }
+
+        @media (max-width: 768px) {
+            body { padding-top: 60px; }
+            .profile-banner { height: 180px; margin-bottom: -30px; }
+            .profile-layout { padding: 0 12px 40px; }
+            .profile-card { padding: 28px 20px; border-radius: 14px; }
+            .avatar-container { width: 100px; height: 100px; margin-bottom: 18px; }
+            .profile-avatar { border-width: 3px; }
+            .user-name { font-size: 20px; }
+            .user-handle { font-size: 13px; margin-bottom: 18px; }
+            .level-badge { padding: 5px 14px; font-size: 11px; }
+            .profile-details { padding-top: 18px; margin-top: 18px; }
+            .detail-row { font-size: 13px; margin-bottom: 12px; gap: 10px; }
+            .detail-row svg { width: 16px; height: 16px; }
+            .content-area { gap: 20px; }
+            .gamification-card, .photo-gallery-section { padding: 20px; border-radius: 14px; }
+            .level-header strong { font-size: 18px !important; }
+            .xp-text { font-size: 13px; }
+            .progress-track { height: 10px; }
+            .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+            .stat-box { padding: 16px 10px; border-radius: 12px; }
+            .stat-value { font-size: 22px; }
+            .stat-label { font-size: 9px; letter-spacing: 0.5px; }
+            .gallery-header h3 { font-size: 16px; }
+            .add-photo-btn { padding: 8px 14px; font-size: 13px; border-radius: 8px; }
+            .add-photo-btn svg { width: 16px; height: 16px; }
+            .photos-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+            .user-photo-card { border-radius: 10px; }
+            .photo-location { font-size: 10px; }
+            .profile button { padding: 6px 14px !important; font-size: 12px !important; }
+            #adminBtn { padding: 16px !important; font-size: 15px !important; border-radius: 12px !important; }
+        }
+
+        @media (max-width: 480px) {
+            body { padding-top: 50px; }
+            .profile-banner { height: 150px; margin-bottom: -25px; }
+            .profile-layout { padding: 0 10px 30px; }
+            .profile-card { padding: 24px 16px; }
+            .avatar-container { width: 90px; height: 90px; margin-bottom: 16px; }
+            .user-name { font-size: 18px; }
+            .user-handle { font-size: 12px; margin-bottom: 16px; }
+            .level-badge { font-size: 10px; padding: 4px 12px; }
+            .detail-row { font-size: 12px; }
+            .gamification-card, .photo-gallery-section { padding: 16px; border-radius: 12px; }
+            .level-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+            .level-header strong { font-size: 16px !important; }
+            .xp-text { font-size: 12px; }
+            .progress-track { height: 8px; }
+            .stats-grid { gap: 8px; }
+            .stat-box { padding: 14px 8px; }
+            .stat-value { font-size: 20px; }
+            .stat-label { font-size: 8px; }
+            .gallery-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .add-photo-btn { width: 100%; justify-content: center; }
+            .photos-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .upload-content { padding: 24px 20px; border-radius: 14px; }
+            .upload-content h3 { font-size: 18px; }
+            .file-input-wrapper { padding: 24px; }
+            .caption-input { padding: 10px; font-size: 14px; }
+            .upload-actions { flex-direction: column; }
+            .btn-cancel, .btn-confirm { padding: 11px; }
+        }
+
+        @media (max-width: 360px) {
+            .profile-card { padding: 20px 14px; }
+            .avatar-container { width: 80px; height: 80px; }
+            .user-name { font-size: 16px; }
+            .stat-value { font-size: 18px; }
+            .photos-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+            .stat-box:hover { transform: none; }
+            .stat-box:active { transform: scale(0.98); }
+            .user-photo-card:hover { transform: none; }
+            .user-photo-card:active { transform: scale(0.98); }
+            .photo-overlay { opacity: 1; }
+            .delete-photo-btn { display: flex; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header" data-header>
+        <div class="container header-inner">
+            <a href="index.html" class="brand" aria-label="CinePath home page">
+                <span class="brand-accent">CINE</span>PATH
+            </a>
+            <nav class="nav desktop-nav" aria-label="Ana menü">
+                <ul class="nav-list" data-nav-list>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="explore.html">Explore</a></li>
+                    <li><a href="AI.html">CineAI</a></li>
+                    <li><a href="Contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="profile" style="margin-left: auto;">
+                <button onclick="logoutAction()" style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:#fff; padding:8px 20px; border-radius:50px; cursor:pointer; font-size:13px; font-weight:600; transition:0.2s;">Log Out</button>
+            </div>
+            <button id="hamburgerBtn" class="hamburger-btn" aria-label="Menüyü aç">
+                <span class="hamburger-box">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </span>
+            </button>
+        </div>
+    </header>
+
+    <div id="mobileOverlay" class="mobile-overlay"></div>
+    <nav id="mobileNavPanel" class="mobile-nav-panel">
+        <div class="mobile-nav-header">
+            <div class="mobile-nav-brand"><span class="brand-accent">CINE</span>PATH</div>
+            <div class="mobile-nav-tagline">DIscover FIlm LocatIons</div>
+        </div>
+        <a href="index.html" class="mobile-link">
+            
+            <span class="mobile-link-text">
+                <span class="mobile-link-title">Home</span>
+                <span class="mobile-link-subtitle">Back to homepage</span>
+            </span>
+        </a>
+        <a href="explore.html" class="mobile-link">
+            
+            <span class="mobile-link-text">
+                <span class="mobile-link-title">Explore</span>
+                <span class="mobile-link-subtitle">Browse all locations</span>
+            </span>
+        </a>
+        <a href="about.html" class="mobile-link">
+            
+            <span class="mobile-link-text">
+                <span class="mobile-link-title">About Us</span>
+                <span class="mobile-link-subtitle">Learn about CinePath</span>
+            </span>
+        </a>
+        
+        <a href="AI.html" class="mobile-link">
+            
+            <span class="mobile-link-text">
+                <span class="mobile-link-title">CineAI</span>
+                <span class="mobile-link-subtitle">AI recommendations</span>
+            </span>
+        </a>
+        <a href="Contact.html" class="mobile-link">
+            
+            <span class="mobile-link-text">
+                <span class="mobile-link-title">Contact</span>
+                <span class="mobile-link-subtitle">Get in touch</span>
+            </span>
+        </a>
+        <button onclick="logoutAction()" class="mobile-link" style="background: linear-gradient(135deg, rgba(229, 9, 20, 0.2) 0%, rgba(225, 29, 72, 0.1) 100%); border-color: rgba(229, 9, 20, 0.4); width: 100%; cursor: pointer; font-family: inherit;">
+            
+            <span class="mobile-link-text">
+                <span class="mobile-link-title">Log Out</span>
+                <span class="mobile-link-subtitle">Sign out of your account</span>
+            </span>
+        </button>
+        <div class="mobile-nav-footer">
+            <p>© 2025 CinePath. All rights reserved.</p>
+        </div>
+    </nav>
+
+    <div class="profile-banner"></div>
+
+    <main class="profile-layout">
+        <aside class="profile-card">
+            <div class="avatar-container">
+                <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff" alt="Profile" class="profile-avatar" id="currentAvatar">
+            </div>
+            <h1 class="user-name" id="displayName">Loading...</h1>
+            <p class="user-handle" id="userTitle">Novice Cinephile</p>
+            <div class="level-badge">
+                <span>LEVEL</span>
+                <span id="userLevel">1</span>
+            </div>
+            <div class="profile-details">
+                <div class="detail-row">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    <span id="displayEmail">email@example.com</span>
+                </div>
+                <div class="detail-row">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    <span id="joinDate">Joined: 2024</span>
+                </div>
+            </div>
+        </aside>
+
+        <div class="content-area">
+            <a href="admin.html" id="adminBtn" style="display: none; background: linear-gradient(45deg, #b91c1c, #ef4444); color: white; padding: 20px; border-radius: 16px; text-align: center; font-weight: 800; font-size: 18px; box-shadow: 0 10px 25px rgba(220, 38, 38, 0.4); transition: transform 0.2s; text-decoration: none; margin-bottom: 20px;">
+                 CONTENT MANAGER PANEL
+            </a>
+
+            <div class="gamification-card">
+                <div class="level-header">
+                    <strong style="font-size: 20px; color: var(--text);">Level Progress</strong>
+                    <span class="xp-text"><span id="currentXp">0</span> / <span id="nextXp">100</span> XP</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" id="xpBar"></div>
+                </div>
+                <p id="xpHelpText" style="font-size: 14px; color: var(--text-muted); margin-top: 16px;">
+                    Upload photos (+10 XP) and rate locations (+3 XP) to level up!
+                </p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span class="stat-value" id="statLoc">0</span>
+                    <span class="stat-label">Visits</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value" id="statRev">0</span>
+                    <span class="stat-label">Reviews</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value" id="statPhoto">0</span>
+                    <span class="stat-label">Photos</span>
+                </div>
+            </div>
+
+            <div class="photo-gallery-section">
+                <div class="gallery-header">
+                    <h3 style="margin:0;"> My Memories</h3>
+                    <button class="add-photo-btn" onclick="openUploadModal()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v14M5 12h14"/></svg>
+                        Add
+                    </button>
+                </div>
+                <div class="photos-grid" id="userPhotosGrid">
+                    <p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;">No photos uploaded yet. Immortalize the places you visit!</p>
+                </div>
+            </div>
+
+            <div class="photo-gallery-section" style="margin-top: 30px;">
+                <div class="gallery-header">
+                    <h3 style="margin:0;"> My Favorites</h3>
+                </div>
+                <div class="photos-grid" id="favoritesGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap:15px;">
+                    <p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;">No favorites added yet.</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div class="upload-modal" id="uploadModal">
+        <div class="upload-content">
+            <h3>Share Photo</h3>
+            <label class="file-input-wrapper" for="photoInput">
+                <p id="fileName" style="color:#aaa;">Click to select photo</p>
+                <input type="file" id="photoInput" accept="image/*" style="display:none;" onchange="handleFileSelect(this)">
+            </label>
+            <input type="text" id="photoLocation" class="caption-input" placeholder="Which Location? (e.g. Galata Tower)">
+            <input type="text" id="photoCaption" class="caption-input" placeholder="Write a caption...">
+            <div class="upload-actions">
+                <button class="btn-cancel" onclick="closeUploadModal()">Cancel</button>
+                <button class="btn-confirm" id="confirmUploadBtn" onclick="uploadPhotoAction()" disabled>Upload</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('hamburgerBtn');
+            const menu = document.getElementById('mobileNavPanel');
+            const overlay = document.getElementById('mobileOverlay');
+            
+            function toggleMenu() {
+                menu.classList.toggle('open');
+                overlay.classList.toggle('active');
+                btn.classList.toggle('active');
+                document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+            }
+
+            if(btn && menu && overlay) {
+                btn.addEventListener('click', toggleMenu);
+                overlay.addEventListener('click', toggleMenu);
+                menu.querySelectorAll('a, button').forEach(link => {
+                    link.addEventListener('click', toggleMenu);
+                });
+            }
+        });
+    </script>
+
+    <script type="module">
+        import { initAuthListener, getUserData, logoutUser, addUserPhoto, getUserPhotos, getMovieById, deleteUserPhoto, updateUserXP } from './auth_manager.js';
+
+        let currentUserUid = null;
+        let selectedFileBase64 = null;
+        
+        function showLevelUpNotification(newLevel, newTitle) {
+            const notification = document.createElement('div');
+            notification.className = 'level-up-notification';
+            notification.innerHTML = `
+                <div class="level-up-content">
+                    <span class="level-up-icon">🎉</span>
+                    <h3>LEVEL UP!</h3>
+                    <p>You reached <strong>Level ${newLevel}</strong></p>
+                    <p class="new-title">${newTitle}</p>
+                </div>
+            `;
+            notification.style.cssText = `
+                position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+                display: flex; align-items: center; justify-content: center; z-index: 3000;
+                animation: fadeIn 0.3s ease;
+            `;
+            notification.querySelector('.level-up-content').style.cssText = `
+                text-align: center; padding: 40px; background: linear-gradient(135deg, #1a1a1d 0%, #2d1f1f 100%);
+                border: 2px solid #e50914; border-radius: 20px; animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            `;
+            notification.querySelector('.level-up-icon').style.cssText = `font-size: 60px; display: block; margin-bottom: 10px;`;
+            notification.querySelector('h3').style.cssText = `font-size: 32px; color: #e50914; margin: 0 0 10px 0;`;
+            notification.querySelector('p').style.cssText = `font-size: 18px; color: #fff; margin: 0;`;
+            notification.querySelector('.new-title').style.cssText = `font-size: 14px; color: #888; margin-top: 8px;`;
+            
+            document.body.appendChild(notification);
+            notification.onclick = () => notification.remove();
+            setTimeout(() => notification.remove(), 4000);
+        }
+        
+        function updateXPDisplay(xp, nextXp, level, title) {
+            document.getElementById('currentXp').textContent = xp;
+            document.getElementById('nextXp').textContent = nextXp;
+            document.getElementById('userLevel').textContent = level;
+            document.getElementById('userTitle').textContent = title;
+            const percentage = (xp / nextXp) * 100;
+            document.getElementById('xpBar').style.width = `${percentage}%`;
+        }
+        
+        async function refreshUserData() {
+            if (!currentUserUid) return;
+            const userData = await getUserData(currentUserUid);
+            if (userData) {
+                updateXPDisplay(
+                    userData.xp || 0,
+                    userData.nextLevelXp || 100,
+                    userData.level || 1,
+                    userData.title || "Novice Cinephile"
+                );
+                document.getElementById('statLoc').textContent = userData.stats?.visitedLocations || 0;
+                document.getElementById('statRev').textContent = userData.stats?.reviews || 0;
+                document.getElementById('statPhoto').textContent = userData.stats?.photos || 0;
+            }
+        }
+
+        window.logoutAction = () => { logoutUser(); };
+
+        const uploadModal = document.getElementById('uploadModal');
+        window.openUploadModal = () => uploadModal.style.display = 'flex';
+        window.closeUploadModal = () => {
+            uploadModal.style.display = 'none';
+            document.getElementById('photoInput').value = ''; 
+            selectedFileBase64 = null;
+            document.getElementById('fileName').textContent = "Click to select photo";
+            document.getElementById('confirmUploadBtn').disabled = true;
+        };
+
+        window.handleFileSelect = (input) => {
+            const file = input.files[0];
+            if (!file) return;
+            document.getElementById('fileName').textContent = file.name;
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (event) => {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const MAX_WIDTH = 800;
+                    const MAX_HEIGHT = 800;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+                    } else {
+                        if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+                    selectedFileBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                    document.getElementById('confirmUploadBtn').disabled = false;
+                };
+            };
+        };
+
+        window.uploadPhotoAction = async () => {
+            if (!selectedFileBase64 || !currentUserUid) return;
+            const btn = document.getElementById('confirmUploadBtn');
+            const originalText = btn.textContent;
+            btn.textContent = "Saving...";
+            btn.disabled = true;
+            const locName = document.getElementById('photoLocation').value;
+            const caption = document.getElementById('photoCaption').value;
+            const result = await addUserPhoto(currentUserUid, { image: selectedFileBase64, locationName: locName, caption: caption });
+
+            if (result.success) {
+                closeUploadModal();
+                loadUserPhotos(currentUserUid);
+                await refreshUserData();
+                if (result.leveledUp) {
+                    const userData = await getUserData(currentUserUid);
+                    showLevelUpNotification(userData.level, userData.title);
+                }
+            } else {
+                alert("Error: " + result.error);
+            }
+            btn.textContent = originalText;
+            btn.disabled = false;
+        };
+
+        window.deletePhotoAction = async (photoId, event) => {
+            event.stopPropagation();
+            if(!confirm("Are you sure you want to delete this photo? You will lose 10 XP.")) return;
+            const card = event.target.closest('.user-photo-card');
+            if(card) card.style.opacity = '0.5';
+            const result = await deleteUserPhoto(currentUserUid, photoId);
+            if (result.success) {
+                if(card) card.remove();
+                await refreshUserData();
+            } else {
+                alert("Error deleting photo: " + result.error);
+                if(card) card.style.opacity = '1';
+            }
+        }
+
+        async function loadUserPhotos(uid) {
+            const photos = await getUserPhotos(uid);
+            const grid = document.getElementById('userPhotosGrid');
+            if (photos.length === 0) {
+                grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;'>No photos uploaded yet. Immortalize the places you visit!</p>";
+                return;
+            }
+            grid.innerHTML = "";
+            photos.forEach(photo => {
+                const div = document.createElement('div');
+                div.className = 'user-photo-card';
+                div.innerHTML = `
+                    <img src="${photo.image}" class="user-photo-img" loading="lazy">
+                    <button class="delete-photo-btn" onclick="deletePhotoAction('${photo.id}', event)">×</button>
+                    <div class="photo-overlay">
+                        <span class="photo-location">📍 ${photo.locationName}</span>
+                    </div>
+                `;
+                grid.appendChild(div);
+            });
+        }
+
+        async function loadFavorites(uid, favIds) {
+            const grid = document.getElementById('favoritesGrid');
+            if (!favIds || favIds.length === 0) {
+                grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;'>No favorites added yet.</p>";
+                return;
+            }
+            grid.innerHTML = '<p style="color:var(--text-muted); grid-column: 1/-1; text-align: center;">Loading...</p>';
+            let html = '';
+            for (const movieId of favIds) {
+                const movie = await getMovieById(movieId);
+                if (movie) {
+                    html += `
+                        <div class="user-photo-card" onclick="window.location.href='explore.html?id=${movie.id}'" style="aspect-ratio: 2/3;">
+                            <img src="${movie.poster}" class="user-photo-img" loading="lazy" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='https://placehold.co/200x300/1a1a1d/FFF?text=No+Image'">
+                            <div class="photo-overlay">
+                                <span class="photo-location" style="font-size:12px;">${movie.title}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            if (html) grid.innerHTML = html;
+            else grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;'>Failed to load favorites.</p>";
+        }
+
+        async function loadProfile(user) {
+            currentUserUid = user.uid;
+            const dbData = await getUserData(user.uid);
+            const name = dbData?.name || user.displayName || "User";
+            const email = dbData?.email || user.email;
+            
+            if (email === "admin@gmail.com") {
+                const adminBtn = document.getElementById('adminBtn');
+                if(adminBtn) adminBtn.style.display = 'block';
+            }
+
+            const photo = dbData?.photoURL || user.photoURL || `https://ui-avatars.com/api/?name=${name}&background=111&color=fff&size=256`;
+            const level = dbData?.level || 1;
+            const xp = dbData?.xp || 0;
+            const nextXp = dbData?.nextLevelXp || 100;
+            const title = dbData?.title || "Novice Cinephile";
+            const stats = dbData?.stats || { visitedLocations: 0, reviews: 0, photos: 0 };
+            
+            let joined = "New Member";
+            if (dbData?.createdAt) {
+                const dateObj = dbData.createdAt.toDate ? dbData.createdAt.toDate() : new Date(dbData.createdAt);
+                joined = "Joined: " + dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+            }
+
+            document.getElementById('displayName').textContent = name;
+            document.getElementById('displayEmail').textContent = email;
+            document.getElementById('joinDate').textContent = joined;
+            document.getElementById('currentAvatar').src = photo;
+            document.getElementById('userLevel').textContent = level;
+            document.getElementById('userTitle').textContent = title;
+            document.getElementById('currentXp').textContent = xp;
+            document.getElementById('nextXp').textContent = nextXp;
+            document.getElementById('statLoc').textContent = stats.visitedLocations;
+            document.getElementById('statRev').textContent = stats.reviews;
+            document.getElementById('statPhoto').textContent = stats.photos;
+            const percentage = (xp / nextXp) * 100;
+            document.getElementById('xpBar').style.width = `${percentage}%`;
+
+            loadUserPhotos(user.uid);
+            if (dbData && dbData.favorites) {
+                loadFavorites(user.uid, dbData.favorites);
+            } else {
+                 const grid = document.getElementById('favoritesGrid');
+                 if(grid) grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;'>No favorites added yet.</p>";
+            }
+        }
+
+        initAuthListener((user) => {
+            if (user) {
+                loadProfile(user);
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+</body>
+</html>

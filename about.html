@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>About Us — CinePath</title>
+    <link rel="icon" href="assets/favicon/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <style>
+        :root { --bg-dark: #050505; --text-main: #ffffff; --text-muted: #a3a3a3; --accent: #e50914; --border-color: rgba(255, 255, 255, 0.1); }
+        body { background-color: var(--bg-dark); color: var(--text-main); overflow-x: hidden; }
+        .about-hero { position: relative; height: 80vh; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; margin-top: -80px; padding-top: 80px; }
+        .hero-bg { position: absolute; inset: 0; background-image: url('https://images.unsplash.com/photo-1478720568477-152d9b164e63?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center; opacity: 0.6; z-index: -1; animation: zoomSlow 20s infinite alternate; }
+        .hero-overlay { position: absolute; inset: 0; background: radial-gradient(circle, rgba(5,5,5,0.2) 0%, var(--bg-dark) 90%); z-index: 0; }
+        .hero-content { position: relative; z-index: 1; max-width: 800px; padding: 0 20px; animation: fadeInUp 1s ease-out; }
+        .hero-badge { display: inline-block; padding: 6px 16px; border: 1px solid var(--accent); border-radius: 50px; color: var(--accent); font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; background: rgba(229, 9, 20, 0.1); }
+        .hero-title { font-size: clamp(40px, 5vw, 72px); font-weight: 800; line-height: 1.1; margin-bottom: 24px; letter-spacing: -0.02em; }
+        .hero-text { font-size: 18px; color: rgba(255,255,255,0.8); font-weight: 300; }
+        .mission-section { padding: 100px 20px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+        .mission-content h2 { font-size: 36px; margin-bottom: 24px; color: #fff; }
+        .mission-content p { color: var(--text-muted); margin-bottom: 20px; font-size: 16px; line-height: 1.6; }
+        .mission-image { position: relative; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .mission-image img { width: 100%; display: block; transition: transform 0.5s; }
+        .mission-image:hover img { transform: scale(1.05); }
+        .stats-section { background: #0f0f10; padding: 80px 20px; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+        .stats-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; text-align: center; }
+        .stat-item h3 { font-size: 48px; font-weight: 700; color: var(--text-main); margin: 0 0 10px 0; background: linear-gradient(to right, #fff, #888); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+        .stat-item p { color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 14px; }
+        .cta-section { padding: 120px 20px; text-align: center; background: radial-gradient(circle at center, #1a0505 0%, var(--bg-dark) 70%); }
+        .cta-box { max-width: 700px; margin: 0 auto; }
+        .cta-btn { display: inline-block; background: var(--text-main); color: #000; padding: 16px 32px; border-radius: 50px; font-weight: 700; margin-top: 30px; transition: transform 0.2s, box-shadow 0.2s; }
+        .cta-btn:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(255,255,255,0.2); }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes zoomSlow { from { transform: scale(1); } to { transform: scale(1.1); } }
+
+        @media (max-width: 1024px) { .mission-section { gap: 50px; padding: 80px 20px; } .stats-grid { gap: 30px; } .cta-section { padding: 80px 20px; } }
+        @media (max-width: 900px) { .mission-section { grid-template-columns: 1fr; gap: 40px; padding: 60px 20px; } .mission-content { order: 1; } .mission-image { order: 2; max-width: 500px; margin: 0 auto; } .mission-content h2 { font-size: 30px; } }
+        @media (max-width: 768px) { .about-hero { height: 70vh; min-height: 500px; margin-top: -70px; padding-top: 70px; } .hero-title { font-size: clamp(28px, 7vw, 42px); margin-bottom: 20px; } .hero-text { font-size: 16px; line-height: 1.6; } .hero-badge { font-size: 11px; padding: 5px 12px; } .mission-section { grid-template-columns: 1fr; gap: 30px; padding: 50px 16px; } .mission-content h2 { font-size: 26px; margin-bottom: 18px; } .mission-content p { font-size: 15px; } .mission-image { border-radius: 16px; } .stats-section { padding: 50px 16px; } .stats-grid { gap: 30px; } .stat-item h3 { font-size: 36px; } .stat-item p { font-size: 12px; } .cta-section { padding: 60px 16px; } .cta-box h2 { font-size: 28px !important; } .cta-box p { font-size: 15px !important; } .cta-btn { padding: 14px 28px; font-size: 15px; } }
+        @media (max-width: 480px) { .about-hero { height: 65vh; min-height: 450px; } .hero-content { padding: 0 16px; } .hero-title { font-size: clamp(24px, 6vw, 32px); } .hero-text { font-size: 14px; } .hero-badge { font-size: 10px; letter-spacing: 1.5px; } .mission-section { padding: 40px 12px; gap: 24px; } .mission-content h2 { font-size: 22px; } .mission-content p { font-size: 14px; margin-bottom: 16px; } .mission-image { border-radius: 12px; } .stats-section { padding: 40px 12px; } .stats-grid { grid-template-columns: 1fr; gap: 24px; } .stat-item h3 { font-size: 32px; } .stat-item p { font-size: 11px; } .cta-section { padding: 50px 12px; } .cta-box h2 { font-size: 24px !important; } .cta-box p { font-size: 14px !important; line-height: 1.5; } .cta-btn { padding: 12px 24px; font-size: 14px; width: 100%; max-width: 280px; } }
+        @media (max-width: 360px) { .hero-title { font-size: 22px; } .mission-content h2 { font-size: 20px; } .stat-item h3 { font-size: 28px; } .cta-box h2 { font-size: 20px !important; } }
+        @media (hover: none) and (pointer: coarse) { .mission-image:hover img { transform: none; } .cta-btn:hover { transform: none; box-shadow: none; } .cta-btn:active { transform: scale(0.98); } }
+    </style>
+</head>
+<body>
+
+    <header class="site-header" data-header>
+      <div class="container header-inner">
+        <a href="index.html" class="brand" aria-label="CinePath ana sayfa">
+          <span class="brand-accent">CINE</span>PATH
+        </a>
+        <nav class="nav desktop-nav">
+          <ul class="nav-list" data-nav-list>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="AI.html">CineAI</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="profile" data-profile>
+          <button class="avatar-btn" type="button" aria-haspopup="menu" aria-expanded="false" data-profile-btn>
+            <span class="avatar" data-avatar>👤</span>
+            <span class="avatar-label" data-avatar-label>Log In</span>
+          </button>
+          <div class="profile-menu" role="menu" data-profile-menu>
+            <a role="menuitem" href="login.html" data-menu-login>Log In</a>
+            <a role="menuitem" href="signup.html" data-menu-signup>Register</a>
+            <a role="menuitem" href="#logout" data-menu-logout style="display:none">Log Out</a>
+          </div>
+        </div>
+        <button id="hamburgerBtn" class="hamburger-btn" aria-label="Menüyü aç">
+            <span class="hamburger-box">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </span>
+        </button>
+      </div>
+    </header>
+
+    <div id="mobileOverlay" class="mobile-overlay"></div>
+    <nav id="mobileNavPanel" class="mobile-nav-panel">
+        <div class="mobile-nav-header">
+            <div class="mobile-nav-brand"><span class="brand-accent">CINE</span>PATH</div>
+            <div class="mobile-nav-tagline">DIscover FIlm LocatIons</div>
+        </div>
+        <a href="index.html" class="mobile-link">
+            
+            <span class="mobile-link-text">
+                <span class="mobile-link-title">Home</span>
+                <span class="mobile-link-subtitle">Back to homepage</span>
+            </span>
+        </a>
+        <a href="explore.html" class="mobile-link">
+            
+            <span class="mobile-link-text">
+                <span class="mobile-link-title">Explore</span>
+                <span class="mobile-link-subtitle">Browse all locations</span>
+            </span>
+        </a>
+        <a href="about.html" class="mobile-link">
+            
+            <span class="mobile-link-text">
+                <span class="mobile-link-title">About Us</span>
+                <span class="mobile-link-subtitle">Learn about CinePath</span>
+            </span>
+        </a>
+        
+        <a href="AI.html" class="mobile-link">
+            
+            <span class="mobile-link-text">
+                <span class="mobile-link-title">CineAI</span>
+                <span class="mobile-link-subtitle">AI recommendations</span>
+            </span>
+        </a>
+        <a href="Contact.html" class="mobile-link">
+            
+            <span class="mobile-link-text">
+                <span class="mobile-link-title">Contact</span>
+                <span class="mobile-link-subtitle">Get in touch</span>
+            </span>
+        </a>
+       
+        <div class="mobile-nav-footer">
+            <p>© 2025 CinePath. All rights reserved.</p>
+        </div>
+    </nav>
+
+    <section class="about-hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">The Bridge Between Cinema and Reality</h1>
+            <p class="hero-text">
+                We're creating a path where your favorite movies don't just stay on the screen, but you can touch and experience them.
+            </p>
+        </div>
+    </section>
+
+    <section class="mission-section">
+        <div class="mission-image">
+            <img src="https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?q=80&w=1000&auto=format&fit=crop" alt="Sinema Seti">
+        </div>
+        <div class="mission-content">
+            <h2>Route to Discovery</h2>
+            <p>
+                We know that moment when you're watching a movie and wonder, "Where is this?" CinePath was born to turn that curiosity into an adventure.
+            </p>
+            <p>
+                Our goal is to map iconic film and TV locations across Turkey, enabling fans to visit these places, take photos, and relive those magical moments.
+            <p>
+                We are not just a platform; we are a community created by cinema enthusiasts, a living and constantly growing community.
+            </p>
+        </div>
+    </section>
+
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>500+</h3>
+                <p>RegIstered LocatIon</p>
+            </div>
+            <div class="stat-item">
+                <h3>100+</h3>
+                <p>MovIes & TV Shows</p>
+            </div>
+            <div class="stat-item">
+                <h3>24/7</h3>
+                <p>ActIve Team</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="cta-box">
+            <h2 style="font-size: 42px; font-weight: 800; margin-bottom: 20px;">Create Your Own Path</h2>
+            <p style="color: var(--text-muted); font-size: 18px;">
+                Ready to walk the streets where your favorite movies were filmed? 
+                Create your free account now and start exploring.
+            </p>
+            <a href="signup.html" class="cta-btn">Join Us</a>
+        </div>
+    </section>
+
+   <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand brand-sm"><span class="brand-accent">CINE</span>PATH</a>
+          <p style="margin-top: 10px; line-height: 1.6;">Welcome to Turkey's AI-powered location archive, developed for film and TV series enthusiasts.</p>
+        </div>
+        <div class="footer-col">
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="AI.html">CineAI</a></li>
+            <li><a href="Contact.html">Contact</a></li>
+            <li><a href="https://www.instagram.com/cinepathofficial/">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <p class="copyright">© <span id="year"></span> CinePath. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script type="module">
+      import { initAuthListener } from './auth_manager.js';
+      initAuthListener();
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('hamburgerBtn');
+            const menu = document.getElementById('mobileNavPanel');
+            const overlay = document.getElementById('mobileOverlay');
+            
+            function toggleMenu() {
+                menu.classList.toggle('open');
+                overlay.classList.toggle('active');
+                btn.classList.toggle('active');
+                document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+            }
+
+            if(btn && menu && overlay) {
+                btn.addEventListener('click', toggleMenu);
+                overlay.addEventListener('click', toggleMenu);
+                menu.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', toggleMenu);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
