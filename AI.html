@@ -302,7 +302,7 @@
             if(personalBtn) personalBtn.disabled = true;
 
             try {
-                if (allMovies.length === 0) throw new Error("Database loading, please wait.");
+                if (allMovies.length === 0) throw new Error("Please sign up or log in");
 
                 const dbContext = JSON.stringify(allMovies.map(m => ({ id: m.id, t: m.title, d: m.description, l: m.locations })));
                 let prompt = "";
