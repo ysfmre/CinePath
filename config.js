@@ -1,17 +1,11 @@
-
-
 export const CONFIG = {
-    
     FIREBASE: {
         apiKey: "AIzaSyAyAfkLuPdW1Vi_32I_1eYX18LQyVZkAog",
-  authDomain: "cinepath-2c233.firebaseapp.com",
-  projectId: "cinepath-2c233",
-  storageBucket: "cinepath-2c233.firebasestorage.app",
-  messagingSenderId: "781626702698",
-  appId: "1:781626702698:web:66ac7f1ce955cbf8f40313"
+        authDomain: "cinepath-2c233.firebaseapp.com",
+        projectId: "cinepath-2c233",
+        storageBucket: "cinepath-2c233.firebasestorage.app",
+        messagingSenderId: "781626702698",
+        appId: "1:781626702698:web:66ac7f1ce955cbf8f40313"
     },
-    
-    
-    GEMINI_API_KEY: "AIzaSyDz5ozF7BG8ReDaJcKJVhhRj_AB3K3Aw18",
-    
+    GEMINI_API_KEY: "AIzaSyDz5ozF7BG8ReDaJcKJVhhRj_AB3K3Aw18"
 };

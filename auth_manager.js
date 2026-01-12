@@ -11,7 +11,10 @@ import {
     GoogleAuthProvider,
     OAuthProvider,
     signInWithPopup,
-    sendPasswordResetEmail
+    sendPasswordResetEmail,
+    updatePassword,
+    EmailAuthProvider,
+    reauthenticateWithCredential
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
     getFirestore,
@@ -62,13 +65,30 @@ export async function loginUser(email, password) {
         return { success: true, user: userCredential.user };
     } catch (error) { return { success: false, error: error.message }; }
 }
-
 export async function resetPassword(email) {
     try {
         await sendPasswordResetEmail(auth, email);
         return { success: true };
     } catch (error) {
         console.error("Şifre sıfırlama hatası:", error);
+        return { success: false, error: error.message };
+    }
+}
+
+export async function updateUserPassword(currentPassword, newPassword) {
+    try {
+        const user = auth.currentUser;
+        if (!user) throw new Error("Kullanıcı girişi yapılmamış.");
+
+        // Re-authenticate is mandatory for sensitive operations like password change
+        const credential = EmailAuthProvider.credential(user.email, currentPassword);
+        await reauthenticateWithCredential(user, credential);
+
+        // Update password
+        await updatePassword(user, newPassword);
+        return { success: true };
+    } catch (error) {
+        console.error("Şifre güncelleme hatası:", error);
         return { success: false, error: error.message };
     }
 }
