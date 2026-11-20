@@ -61,8 +61,10 @@ const AUTH_ERRORS = {
 export function friendlyError(error, fallback = "Something went wrong. Please try again.") {
     const code = error?.code || "";
     if (AUTH_ERRORS[code]) return AUTH_ERRORS[code];
-    if (code) console.warn("Firebase error:", code);
-    return fallback;
+    if (!code) return fallback;
+    console.warn("Firebase error:", code, error?.message || "");
+    // Show the code so users can report it (codes contain no personal data).
+    return `${fallback} (${code})`;
 }
 
 /** Show/hide an inline message element. */
