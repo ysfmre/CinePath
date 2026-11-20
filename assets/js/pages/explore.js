@@ -28,7 +28,7 @@ const validLocations = (item) =>
         .sort((a, b) => (a.order || 0) - (b.order || 0));
 
 const HEART_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
-const NAV_SVG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/></svg>';
+const NAV_SVG = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/></svg>';
 const PLAY_SVG = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
 
 // ---------------- Grid ----------------
@@ -189,7 +189,7 @@ function renderLocation(item, loc, index, currentRating) {
                 <strong>${escapeHtml(loc.name)}</strong>
                 <small>${loc.lat.toFixed(4)}, ${loc.lng.toFixed(4)}</small>
             </button>
-            <a class="loc-go-btn" target="_blank" rel="noopener noreferrer" title="Get directions to this location">${NAV_SVG}<span>Go</span></a>
+            <a class="loc-go-btn" target="_blank" rel="noopener noreferrer" title="Directions to this location" aria-label="Directions to ${escapeHtml(loc.name)}">${NAV_SVG}</a>
         </div>
         <div class="rating-container">
             <span class="rating-label">Your Rating:</span>

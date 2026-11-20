@@ -460,24 +460,21 @@
         .loc-info:hover strong { color: #e50914; }
 
         .loc-go-btn {
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 6px;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
             margin-left: 12px;
-            padding: 8px 14px;
-            border-radius: 999px;
+            border-radius: 50%;
             background: rgba(229, 9, 20, 0.15);
             border: 1px solid rgba(229, 9, 20, 0.4);
             color: #fff;
-            font-size: 13px;
-            font-weight: 700;
-            text-decoration: none;
-            white-space: nowrap;
             flex-shrink: 0;
-            transition: background 0.2s;
+            transition: background 0.2s, transform 0.2s;
         }
 
-        .loc-go-btn:hover { background: #e50914; }
+        .loc-go-btn:hover { background: #e50914; transform: scale(1.1); }
 
         .loc-number {
             background: #333;
