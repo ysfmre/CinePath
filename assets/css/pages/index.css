@@ -131,7 +131,6 @@
 .home-section { padding: 88px 0; }
 .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 32px; }
 .section-head-center { flex-direction: column; align-items: center; text-align: center; }
-.section-eyebrow { display: block; margin-bottom: 10px; color: var(--accent); font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
 .section-heading { margin: 0; font-size: clamp(28px, 3.4vw, 42px); font-weight: 800; line-height: 1.1; letter-spacing: -0.025em; }
 
 /* ---------- Productions carousel ---------- */
@@ -360,3 +359,9 @@
 @media (hover: none) {
     .chip-card:hover, .feature-card:hover, .btn-primary:hover { transform: none; }
 }
+
+/* ---------- Right-to-left (Persian) ---------- */
+[dir="rtl"] .btn-primary svg { transform: scaleX(-1); }
+[dir="rtl"] .btn-primary:hover svg { transform: scaleX(-1) translateX(3px); }
+.hero-stats strong { direction: ltr; unicode-bidi: isolate; }
+[dir="rtl"] .carousel-controls { direction: ltr; }

@@ -558,3 +558,9 @@ body {
 .checkbox-wrapper input[type="checkbox"]:checked::after {
     transform: rotate(45deg) scale(1);
 }
+
+/* Language switcher (top-right on login / sign-up) */
+.auth-lang { position: fixed; top: 24px; inset-inline-end: 24px; z-index: 20; }
+@media (max-width: 600px) { .auth-lang { top: 16px; inset-inline-end: 16px; } }
+
+.brand-logo { direction: ltr; unicode-bidi: isolate; }

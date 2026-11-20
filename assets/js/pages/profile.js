@@ -3,6 +3,9 @@ import {
     deleteUserPhoto, getContentsByIds, updateUserPassword, MAX_PHOTO_BYTES
 } from "../auth_manager.js";
 import { escapeHtml, safeUrl, withFallback, friendlyError, PLACEHOLDER_POSTER } from "../utils.js";
+import { t, lang } from "../i18n.js";
+
+const levelTitle = (level) => t(`level.${Math.min(Math.max(Number(level) || 1, 1), 10)}`);
 
 const $ = (id) => document.getElementById(id);
 const EMPTY = (text) => `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;">${escapeHtml(text)}</p>`;
@@ -17,7 +20,7 @@ function renderStats(data) {
     $("currentXp").textContent = xp;
     $("nextXp").textContent = nextXp;
     $("userLevel").textContent = data.level || 1;
-    $("userTitle").textContent = data.title || "Novice Cinephile";
+    $("userTitle").textContent = levelTitle(data.level);
     $("xpBar").style.width = `${Math.min(100, (xp / nextXp) * 100)}%`;
     $("statLoc").textContent = data.stats?.visitedLocations || 0;
     $("statRev").textContent = data.stats?.reviews || 0;
@@ -33,7 +36,7 @@ async function refreshUserData() {
 async function loadProfile(user) {
     currentUid = user.uid;
     const data = (await getUserData(user.uid)) || {};
-    const name = data.name || user.displayName || "User";
+    const name = data.name || user.displayName || t("profile.user");
 
     $("displayName").textContent = name;
     $("displayEmail").textContent = data.email || user.email || "";
@@ -45,10 +48,10 @@ async function loadProfile(user) {
     avatar.referrerPolicy = "no-referrer";
     avatar.src = safeUrl(data.photoURL || user.photoURL, { fallback: fallbackAvatar });
 
-    let joined = "New Member";
+    let joined = t("profile.newMember");
     if (data.createdAt) {
         const date = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
-        if (!Number.isNaN(date.getTime())) joined = `Joined: ${date.toLocaleDateString("en-US", { year: "numeric", month: "long" })}`;
+        if (!Number.isNaN(date.getTime())) joined = t("profile.joined", { date: date.toLocaleDateString(lang, { year: "numeric", month: "long" }) });
     }
     $("joinDate").textContent = joined;
     renderStats(data);
@@ -64,7 +67,7 @@ async function loadUserPhotos(uid) {
     const grid = $("userPhotosGrid");
     const photos = await getUserPhotos(uid);
     if (photos.length === 0) {
-        grid.innerHTML = EMPTY("No photos uploaded yet. Immortalize the places you visit!");
+        grid.innerHTML = EMPTY(t("profile.noPhotos"));
         return;
     }
     const fragment = document.createDocumentFragment();
@@ -76,7 +79,7 @@ async function loadUserPhotos(uid) {
         card.dataset.photoId = photo.id;
         card.innerHTML = `
             <img class="user-photo-img" loading="lazy" alt="${escapeHtml(photo.caption || photo.locationName)}">
-            <button type="button" class="delete-photo-btn" aria-label="Delete photo">×</button>
+            <button type="button" class="delete-photo-btn" aria-label="${escapeHtml(t("profile.deletePhoto"))}">×</button>
             <div class="photo-overlay"><span class="photo-location">📍 ${escapeHtml(photo.locationName)}</span></div>`;
         card.querySelector("img").src = src;
         fragment.appendChild(card);
@@ -87,14 +90,14 @@ async function loadUserPhotos(uid) {
 async function loadFavorites(favIds) {
     const grid = $("favoritesGrid");
     if (favIds.length === 0) {
-        grid.innerHTML = EMPTY("No favorites added yet.");
+        grid.innerHTML = EMPTY(t("profile.noFavorites"));
         return;
     }
-    grid.innerHTML = EMPTY("Loading...");
+    grid.innerHTML = EMPTY(t("common.loading"));
     try {
         const movies = await getContentsByIds(favIds);
         if (movies.length === 0) {
-            grid.innerHTML = EMPTY("No favorites added yet.");
+            grid.innerHTML = EMPTY(t("profile.noFavorites"));
             return;
         }
         const fragment = document.createDocumentFragment();
@@ -111,19 +114,19 @@ async function loadFavorites(favIds) {
         }
         grid.replaceChildren(fragment);
     } catch {
-        grid.innerHTML = EMPTY("Failed to load favorites.");
+        grid.innerHTML = EMPTY(t("profile.favoritesFailed"));
     }
 }
 
-function showLevelUp(level, title) {
+function showLevelUp(level) {
     const overlay = document.createElement("div");
     overlay.className = "level-up-notification";
     overlay.innerHTML = `
         <div class="level-up-content">
             <span class="level-up-icon">🎉</span>
-            <h3>LEVEL UP!</h3>
-            <p>You reached <strong>Level ${escapeHtml(level)}</strong></p>
-            <p class="new-title">${escapeHtml(title)}</p>
+            <h3>${escapeHtml(t("profile.levelUp"))}</h3>
+            <p>${t("profile.reachedLevel", { n: escapeHtml(level) })}</p>
+            <p class="new-title">${escapeHtml(levelTitle(level))}</p>
         </div>`;
     document.body.appendChild(overlay);
     overlay.addEventListener("click", () => overlay.remove());
@@ -141,7 +144,7 @@ function closeUploadModal() {
     photoInput.value = "";
     $("photoLocation").value = "";
     $("photoCaption").value = "";
-    $("fileName").textContent = "Click to select photo";
+    $("fileName").textContent = t("profile.selectPhoto");
     selectedImage = null;
     confirmUploadBtn.disabled = true;
 }
@@ -150,7 +153,7 @@ function closeUploadModal() {
 function resizeImage(file, maxSize = 800) {
     return new Promise((resolve, reject) => {
         if (!/^image\/(jpeg|png|webp|gif)$/.test(file.type) || file.size > 15 * 1024 * 1024) {
-            reject(new Error("Please choose a JPG, PNG, WEBP or GIF image smaller than 15 MB."));
+            reject(new Error(t("profile.imageType")));
             return;
         }
         const url = URL.createObjectURL(file);
@@ -168,9 +171,9 @@ function resizeImage(file, maxSize = 800) {
                 quality -= 0.15;
                 data = canvas.toDataURL("image/jpeg", quality);
             }
-            data.length > MAX_PHOTO_BYTES ? reject(new Error("Image is too large.")) : resolve(data);
+            data.length > MAX_PHOTO_BYTES ? reject(new Error(t("profile.imageTooLarge"))) : resolve(data);
         };
-        img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("This file is not a valid image.")); };
+        img.onerror = () => { URL.revokeObjectURL(url); reject(new Error(t("profile.imageInvalid"))); };
         img.src = url;
     });
 }
@@ -191,22 +194,22 @@ photoInput.addEventListener("change", async () => {
 
 confirmUploadBtn.addEventListener("click", async () => {
     if (!selectedImage || !currentUid) return;
-    confirmUploadBtn.textContent = "Saving...";
+    confirmUploadBtn.textContent = t("profile.saving");
     confirmUploadBtn.disabled = true;
     const result = await addUserPhoto({
         image: selectedImage,
         locationName: $("photoLocation").value.trim(),
         caption: $("photoCaption").value.trim()
     });
-    confirmUploadBtn.textContent = "Upload";
+    confirmUploadBtn.textContent = t("profile.upload");
     if (result.success) {
         closeUploadModal();
         loadUserPhotos(currentUid);
         const data = await refreshUserData();
-        if (result.leveledUp && data) showLevelUp(data.level, data.title);
+        if (result.leveledUp && data) showLevelUp(data.level);
     } else {
         confirmUploadBtn.disabled = false;
-        alert(friendlyError(result.error, "Photo could not be saved."));
+        alert(friendlyError(result.error, "err.photoSave"));
     }
 });
 
@@ -214,16 +217,16 @@ $("userPhotosGrid").addEventListener("click", async (e) => {
     const btn = e.target.closest(".delete-photo-btn");
     if (!btn) return;
     const card = btn.closest(".user-photo-card");
-    if (!confirm("Are you sure you want to delete this photo? You will lose 10 XP.")) return;
+    if (!confirm(t("profile.deleteConfirm"))) return;
     card.style.opacity = "0.5";
     const result = await deleteUserPhoto(card.dataset.photoId);
     if (result.success) {
         card.remove();
-        if (!$("userPhotosGrid").children.length) $("userPhotosGrid").innerHTML = EMPTY("No photos uploaded yet. Immortalize the places you visit!");
+        if (!$("userPhotosGrid").children.length) $("userPhotosGrid").innerHTML = EMPTY(t("profile.noPhotos"));
         refreshUserData();
     } else {
         card.style.opacity = "1";
-        alert(friendlyError(result.error, "Photo could not be deleted."));
+        alert(friendlyError(result.error, "err.photoDelete"));
     }
 });
 
@@ -238,22 +241,22 @@ function closePasswordModal() {
 $("confirmPasswordBtn").addEventListener("click", async () => {
     const current = $("currentPassword").value;
     const next = $("newPassword").value;
-    if (!current || !next || !$("confirmNewPassword").value) return alert("Please fill in all fields.");
-    if (next !== $("confirmNewPassword").value) return alert("Passwords do not match.");
+    if (!current || !next || !$("confirmNewPassword").value) return alert(t("profile.fillAll"));
+    if (next !== $("confirmNewPassword").value) return alert(t("profile.mismatch"));
     if (next.length < 8 || !/[A-Za-z]/.test(next) || !/\d/.test(next)) {
-        return alert("New password must be at least 8 characters and contain letters and numbers.");
+        return alert(t("auth.passwordRule"));
     }
     const btn = $("confirmPasswordBtn");
-    btn.textContent = "Updating...";
+    btn.textContent = t("profile.updating");
     btn.disabled = true;
     const result = await updateUserPassword(current, next);
-    btn.textContent = "Update";
+    btn.textContent = t("profile.update");
     btn.disabled = false;
     if (result.success) {
-        alert("Password updated successfully!");
+        alert(t("profile.passwordUpdated"));
         closePasswordModal();
     } else {
-        alert(friendlyError(result.error, "Password could not be updated."));
+        alert(friendlyError(result.error, "err.passwordUpdate"));
     }
 });
 

@@ -1,4 +1,5 @@
 // Home page: FAQ accordion + productions carousel.
+import "../i18n.js"; // wait until the language (and text direction) is applied
 
 document.querySelectorAll(".accordion-item").forEach((item) => {
     const btn = item.querySelector(".accordion-btn");
@@ -20,10 +21,13 @@ if (row) {
         row.scrollBy({ left: Number(btn.dataset.dir) * step(), behavior: "smooth" });
     }));
 
+    // In right-to-left pages (Persian) scrollLeft runs from 0 down to -max instead of 0 up to max.
     const update = () => {
-        const max = row.scrollWidth - row.clientWidth - 4;
+        const max = row.scrollWidth - row.clientWidth;
+        const rtl = getComputedStyle(row).direction === "rtl";
+        const [minPos, maxPos] = rtl ? [-max, 0] : [0, max];
         buttons.forEach((btn) => {
-            btn.disabled = Number(btn.dataset.dir) < 0 ? row.scrollLeft <= 4 : row.scrollLeft >= max;
+            btn.disabled = Number(btn.dataset.dir) < 0 ? row.scrollLeft <= minPos + 4 : row.scrollLeft >= maxPos - 4;
         });
     };
     let raf = 0;

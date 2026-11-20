@@ -1,4 +1,5 @@
-// Small, dependency-free helpers shared by every page.
+// Small helpers shared by every page.
+import { t } from "./i18n.js";
 
 const HTML_ESCAPES = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;", "`": "&#96;" };
 
@@ -32,39 +33,39 @@ export function withFallback(img, fallback = PLACEHOLDER_POSTER) {
 }
 
 const AUTH_ERRORS = {
-    "auth/invalid-credential": "E-mail or password is incorrect.",
-    "auth/invalid-login-credentials": "E-mail or password is incorrect.",
-    "auth/wrong-password": "E-mail or password is incorrect.",
-    "auth/user-not-found": "E-mail or password is incorrect.",
-    "auth/invalid-email": "Please enter a valid e-mail address.",
-    "auth/missing-password": "Please enter your password.",
-    "auth/email-already-in-use": "An account with this e-mail already exists.",
-    "auth/weak-password": "Password must be at least 8 characters.",
-    "auth/user-disabled": "This account has been disabled.",
-    "auth/too-many-requests": "Too many attempts. Please wait a moment and try again.",
-    "auth/network-request-failed": "Network error. Check your connection and try again.",
-    "auth/popup-closed-by-user": "The sign-in window was closed before finishing.",
-    "auth/cancelled-popup-request": "The sign-in window was closed before finishing.",
-    "auth/popup-blocked": "Your browser blocked the sign-in window. Allow pop-ups for this site and try again.",
-    "auth/unauthorized-domain": "This domain is not authorized for sign-in. Add it in Firebase Console → Authentication → Settings → Authorized domains.",
-    "auth/operation-not-allowed": "This sign-in method is disabled. Enable it in Firebase Console → Authentication → Sign-in method.",
-    "auth/invalid-api-key": "The site's Firebase configuration is invalid (API key).",
-    "auth/api-key-not-valid.-please-pass-a-valid-api-key.": "The site's Firebase configuration is invalid (API key).",
-    "auth/account-exists-with-different-credential": "An account already exists with this e-mail using a different sign-in method.",
-    "auth/requires-recent-login": "Please log in again and retry.",
-    "auth/no-password-provider": "This account signs in with Google and has no password to change.",
-    "auth/firebase-app-check-token-is-invalid": "Sign-in is temporarily unavailable (security check failed). Please try again later.",
-    "permission-denied": "You don't have permission to do that."
+    "auth/invalid-credential": "err.invalid-credential",
+    "auth/invalid-login-credentials": "err.invalid-credential",
+    "auth/wrong-password": "err.invalid-credential",
+    "auth/user-not-found": "err.invalid-credential",
+    "auth/invalid-email": "err.invalid-email",
+    "auth/missing-password": "err.missing-password",
+    "auth/email-already-in-use": "err.email-already-in-use",
+    "auth/weak-password": "err.weak-password",
+    "auth/user-disabled": "err.user-disabled",
+    "auth/too-many-requests": "err.too-many-requests",
+    "auth/network-request-failed": "err.network-request-failed",
+    "auth/popup-closed-by-user": "err.popup-closed-by-user",
+    "auth/cancelled-popup-request": "err.popup-closed-by-user",
+    "auth/popup-blocked": "err.popup-blocked",
+    "auth/unauthorized-domain": "err.unauthorized-domain",
+    "auth/operation-not-allowed": "err.operation-not-allowed",
+    "auth/invalid-api-key": "err.invalid-api-key",
+    "auth/api-key-not-valid.-please-pass-a-valid-api-key.": "err.invalid-api-key",
+    "auth/account-exists-with-different-credential": "err.account-exists-with-different-credential",
+    "auth/requires-recent-login": "err.requires-recent-login",
+    "auth/no-password-provider": "err.no-password-provider",
+    "auth/firebase-app-check-token-is-invalid": "err.firebase-app-check-token-is-invalid",
+    "permission-denied": "err.permission-denied"
 };
 
-/** Turn a Firebase error into a short, user-facing message without leaking internals. */
-export function friendlyError(error, fallback = "Something went wrong. Please try again.") {
+/** Turn a Firebase error into a short, translated message without leaking internals. */
+export function friendlyError(error, fallbackKey = "err.generic") {
     const code = error?.code || "";
-    if (AUTH_ERRORS[code]) return AUTH_ERRORS[code];
-    if (!code) return fallback;
+    if (AUTH_ERRORS[code]) return t(AUTH_ERRORS[code]);
+    if (!code) return t(fallbackKey);
     console.warn("Firebase error:", code, error?.message || "");
     // Show the code so users can report it (codes contain no personal data).
-    return `${fallback} (${code})`;
+    return `${t(fallbackKey)} (${code})`;
 }
 
 /** Show/hide an inline message element. */

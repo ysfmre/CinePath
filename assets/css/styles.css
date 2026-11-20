@@ -52,6 +52,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
 }
+[hidden] { display: none !important; }
 img { display: block; max-width: 100%; height: auto; }
 a { text-decoration: none; color: inherit; transition: color 0.2s; }
 ul { list-style: none; padding: 0; margin: 0; }
@@ -64,6 +65,8 @@ button { font-family: inherit; }
 ::-webkit-scrollbar-thumb:hover { background: #555; }
 
 .container { max-width: var(--container); margin-inline: auto; padding-inline: 24px; }
+
+.section-eyebrow { display: block; margin-bottom: 10px; color: var(--accent); font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
 
 /* Reusable glass surface */
 .glass {
@@ -92,13 +95,15 @@ button { font-family: inherit; }
 }
 .header-inner {
   display: grid;
-  grid-template-columns: auto 1fr auto auto;
+  grid-template-columns: auto 1fr auto auto auto;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   height: 100%;
 }
 .brand { display: inline-flex; align-items: center; font-weight: 800; font-size: 21px; letter-spacing: -0.5px; }
 .brand-accent { color: var(--accent); }
+/* The logo reads left-to-right in every language (incl. Persian) */
+.brand, .mobile-nav-brand { direction: ltr; unicode-bidi: isolate; }
 .brand-sm { font-size: 18px; }
 
 .nav { justify-self: center; }
@@ -140,10 +145,11 @@ button { font-family: inherit; }
   height: 32px;
   overflow: hidden;
   border-radius: 50%;
-  background: var(--bg-elev);
-  border: 1px solid var(--stroke);
-  font-size: 16px;
+  background: var(--glass-tint);
+  border: 1px solid var(--glass-border);
+  font-size: 14px;
 }
+.avatar-icon { width: 18px; height: 18px; color: #e4e4e7; }
 .avatar.is-user { background: var(--accent); border: none; color: #fff; font-weight: 700; }
 .avatar-img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 2px solid var(--accent); }
 .avatar-label { font-size: 14px; font-weight: 500; }
@@ -263,7 +269,7 @@ button { font-family: inherit; }
   border: 1px solid rgba(255, 255, 255, 0.07);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   color: #e6e6e9;
-  text-align: left;
+  text-align: start;
   opacity: 0;
   transform: translateX(16px);
   transition: opacity 0.35s var(--ease), transform 0.35s var(--ease), background 0.2s, border-color 0.2s;
@@ -278,12 +284,13 @@ button { font-family: inherit; }
   content: "";
   width: 7px;
   height: 7px;
-  margin-left: 12px;
+  margin-inline-start: 12px;
   border-top: 2px solid currentColor;
   border-right: 2px solid currentColor;
   transform: rotate(45deg);
   opacity: 0.35;
 }
+[dir="rtl"] .mobile-link::after { transform: rotate(-135deg); }
 .mobile-link:hover, .mobile-link:active { background: rgba(229, 9, 20, 0.14); border-color: rgba(229, 9, 20, 0.35); color: #fff; }
 .mobile-link[aria-current="page"] { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.16); color: #fff; }
 .mobile-link[aria-current="page"]::after { opacity: 0.8; color: var(--accent); }
@@ -349,7 +356,7 @@ button { font-family: inherit; }
   :root { --header-height: 60px; }
   .container { padding-inline: 16px; }
   .site-header { top: calc(8px + var(--safe-top)); width: calc(100% - 16px); margin-top: calc(8px + var(--safe-top)); border-radius: 20px; }
-  .header-inner { grid-template-columns: 1fr auto auto; gap: 8px; }
+  .header-inner { grid-template-columns: 1fr auto auto auto; gap: 8px; }
   .brand { font-size: 18px; }
   .desktop-nav { display: none !important; }
   .profile { margin-left: 0 !important; }

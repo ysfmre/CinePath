@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-i18n-loading>
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com https://apis.google.com https://www.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self' https:; connect-src 'self' https://*.googleapis.com https://www.gstatic.com https://www.google.com; frame-src https://www.google.com https://cinepath-2c233.firebaseapp.com https://accounts.google.com https://apis.google.com; object-src 'none'; base-uri 'self'; form-action 'self' mailto:" />
@@ -9,13 +9,14 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="theme-color" content="#0a0a0b" />
-    <title>AI Route Wizard — CinePath</title>
+    <title data-i18n="meta.ai">CineAI — CinePath</title>
     <link rel="icon" href="assets/favicon/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="stylesheet" href="assets/css/pages/ai.css" />
+    <link rel="stylesheet" href="assets/css/i18n.css" />
 </head>
 <body>
     <header class="site-header" data-header>
@@ -25,20 +26,21 @@
             </a>
             <nav class="nav desktop-nav">
                 <ul class="nav-list" data-nav-list>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="explore.html">Explore</a></li>
-                    <li><a href="AI.html">CineAI</a></li>
-                    <li><a href="Contact.html">Contact</a></li>
+                    <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                    <li><a href="about.html" data-i18n="nav.about">About</a></li>
+                    <li><a href="explore.html" data-i18n="nav.explore">Explore</a></li>
+                    <li><a href="AI.html" data-i18n="nav.cineai">CineAI</a></li>
+                    <li><a href="Contact.html" data-i18n="nav.contact">Contact</a></li>
                 </ul>
             </nav>
+            <div data-lang-switcher></div>
             <div class="profile" data-profile>
                 <button class="avatar-btn" type="button" data-profile-btn>
-                    <span class="avatar" data-avatar>👤</span>
-                    <span class="avatar-label" data-avatar-label>Log In</span>
+                    <span class="avatar" data-avatar><svg class="avatar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
+                    <span class="avatar-label" data-avatar-label data-i18n="nav.login">Log In</span>
                 </button>
             </div>
-            <button id="hamburgerBtn" class="hamburger-btn" type="button" aria-label="Toggle menu" aria-expanded="false">
+            <button id="hamburgerBtn" class="hamburger-btn" type="button" aria-label="Toggle menu" data-i18n-attr="aria-label:nav.menu" aria-expanded="false">
                 <span class="hamburger-box">
                     <span class="hamburger-line"></span>
                     <span class="hamburger-line"></span>
@@ -52,47 +54,47 @@
     <nav id="mobileNavPanel" class="mobile-nav-panel">
         <div class="mobile-nav-header">
             <div class="mobile-nav-brand"><span class="brand-accent">CINE</span>PATH</div>
-            <div class="mobile-nav-tagline">DIscover FIlm LocatIons</div>
+            <div class="mobile-nav-tagline" data-i18n="nav.tagline">Discover film locations</div>
         </div>
         <a href="index.html" class="mobile-link">
             
             <span class="mobile-link-text">
-                <span class="mobile-link-title">Home</span>
-                <span class="mobile-link-subtitle">Back to homepage</span>
+                <span class="mobile-link-title" data-i18n="nav.home">Home</span>
+                <span class="mobile-link-subtitle" data-i18n="nav.homeSub">Back to homepage</span>
             </span>
         </a>
         <a href="explore.html" class="mobile-link">
             
             <span class="mobile-link-text">
-                <span class="mobile-link-title">Explore</span>
-                <span class="mobile-link-subtitle">Browse all locations</span>
+                <span class="mobile-link-title" data-i18n="nav.explore">Explore</span>
+                <span class="mobile-link-subtitle" data-i18n="nav.exploreSub">Browse all locations</span>
             </span>
         </a>
         <a href="about.html" class="mobile-link">
             
             <span class="mobile-link-text">
-                <span class="mobile-link-title">About Us</span>
-                <span class="mobile-link-subtitle">Learn about CinePath</span>
+                <span class="mobile-link-title" data-i18n="nav.aboutUs">About Us</span>
+                <span class="mobile-link-subtitle" data-i18n="nav.aboutSub">Learn about CinePath</span>
             </span>
         </a>
         
         <a href="AI.html" class="mobile-link">
             
             <span class="mobile-link-text">
-                <span class="mobile-link-title">CineAI</span>
-                <span class="mobile-link-subtitle">AI recommendations</span>
+                <span class="mobile-link-title" data-i18n="nav.cineai">CineAI</span>
+                <span class="mobile-link-subtitle" data-i18n="nav.cineaiSub">AI recommendations</span>
             </span>
         </a>
         <a href="Contact.html" class="mobile-link">
             
             <span class="mobile-link-text">
-                <span class="mobile-link-title">Contact</span>
-                <span class="mobile-link-subtitle">Get in touch</span>
+                <span class="mobile-link-title" data-i18n="nav.contact">Contact</span>
+                <span class="mobile-link-subtitle" data-i18n="nav.contactSub">Get in touch</span>
             </span>
         </a>
         
         <div class="mobile-nav-footer">
-            <p>© <span data-year></span> CinePath. All rights reserved.</p>
+            <p>© <span data-year></span> CinePath. <span data-i18n="footer.rights">All rights reserved.</span></p>
         </div>
     </nav>
 
@@ -101,66 +103,66 @@
             <div class="ai-glow"></div>
             <div class="container ai-container">
                 <div class="ai-header">
-                    <span class="ai-badge">Beta • Gemini AI Powered</span>
-                    <h1 class="ai-title">Smart Route Wizard</h1>
-                    <p class="ai-desc">Indecisive? Let our AI find the perfect movie route for you from our database in seconds.</p>
+                    <span class="ai-badge" data-i18n="ai.badge">Beta • Gemini AI Powered</span>
+                    <h1 class="ai-title" data-i18n="ai.title">Smart Route Wizard</h1>
+                    <p class="ai-desc" data-i18n="ai.desc">Indecisive? Let our AI find the perfect movie route for you from our database in seconds.</p>
                 </div>
 
                 <div class="ai-content-wrapper">
                     <div class="ai-form">
                         <div class="ai-input-group">
-                            <label>Content Type</label>
+                            <label for="aiType" data-i18n="ai.typeLabel">Content Type</label>
                             <select id="aiType" class="ai-select">
-                                <option value="both">Any</option>
-                                <option value="movie">Movies Only</option>
-                                <option value="series">Series Only</option>
+                                <option value="both" data-i18n="ai.typeAny">Any</option>
+                                <option value="movie" data-i18n="ai.typeMovies">Movies Only</option>
+                                <option value="series" data-i18n="ai.typeSeries">Series Only</option>
                             </select>
                         </div>
                         <div class="ai-input-group">
-                            <label>Mood / Genre</label>
+                            <label for="aiGenre" data-i18n="ai.genreLabel">Mood / Genre</label>
                             <select id="aiGenre" class="ai-select">
-                                <option value="comedy">Comedy</option>
-                                <option value="drama">Drama</option>
-                                <option value="action">Action</option>
-                                <option value="romantic">Romance</option>
-                                <option value="nostalgic">Nostalgic Classics</option>
-                                <option value="historical">Historical</option>
+                                <option value="comedy" data-i18n="ai.genreComedy">Comedy</option>
+                                <option value="drama" data-i18n="ai.genreDrama">Drama</option>
+                                <option value="action" data-i18n="ai.genreAction">Action</option>
+                                <option value="romantic" data-i18n="ai.genreRomance">Romance</option>
+                                <option value="nostalgic" data-i18n="ai.genreNostalgic">Nostalgic Classics</option>
+                                <option value="historical" data-i18n="ai.genreHistorical">Historical</option>
                             </select>
                         </div>
                         <div class="ai-input-group">
-                            <label>Location</label>
+                            <label for="aiLocation" data-i18n="ai.locationLabel">Location</label>
                             <select id="aiLocation" class="ai-select">
-                                <option value="Istanbul">Istanbul</option>
-                                <option value="Izmir">Izmir</option>
-                                <option value="Ankara">Ankara</option>
-                                <option value="Cappadocia">Cappadocia</option>
-                                <option value="Mardin">Mardin</option>
-                                <option value="Kars">Kars</option>
-                                <option value="Gaziantep">Gaziantep</option>
-                                <option value="Adana">Adana</option>
-                                <option value="Mugla">Mugla</option>
+                                <option value="Istanbul" data-i18n="city.istanbul">Istanbul</option>
+                                <option value="Izmir" data-i18n="city.izmir">Izmir</option>
+                                <option value="Ankara" data-i18n="city.ankara">Ankara</option>
+                                <option value="Cappadocia" data-i18n="city.cappadocia">Cappadocia</option>
+                                <option value="Mardin" data-i18n="city.mardin">Mardin</option>
+                                <option value="Kars" data-i18n="city.kars">Kars</option>
+                                <option value="Gaziantep" data-i18n="city.gaziantep">Gaziantep</option>
+                                <option value="Adana" data-i18n="city.adana">Adana</option>
+                                <option value="Mugla" data-i18n="city.mugla">Mugla</option>
                             </select>
                         </div>
                         <button type="button" id="askAiBtn" class="ai-btn">
-                            <span>Get Recommendation</span>
+                            <span id="askAiLabel" data-i18n="ai.ask">Get Recommendation</span>
                         </button>
                     </div>
 
                     <div class="action-area">
                         <button type="button" id="personalSuggestBtn" class="ai-btn-secondary">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                            Personalized Recommendation
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            <span data-i18n="ai.personal">Personalized Recommendation</span>
                         </button>
                     </div>
 
                     <div id="aiResult" class="ai-result">
-                        <img id="aiPoster" class="ai-poster" alt="Movie Poster">
+                        <img id="aiPoster" class="ai-poster" alt="Movie Poster" data-i18n-attr="alt:ai.posterAlt">
                         <div class="result-content">
                             <h3 id="aiSuggestionTitle" class="ai-suggestion-text">Recommendation</h3>
                             <p id="aiReason" class="ai-reason">AI explanation...</p>
                             <a id="aiActionLink" href="#" class="ai-action-btn">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M14 10l6.1-6.1M9 21H3v-6M10 14l-6.1 6.1"/></svg>
-                                View Route Details
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 3h6v6M14 10l6.1-6.1M9 21H3v-6M10 14l-6.1 6.1"/></svg>
+                                <span data-i18n="ai.viewRoute">View Route Details</span>
                             </a>
                         </div>
                     </div>

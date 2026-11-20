@@ -1,3 +1,5 @@
+import { t } from "../i18n.js";
+
 // The site is static (no backend), so the contact form opens the visitor's
 // mail app with a pre-filled message instead of pretending to "send" it.
 const CONTACT_EMAIL = "cinepathcontact@gmail.com";
@@ -12,6 +14,6 @@ form.addEventListener("submit", (e) => {
     window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body.slice(0, 1800))}`;
 
     const btn = form.querySelector(".submit-btn span");
-    if (btn) btn.textContent = "Opening your mail app…";
-    setTimeout(() => { if (btn) btn.textContent = "Send Message"; }, 4000);
+    if (btn) btn.textContent = t("contact.opening");
+    setTimeout(() => { if (btn) btn.textContent = t("contact.send"); }, 4000);
 });

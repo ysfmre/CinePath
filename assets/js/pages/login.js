@@ -1,5 +1,6 @@
 import { loginUser, loginWithGoogle, resetPassword, authReady } from "../auth_manager.js";
 import { friendlyError, showMessage } from "../utils.js";
+import { t } from "../i18n.js";
 
 const form = document.getElementById("loginForm");
 const errorEl = form.querySelector("[data-error]");
@@ -16,17 +17,18 @@ function nextPage() {
 authReady.then((user) => { if (user) location.replace(nextPage()); });
 
 async function withBusy(button, busyText, task) {
-    const original = button.textContent;
+    const label = button.querySelector("span") || button; // keep icons intact
+    const original = label.textContent;
     button.disabled = true;
-    button.textContent = busyText;
-    try { return await task(); } finally { button.disabled = false; button.textContent = original; }
+    label.textContent = busyText;
+    try { return await task(); } finally { button.disabled = false; label.textContent = original; }
 }
 
 googleBtn.addEventListener("click", async () => {
     showMessage(errorEl, "");
-    const result = await withBusy(googleBtn, "Connecting…", loginWithGoogle);
+    const result = await withBusy(googleBtn, t("auth.connecting"), loginWithGoogle);
     if (result.success) location.href = nextPage();
-    else showMessage(errorEl, friendlyError(result.error, "Google sign-in failed. Please try again."));
+    else showMessage(errorEl, friendlyError(result.error, "err.googleFailed"));
 });
 
 form.addEventListener("submit", async (e) => {
@@ -35,9 +37,9 @@ form.addEventListener("submit", async (e) => {
     const email = form.elements.email.value;
     const password = form.elements.password.value;
     const remember = form.elements.remember.checked;
-    const result = await withBusy(submitBtn, "Logging in…", () => loginUser(email, password, remember));
+    const result = await withBusy(submitBtn, t("auth.loggingIn"), () => loginUser(email, password, remember));
     if (result.success) location.href = nextPage();
-    else showMessage(errorEl, friendlyError(result.error, "Login failed. Please try again."));
+    else showMessage(errorEl, friendlyError(result.error, "err.loginFailed"));
 });
 
 // ---- Forgot password modal ----
@@ -68,14 +70,14 @@ modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); }
 
 fpSend.addEventListener("click", async () => {
     if (!fpEmail.checkValidity() || !fpEmail.value.trim()) {
-        setFpMessage("Please enter a valid e-mail address.", "error");
+        setFpMessage(t("err.invalid-email"), "error");
         return;
     }
-    setFpMessage("Sending…");
-    const result = await withBusy(fpSend, "Sending…", () => resetPassword(fpEmail.value));
+    setFpMessage(t("auth.sending"));
+    const result = await withBusy(fpSend, t("auth.sending"), () => resetPassword(fpEmail.value));
     if (result.success) {
         // Same message whether or not the account exists (no account enumeration).
-        setFpMessage("If an account exists for this address, a reset link has been sent.", "success");
+        setFpMessage(t("auth.resetSent"), "success");
         setTimeout(closeModal, 4000);
     } else {
         setFpMessage(friendlyError(result.error), "error");

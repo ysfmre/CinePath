@@ -41,6 +41,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 import { FIREBASE_CONFIG, RECAPTCHA_ENTERPRISE_SITE_KEY } from "../../config.js";
 import { safeUrl } from "./utils.js";
+import { t } from "./i18n.js";
 
 const SDK_BASE = "https://www.gstatic.com/firebasejs/12.19.0";
 
@@ -157,6 +158,8 @@ export function initAuthListener(callback) {
     });
 }
 
+const USER_ICON = '<svg class="avatar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>';
+
 function renderProfileButton(user) {
     const btn = document.querySelector("[data-profile-btn]");
     if (!btn) return;
@@ -167,7 +170,7 @@ function renderProfileButton(user) {
         e.preventDefault();
         window.location.href = user ? "profil.html" : "login.html";
     };
-    if (label) label.textContent = user ? (user.displayName?.split(" ")[0] || "Profile") : "Log In";
+    if (label) label.textContent = user ? (user.displayName?.split(" ")[0] || t("nav.profile")) : t("nav.login");
     if (!avatar) return;
 
     avatar.replaceChildren();
@@ -181,7 +184,8 @@ function renderProfileButton(user) {
         img.className = "avatar-img";
         avatar.appendChild(img);
     } else {
-        avatar.textContent = user ? (user.displayName?.[0] || "U").toUpperCase() : "👤";
+        if (user) avatar.textContent = (user.displayName?.[0] || "U").toUpperCase();
+        else avatar.innerHTML = USER_ICON; // static markup, no user data
     }
 }
 

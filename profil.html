@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-i18n-loading>
 
 <head>
     <meta charset="utf-8" />
@@ -10,7 +10,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="theme-color" content="#050505" />
-    <title>My Profile — CinePath</title>
+    <title data-i18n="meta.profile">My profile — CinePath</title>
     <link rel="icon" href="assets/favicon/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -18,6 +18,7 @@
         rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="stylesheet" href="assets/css/pages/profile.css" />
+    <link rel="stylesheet" href="assets/css/i18n.css" />
 </head>
 
 <body>
@@ -29,19 +30,19 @@
             </a>
             <nav class="nav desktop-nav" aria-label="Ana menü">
                 <ul class="nav-list" data-nav-list>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="explore.html">Explore</a></li>
-                    <li><a href="AI.html">CineAI</a></li>
-                    <li><a href="Contact.html">Contact</a></li>
+                    <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                    <li><a href="about.html" data-i18n="nav.about">About</a></li>
+                    <li><a href="explore.html" data-i18n="nav.explore">Explore</a></li>
+                    <li><a href="AI.html" data-i18n="nav.cineai">CineAI</a></li>
+                    <li><a href="Contact.html" data-i18n="nav.contact">Contact</a></li>
                 </ul>
             </nav>
+            <div data-lang-switcher></div>
             <div class="profile" style="margin-left: auto;">
                 <button type="button" data-logout
-                    style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:#fff; padding:8px 20px; border-radius:50px; cursor:pointer; font-size:13px; font-weight:600; transition:0.2s;">Log
-                    Out</button>
+                    style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:#fff; padding:8px 20px; border-radius:50px; cursor:pointer; font-size:13px; font-weight:600; transition:0.2s;" data-i18n="nav.logout">Log Out</button>
             </div>
-            <button id="hamburgerBtn" class="hamburger-btn" type="button" aria-label="Toggle menu" aria-expanded="false">
+            <button id="hamburgerBtn" class="hamburger-btn" type="button" aria-label="Toggle menu" data-i18n-attr="aria-label:nav.menu" aria-expanded="false">
                 <span class="hamburger-box">
                     <span class="hamburger-line"></span>
                     <span class="hamburger-line"></span>
@@ -55,54 +56,54 @@
     <nav id="mobileNavPanel" class="mobile-nav-panel">
         <div class="mobile-nav-header">
             <div class="mobile-nav-brand"><span class="brand-accent">CINE</span>PATH</div>
-            <div class="mobile-nav-tagline">DIscover FIlm LocatIons</div>
+            <div class="mobile-nav-tagline" data-i18n="nav.tagline">Discover film locations</div>
         </div>
         <a href="index.html" class="mobile-link">
 
             <span class="mobile-link-text">
-                <span class="mobile-link-title">Home</span>
-                <span class="mobile-link-subtitle">Back to homepage</span>
+                <span class="mobile-link-title" data-i18n="nav.home">Home</span>
+                <span class="mobile-link-subtitle" data-i18n="nav.homeSub">Back to homepage</span>
             </span>
         </a>
         <a href="explore.html" class="mobile-link">
 
             <span class="mobile-link-text">
-                <span class="mobile-link-title">Explore</span>
-                <span class="mobile-link-subtitle">Browse all locations</span>
+                <span class="mobile-link-title" data-i18n="nav.explore">Explore</span>
+                <span class="mobile-link-subtitle" data-i18n="nav.exploreSub">Browse all locations</span>
             </span>
         </a>
         <a href="about.html" class="mobile-link">
 
             <span class="mobile-link-text">
-                <span class="mobile-link-title">About Us</span>
-                <span class="mobile-link-subtitle">Learn about CinePath</span>
+                <span class="mobile-link-title" data-i18n="nav.aboutUs">About Us</span>
+                <span class="mobile-link-subtitle" data-i18n="nav.aboutSub">Learn about CinePath</span>
             </span>
         </a>
 
         <a href="AI.html" class="mobile-link">
 
             <span class="mobile-link-text">
-                <span class="mobile-link-title">CineAI</span>
-                <span class="mobile-link-subtitle">AI recommendations</span>
+                <span class="mobile-link-title" data-i18n="nav.cineai">CineAI</span>
+                <span class="mobile-link-subtitle" data-i18n="nav.cineaiSub">AI recommendations</span>
             </span>
         </a>
         <a href="Contact.html" class="mobile-link">
 
             <span class="mobile-link-text">
-                <span class="mobile-link-title">Contact</span>
-                <span class="mobile-link-subtitle">Get in touch</span>
+                <span class="mobile-link-title" data-i18n="nav.contact">Contact</span>
+                <span class="mobile-link-subtitle" data-i18n="nav.contactSub">Get in touch</span>
             </span>
         </a>
         <button type="button" data-logout class="mobile-link"
             style="background: linear-gradient(135deg, rgba(229, 9, 20, 0.2) 0%, rgba(225, 29, 72, 0.1) 100%); border-color: rgba(229, 9, 20, 0.4); width: 100%; cursor: pointer; font-family: inherit;">
 
             <span class="mobile-link-text">
-                <span class="mobile-link-title">Log Out</span>
-                <span class="mobile-link-subtitle">Sign out of your account</span>
+                <span class="mobile-link-title" data-i18n="nav.logout">Log Out</span>
+                <span class="mobile-link-subtitle" data-i18n="nav.logoutSub">Sign out of your account</span>
             </span>
         </button>
         <div class="mobile-nav-footer">
-            <p>© <span data-year></span> CinePath. All rights reserved.</p>
+            <p>© <span data-year></span> CinePath. <span data-i18n="footer.rights">All rights reserved.</span></p>
         </div>
     </nav>
 
@@ -111,13 +112,13 @@
     <main class="profile-layout">
         <aside class="profile-card">
             <div class="avatar-container">
-                <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff" alt="Profile"
+                <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff" alt="" 
                     class="profile-avatar" id="currentAvatar">
             </div>
-            <h1 class="user-name" id="displayName">Loading...</h1>
-            <p class="user-handle" id="userTitle">Novice Cinephile</p>
+            <h1 class="user-name" id="displayName" data-i18n="common.loading">Loading...</h1>
+            <p class="user-handle" id="userTitle" data-i18n="level.1">Novice Cinephile</p>
             <div class="level-badge">
-                <span>LEVEL</span>
+                <span data-i18n="profile.level">LEVEL</span>
                 <span id="userLevel">1</span>
             </div>
             <div class="profile-details">
@@ -143,70 +144,64 @@
                         <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                         <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                     </svg>
-                    Update Password
+                    <span data-i18n="profile.updatePassword">Update Password</span>
                 </button>
             </div>
         </aside>
 
         <div class="content-area">
             <a href="admin.html" id="adminBtn"
-                style="display: none; background: linear-gradient(45deg, #b91c1c, #ef4444); color: white; padding: 20px; border-radius: 16px; text-align: center; font-weight: 800; font-size: 18px; box-shadow: 0 10px 25px rgba(220, 38, 38, 0.4); transition: transform 0.2s; text-decoration: none; margin-bottom: 20px;">
-                CONTENT MANAGER PANEL
-            </a>
+                style="display: none; background: linear-gradient(45deg, #b91c1c, #ef4444); color: white; padding: 20px; border-radius: 16px; text-align: center; font-weight: 800; font-size: 18px; box-shadow: 0 10px 25px rgba(220, 38, 38, 0.4); transition: transform 0.2s; text-decoration: none; margin-bottom: 20px;" data-i18n="profile.adminPanel">Content manager panel</a>
 
             <div class="gamification-card">
                 <div class="level-header">
-                    <strong style="font-size: 20px; color: var(--text);">Level Progress</strong>
-                    <span class="xp-text"><span id="currentXp">0</span> / <span id="nextXp">100</span> XP</span>
+                    <strong style="font-size: 20px; color: var(--text);" data-i18n="profile.levelProgress">Level Progress</strong>
+                    <span class="xp-text" dir="ltr"><span id="currentXp">0</span> / <span id="nextXp">100</span> XP</span>
                 </div>
                 <div class="progress-track">
                     <div class="progress-fill" id="xpBar"></div>
                 </div>
-                <p id="xpHelpText" style="font-size: 14px; color: var(--text-muted); margin-top: 16px;">
-                    Upload photos (+10 XP) and rate locations (+3 XP) to level up!
-                </p>
+                <p id="xpHelpText" style="font-size: 14px; color: var(--text-muted); margin-top: 16px;" data-i18n="profile.xpHelp">Upload photos (+10 XP) and rate locations (+3 XP) to level up!</p>
             </div>
 
             <div class="stats-grid">
                 <div class="stat-box">
                     <span class="stat-value" id="statLoc">0</span>
-                    <span class="stat-label">Visits</span>
+                    <span class="stat-label" data-i18n="profile.visits">Visits</span>
                 </div>
                 <div class="stat-box">
                     <span class="stat-value" id="statRev">0</span>
-                    <span class="stat-label">Reviews</span>
+                    <span class="stat-label" data-i18n="profile.reviews">Reviews</span>
                 </div>
                 <div class="stat-box">
                     <span class="stat-value" id="statPhoto">0</span>
-                    <span class="stat-label">Photos</span>
+                    <span class="stat-label" data-i18n="profile.photos">Photos</span>
                 </div>
             </div>
 
             <div class="photo-gallery-section">
                 <div class="gallery-header">
-                    <h3 style="margin:0;"> My Memories</h3>
+                    <h3 style="margin:0;" data-i18n="profile.memories">My Memories</h3>
                     <button type="button" class="add-photo-btn" id="openUploadBtn">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="3">
                             <path d="M12 5v14M5 12h14" />
                         </svg>
-                        Add
+                        <span data-i18n="profile.add">Add</span>
                     </button>
                 </div>
                 <div class="photos-grid" id="userPhotosGrid">
-                    <p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;">No photos
-                        uploaded yet. Immortalize the places you visit!</p>
+                    <p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;" data-i18n="profile.noPhotos">No photos uploaded yet. Immortalize the places you visit!</p>
                 </div>
             </div>
 
             <div class="photo-gallery-section" style="margin-top: 30px;">
                 <div class="gallery-header">
-                    <h3 style="margin:0;"> My Favorites</h3>
+                    <h3 style="margin:0;" data-i18n="profile.favorites">My Favorites</h3>
                 </div>
                 <div class="photos-grid" id="favoritesGrid"
                     style="display:grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap:15px;">
-                    <p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;">No
-                        favorites added yet.</p>
+                    <p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;" data-i18n="profile.noFavorites">No favorites added yet.</p>
                 </div>
             </div>
 
@@ -215,31 +210,30 @@
 
     <div class="upload-modal" id="uploadModal">
         <div class="upload-content">
-            <h3>Share Photo</h3>
+            <h3 data-i18n="profile.sharePhoto">Share Photo</h3>
             <label class="file-input-wrapper" for="photoInput">
-                <p id="fileName" style="color:#aaa;">Click to select photo</p>
+                <p id="fileName" style="color:#aaa;" data-i18n="profile.selectPhoto">Click to select photo</p>
                 <input type="file" id="photoInput" accept="image/jpeg,image/png,image/webp,image/gif" style="display:none;">
             </label>
-            <input type="text" id="photoLocation" class="caption-input" maxlength="120" placeholder="Which Location? (e.g. Galata Tower)">
-            <input type="text" id="photoCaption" class="caption-input" maxlength="200" placeholder="Write a caption...">
+            <input type="text" id="photoLocation" class="caption-input" maxlength="120" placeholder="Which Location? (e.g. Galata Tower)" data-i18n-attr="placeholder:profile.photoLocation">
+            <input type="text" id="photoCaption" class="caption-input" maxlength="200" placeholder="Write a caption..." data-i18n-attr="placeholder:profile.photoCaption">
             <div class="upload-actions">
-                <button type="button" class="btn-cancel" id="cancelUploadBtn">Cancel</button>
-                <button type="button" class="btn-confirm" id="confirmUploadBtn" disabled>Upload</button>
+                <button type="button" class="btn-cancel" id="cancelUploadBtn" data-i18n="common.cancel">Cancel</button>
+                <button type="button" class="btn-confirm" id="confirmUploadBtn" disabled data-i18n="profile.upload">Upload</button>
             </div>
         </div>
     </div>
 
     <div class="upload-modal" id="passwordModal">
         <div class="upload-content">
-            <h3>Update Password</h3>
-            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">For security reasons, please
-                enter your current password.</p>
-            <input type="password" id="currentPassword" class="caption-input" autocomplete="current-password" placeholder="Current Password">
-            <input type="password" id="newPassword" class="caption-input" autocomplete="new-password" minlength="8" placeholder="New Password (min. 8 characters)">
-            <input type="password" id="confirmNewPassword" class="caption-input" autocomplete="new-password" placeholder="Confirm New Password">
+            <h3 data-i18n="profile.updatePassword">Update Password</h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;" data-i18n="profile.passwordHint">For security reasons, please enter your current password.</p>
+            <input type="password" id="currentPassword" class="caption-input" autocomplete="current-password" placeholder="Current Password" data-i18n-attr="placeholder:profile.currentPassword">
+            <input type="password" id="newPassword" class="caption-input" autocomplete="new-password" minlength="8" placeholder="New Password (min. 8 characters)" data-i18n-attr="placeholder:profile.newPassword">
+            <input type="password" id="confirmNewPassword" class="caption-input" autocomplete="new-password" placeholder="Confirm New Password" data-i18n-attr="placeholder:profile.confirmPassword">
             <div class="upload-actions">
-                <button type="button" class="btn-cancel" id="cancelPasswordBtn">Cancel</button>
-                <button type="button" class="btn-confirm" id="confirmPasswordBtn">Update</button>
+                <button type="button" class="btn-cancel" id="cancelPasswordBtn" data-i18n="common.cancel">Cancel</button>
+                <button type="button" class="btn-confirm" id="confirmPasswordBtn" data-i18n="profile.update">Update</button>
             </div>
         </div>
     </div>

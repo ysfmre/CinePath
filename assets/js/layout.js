@@ -1,5 +1,6 @@
 // Shared page chrome: mobile navigation, footer year and header profile button.
 // Firebase is loaded separately at the end, so the menu keeps working even if it can't load.
+import { t } from "./i18n.js"; // also applies translations + renders the language switcher
 
 const menuBtn = document.getElementById("hamburgerBtn");
 const menu = document.querySelector(".mobile-nav-panel");
@@ -17,7 +18,7 @@ if (menuBtn && menu && overlay) {
     const closeBtn = document.createElement("button");
     closeBtn.type = "button";
     closeBtn.className = "mobile-nav-close";
-    closeBtn.setAttribute("aria-label", "Close menu");
+    closeBtn.setAttribute("aria-label", t("nav.closeMenu"));
     closeBtn.textContent = "×";
     menu.prepend(closeBtn);
 
