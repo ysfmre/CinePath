@@ -39,12 +39,13 @@ import {
     writeBatch,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
-import { FIREBASE_CONFIG } from "../../config.js";
+import { FIREBASE_CONFIG, RECAPTCHA_ENTERPRISE_SITE_KEY } from "../../config.js";
 import { safeUrl } from "./utils.js";
 
 const SDK_BASE = "https://www.gstatic.com/firebasejs/12.19.0";
 
 export const app = initializeApp(FIREBASE_CONFIG);
+
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
@@ -393,13 +394,23 @@ export async function deleteUserPhoto(photoId) {
 // AI (Firebase AI Logic — no API key in the browser)
 // ============================================
 
+// App Check (reCAPTCHA Enterprise) is required by AI Logic. It is started only when
+// CineAI is used: if a visitor's browser blocks reCAPTCHA, an App Check started at
+// page load would stall every Firebase request (login, catalog...) on every page.
 let aiModelPromise;
 export function getAiModel() {
-    aiModelPromise ??= import(`${SDK_BASE}/firebase-ai.js`).then(({ getAI, getGenerativeModel, GoogleAIBackend }) =>
-        getGenerativeModel(getAI(app, { backend: new GoogleAIBackend() }), {
+    aiModelPromise ??= Promise.all([
+        import(`${SDK_BASE}/firebase-app-check.js`),
+        import(`${SDK_BASE}/firebase-ai.js`)
+    ]).then(([{ initializeAppCheck, ReCaptchaEnterpriseProvider }, { getAI, getGenerativeModel, GoogleAIBackend }]) => {
+        initializeAppCheck(app, {
+            provider: new ReCaptchaEnterpriseProvider(RECAPTCHA_ENTERPRISE_SITE_KEY),
+            isTokenAutoRefreshEnabled: true
+        });
+        return getGenerativeModel(getAI(app, { backend: new GoogleAIBackend() }), {
             model: "gemini-3.8-flash",
             generationConfig: { responseMimeType: "application/json", temperature: 0.7, maxOutputTokens: 512 }
-        })
-    );
+        });
+    }).catch((error) => { aiModelPromise = null; throw error; });
     return aiModelPromise;
 }
