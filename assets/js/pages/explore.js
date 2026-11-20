@@ -142,11 +142,12 @@ async function openModal(item) {
     $("mRatingVal").textContent = item.rating || "";
     $("mRatingBox").style.display = item.rating ? "flex" : "none";
 
-    const spotify = safeUrl(item.spotify);
     const spotifyBtn = $("spotifyBtn");
-    const isSpotify = spotify && new URL(spotify).hostname === "open.spotify.com";
-    spotifyBtn.href = isSpotify ? spotify : "#";
-    spotifyBtn.style.display = isSpotify ? "flex" : "none";
+    const { href: spotifyHref, isSearch } = spotifyLink(item);
+    spotifyBtn.href = spotifyHref;
+    spotifyBtn.title = isSearch ? "Search the soundtrack on Spotify" : "Listen on Spotify";
+    spotifyBtn.setAttribute("aria-label", spotifyBtn.title);
+    spotifyBtn.style.display = spotifyHref ? "flex" : "none";
 
     const routeBtn = $("startRouteBtn");
     const mapDiv = $("osm-map");
@@ -217,6 +218,19 @@ function renderLocation(item, loc, index, currentRating) {
         if (!result.success) paint(previous);
     }));
     return div;
+}
+
+/**
+ * The content's own Spotify link if it has a valid one; otherwise a Spotify search
+ * for its soundtrack (e.g. "Ezel dizi müzikleri"), so every title gets a music button.
+ */
+function spotifyLink(item) {
+    const own = safeUrl(item.spotify);
+    if (own && new URL(own).hostname === "open.spotify.com") return { href: own, isSearch: false };
+    const title = String(item.title || "").trim();
+    if (!title) return { href: "", isSearch: true };
+    const query = `${title} ${isMovie(item) ? "film" : "dizi"} müzikleri`;
+    return { href: `https://open.spotify.com/search/${encodeURIComponent(query)}`, isSearch: true };
 }
 
 /** Directions from the visitor's current position to a single location. */
