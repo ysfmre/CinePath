@@ -98,6 +98,8 @@ export async function loginUser(email, password, remember = true) {
     try {
         await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
         const { user } = await signInWithEmailAndPassword(auth, email.trim(), password);
+        // Accounts created while the old rules blocked profile writes have no users/{uid} doc yet.
+        await ensureUserDoc(user);
         return ok({ user });
     } catch (error) { return fail(error); }
 }

@@ -288,9 +288,22 @@ $("searchInput").addEventListener("input", (e) => {
 });
 $("sortSelect").addEventListener("change", (e) => { filterState.sort = e.target.value; updateView(); });
 
-async function loadContent() {
+// The catalog is for members only (enforced by firestore.rules).
+function showLoginPrompt() {
+    allContent = [];
+    grid.replaceChildren();
+    loader.style.display = "block";
+    const next = encodeURIComponent(`explore.html${location.search}`);
+    loader.innerHTML = `Please <a href="login.html?next=${next}" style="color:#e50914;">log in</a> or <a href="signup.html" style="color:#e50914;">sign up</a> to explore filming locations.`;
+}
+
+async function loadContent(user) {
+    loader.style.display = "block";
+    loader.textContent = "Loading data...";
     try {
-        allContent = await getAllContents();
+        const [contents, data] = await Promise.all([getAllContents(), getUserData(user.uid)]);
+        allContent = contents;
+        favorites = new Set(data?.favorites || []);
         loader.style.display = "none";
         updateView();
         const target = allContent.find((m) => m.id === new URLSearchParams(location.search).get("id"));
@@ -301,12 +314,7 @@ async function loadContent() {
     }
 }
 
-const contentLoaded = loadContent();
-
-// Favourites depend on the signed-in user; content does not, so load it only once.
-onUserChange(async (user) => {
-    const data = user ? await getUserData(user.uid) : null;
-    favorites = new Set(data?.favorites || []);
-    await contentLoaded;
-    if (allContent.length) updateView();
+onUserChange((user) => {
+    if (user) loadContent(user);
+    else { closeModal(); showLoginPrompt(); }
 });

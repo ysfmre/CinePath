@@ -1,6 +1,6 @@
 // CineAI: recommendations through Firebase AI Logic.
 // The Gemini key never reaches the browser; Firebase proxies the request for this project.
-import { auth, getAllContents, getUserData, getAiModel } from "../auth_manager.js";
+import { auth, authReady, getAllContents, getUserData, getAiModel } from "../auth_manager.js";
 import { safeUrl, withFallback, PLACEHOLDER_POSTER } from "../utils.js";
 
 const $ = (id) => document.getElementById(id);
@@ -8,10 +8,14 @@ const askBtn = $("askAiBtn");
 const personalBtn = $("personalSuggestBtn");
 const resultDiv = $("aiResult");
 
-const contentPromise = getAllContents().catch((e) => {
+// The catalog is for members only (enforced by firestore.rules).
+let contentPromise = null;
+const loadCatalog = () => (contentPromise ??= getAllContents().catch((e) => {
     console.error("Content load failed:", e?.code || e);
+    contentPromise = null;
     return [];
-});
+}));
+authReady.then((user) => { if (user) loadCatalog(); });
 
 const clip = (v, n) => String(v ?? "").slice(0, n);
 const selectedText = (el) => clip(el.options[el.selectedIndex]?.text, 60);
@@ -45,7 +49,7 @@ function showResult(movie, reason) {
 }
 
 async function getRecommendation(mode) {
-    if (mode === "personal" && !auth.currentUser) {
+    if (!auth.currentUser) {
         window.location.href = "login.html?next=AI.html";
         return;
     }
@@ -54,7 +58,7 @@ async function getRecommendation(mode) {
     askBtn.textContent = "Thinking...";
 
     try {
-        const movies = await contentPromise;
+        const movies = await loadCatalog();
         if (movies.length === 0) throw new Error("The catalog could not be loaded. Please try again later.");
         const catalog = catalogFor(movies);
         let prompt;
