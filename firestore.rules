@@ -17,9 +17,9 @@ service cloud.firestore {
     function isShortString(v, max) { return v is string && v.size() <= max; }
     function isCount(v) { return v is int && v >= 0 && v <= 1000000; }
 
-    // ---------- Public catalog (movies / series) ----------
+    // ---------- Catalog (movies / series): members only ----------
     match /contents/{contentId} {
-      allow read: if true;
+      allow read: if signedIn();
       allow create, update: if isAdmin() && validContent(request.resource.data);
       allow delete: if isAdmin();
 
