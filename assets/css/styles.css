@@ -84,7 +84,7 @@ button { font-family: inherit; }
   height: var(--header-height);
   margin: calc(12px + var(--safe-top)) auto 0;
   border-radius: 22px;
-  background: var(--glass-bg);
+  background: var(--glass-bg-strong);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
@@ -313,8 +313,25 @@ button { font-family: inherit; }
   color: #8a8a92;
   font-size: 14px;
 }
-.footer-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; margin-bottom: 40px; }
-.footer-links { display: flex; flex-wrap: wrap; align-content: flex-start; gap: 10px 22px; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+.site-footer .brand { color: var(--text); }
+.footer-brand p { max-width: 340px; margin: 14px 0 18px; line-height: 1.7; }
+.footer-social {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--glass-tint);
+  border: 1px solid var(--glass-border);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 500;
+  transition: background 0.2s, border-color 0.2s;
+}
+.footer-social:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.18); }
+.footer-title { margin: 0 0 14px; color: var(--text); font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+.footer-links { display: grid; gap: 10px; }
 .footer-links a:hover { color: #fff; }
 .footer-bottom { padding: 22px 0; border-top: 1px solid rgba(255, 255, 255, 0.06); text-align: center; }
 .copyright { margin: 0; font-size: 13px; }
@@ -340,15 +357,14 @@ button { font-family: inherit; }
   .avatar-label { display: none; }
   .hamburger-btn { display: flex !important; }
   .site-footer { padding-top: 40px; }
-  .footer-grid { grid-template-columns: 1fr; gap: 24px; text-align: center; }
-  .footer-links { justify-content: center; gap: 8px 18px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px 20px; }
+  .footer-brand { grid-column: 1 / -1; }
 }
 @media (max-width: 480px) {
   .container { padding-inline: 12px; }
   .brand { font-size: 17px; }
   .avatar { width: 30px; height: 30px; font-size: 14px; }
   .hamburger-btn { width: 42px; height: 42px; border-radius: 13px; }
-  .footer-links { font-size: 13px; }
 }
 
 /* ---------- Accessibility & fallbacks ---------- */

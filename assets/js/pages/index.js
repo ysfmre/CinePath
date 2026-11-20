@@ -1,4 +1,5 @@
-// Home page: FAQ accordion + draggable chip carousel.
+// Home page: FAQ accordion + productions carousel.
+
 document.querySelectorAll(".accordion-item").forEach((item) => {
     const btn = item.querySelector(".accordion-btn");
     const panel = item.querySelector(".accordion-panel");
@@ -12,47 +13,46 @@ document.querySelectorAll(".accordion-item").forEach((item) => {
 
 const row = document.querySelector(".chip-row");
 if (row) {
-    const makeBtn = (dir, label, symbol) => {
-        const b = document.createElement("button");
-        b.type = "button";
-        b.className = `scroll-btn ${dir}`;
-        b.setAttribute("aria-label", label);
-        b.textContent = symbol;
-        b.addEventListener("click", () => row.scrollBy({ left: dir === "left" ? -300 : 300, behavior: "smooth" }));
-        row.parentElement.appendChild(b);
-        return b;
-    };
-    const left = makeBtn("left", "Scroll left", "‹");
-    const right = makeBtn("right", "Scroll right", "›");
+    const buttons = [...document.querySelectorAll(".carousel-btn")];
+    const step = () => Math.max(row.clientWidth * 0.8, 240);
+
+    buttons.forEach((btn) => btn.addEventListener("click", () => {
+        row.scrollBy({ left: Number(btn.dataset.dir) * step(), behavior: "smooth" });
+    }));
 
     const update = () => {
-        left.disabled = row.scrollLeft <= 0;
-        right.disabled = row.scrollLeft + row.clientWidth >= row.scrollWidth - 10;
-        left.style.opacity = left.disabled ? "0" : "1";
-        right.style.opacity = right.disabled ? "0" : "1";
+        const max = row.scrollWidth - row.clientWidth - 4;
+        buttons.forEach((btn) => {
+            btn.disabled = Number(btn.dataset.dir) < 0 ? row.scrollLeft <= 4 : row.scrollLeft >= max;
+        });
     };
     let raf = 0;
-    row.addEventListener("scroll", () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(update); }, { passive: true });
-    window.addEventListener("resize", update, { passive: true });
+    const schedule = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(update); };
+    row.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule, { passive: true });
     update();
 
-    // Mouse drag-to-scroll; a drag must not trigger the card link.
-    let startX = 0, startScroll = 0, dragging = false, moved = false;
-    row.addEventListener("mousedown", (e) => {
-        dragging = true; moved = false;
-        startX = e.pageX; startScroll = row.scrollLeft;
-        row.classList.add("is-dragging");
+    // Mouse drag-to-scroll (touch devices scroll natively). A drag must not open a card.
+    let startX = 0, startScroll = 0, pressed = false, dragged = false;
+    row.addEventListener("pointerdown", (e) => {
+        if (e.pointerType !== "mouse" || e.button !== 0) return;
+        pressed = true; dragged = false;
+        startX = e.clientX; startScroll = row.scrollLeft;
     });
-    const stop = () => { dragging = false; row.classList.remove("is-dragging"); };
-    row.addEventListener("mouseleave", stop);
-    row.addEventListener("mouseup", stop);
-    row.addEventListener("mousemove", (e) => {
-        if (!dragging) return;
-        const dx = e.pageX - startX;
-        if (Math.abs(dx) > 5) moved = true;
-        e.preventDefault();
-        row.scrollLeft = startScroll - dx * 2;
+    row.addEventListener("pointermove", (e) => {
+        if (!pressed) return;
+        const dx = e.clientX - startX;
+        if (!dragged && Math.abs(dx) > 6) { dragged = true; row.classList.add("is-dragging"); }
+        if (dragged) row.scrollLeft = startScroll - dx;
     });
-    row.addEventListener("click", (e) => { if (moved) { e.preventDefault(); moved = false; } }, true);
+    const release = () => {
+        if (!pressed) return;
+        pressed = false;
+        // Keep pointer-events off until the click that ends the drag has been swallowed.
+        setTimeout(() => row.classList.remove("is-dragging"), 0);
+    };
+    row.addEventListener("pointerup", release);
+    row.addEventListener("pointerleave", release);
+    row.addEventListener("click", (e) => { if (dragged) { e.preventDefault(); dragged = false; } }, true);
     row.querySelectorAll("a, img").forEach((el) => el.setAttribute("draggable", "false"));
 }

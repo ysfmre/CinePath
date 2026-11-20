@@ -336,6 +336,9 @@ async function loadContent(user) {
         allContent = contents;
         favorites = new Set(data?.favorites || []);
         loader.style.display = "none";
+        // explore.html?q=Ezel pre-fills the search (used by the home page posters).
+        const q = (new URLSearchParams(location.search).get("q") || "").trim().slice(0, 80);
+        if (q) { filterState.search = q; $("searchInput").value = q; }
         updateView();
         const target = allContent.find((m) => m.id === new URLSearchParams(location.search).get("id"));
         if (target) openModal(target);
