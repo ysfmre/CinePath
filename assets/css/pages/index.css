@@ -1,0 +1,100 @@
+/* index.html */
+.hero { position: relative; background: radial-gradient(circle at 50% 0%, #1a0505 0%, var(--bg) 70%); padding: 80px 0 64px; }
+.hero-title { font-size: clamp(36px, 5vw, 64px); line-height: 1.1; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 24px; }
+.highlight { background: linear-gradient(to right, var(--accent-2), #f43f5e); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+.tiles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 48px; }
+.tile { padding: 24px; text-align: center; background: var(--glass-tint); border: 1px solid var(--glass-border); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06); border-radius: 20px; transition: transform 0.3s var(--ease), border-color 0.3s; }
+.tile:hover { transform: translateY(-5px); border-color: #333; }
+.tile-accent { background: linear-gradient(180deg, rgba(229, 9, 20, 0.14), rgba(255, 255, 255, 0.03)); border-color: rgba(229, 9, 20, 0.28); }
+.tile-title { margin: 0; font-size: 28px; font-weight: 700; color: #fff; }
+.tile-sub { color: var(--accent-2); font-weight: 600; margin: 4px 0 12px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+.tile-desc { color: var(--muted); margin: 0; font-size: 14px; line-height: 1.6; }
+.route-hero { position: relative; background: linear-gradient(to bottom, rgba(10, 10, 11, 0.3), var(--bg)), url("../../istanbul-hero.jpg") center / cover no-repeat; border-bottom: 1px solid var(--stroke); overflow: hidden; --hero-offset: calc(var(--header-height) + 12px + var(--safe-top)); margin-top: calc(-1 * var(--hero-offset)); padding: calc(var(--hero-offset) + 130px) 0 56px; }
+.route-hero::before { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(11,11,12,0.3), var(--bg)); z-index: 1; pointer-events: none; }
+.route-title { text-align: center; font-size: clamp(24px, 4vw, 48px); font-weight: 800; text-shadow: 0 4px 20px rgba(0,0,0,0.8); margin-bottom: 64px; }
+.chip-row { display: flex; gap: 20px; overflow-x: auto; padding: 20px 4px 40px; margin: 0 60px; scroll-snap-type: x mandatory; scrollbar-width: none; mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 20px), transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 20px), transparent); }
+.chip-row::-webkit-scrollbar { display: none; }
+.chip-row.is-dragging { cursor: grabbing; user-select: none; scroll-snap-type: none; }
+.chip-card { flex: 0 0 180px; height: 260px; border-radius: 16px; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s; cursor: pointer; scroll-snap-align: center; }
+.chip-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.6); z-index: 10; border-color: rgba(255,255,255,0.3); }
+.chip-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+.chip-card:hover .chip-img { transform: scale(1.1); }
+.chip-card span { position: absolute; bottom: 0; left: 0; right: 0; padding: 20px 14px; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); color: #fff; font-weight: 700; font-size: 15px; z-index: 2; }
+.scroll-btn { position: absolute; top: 55%; transform: translateY(-50%); z-index: 10; width: 50px; height: 50px; border-radius: 50%; color: #fff; display: grid; place-items: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; font-size: 24px; background: var(--glass-bg); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); border: 1px solid var(--glass-border); box-shadow: var(--glass-highlight), 0 8px 24px rgba(0, 0, 0, 0.4); }
+.scroll-btn:hover:not(:disabled) { background: var(--accent); border-color: var(--accent); color: #fff; transform: translateY(-50%) scale(1.15); box-shadow: 0 15px 35px rgba(185, 28, 28, 0.5); }
+.scroll-btn:disabled { opacity: 0; pointer-events: none; }
+.route-hero:hover .scroll-btn { opacity: 1; }
+.scroll-btn.left { left: 0; }
+.scroll-btn.right { right: 0; }
+.section-title { font-size: 32px; font-weight: 700; margin-bottom: 12px; }
+.faq { padding: 80px 0; background: linear-gradient(180deg, #0e0e10, var(--bg)); }
+.accordion-item { overflow: hidden; margin-bottom: 12px; transition: border-color 0.2s; background: var(--glass-tint); border: 1px solid var(--glass-border); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05); border-radius: 16px; }
+.accordion-item.is-open { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.14); }
+.accordion-btn { width: 100%; padding: 20px; text-align: left; background: transparent; border: none; color: var(--text); font-weight: 600; display: flex; justify-content: space-between; cursor: pointer; }
+.accordion-panel { max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(0, 1, 0, 1); color: var(--muted); font-size: 15px; line-height: 1.6; }
+.accordion-panel p { margin: 0 20px 20px; }
+.chev { transition: transform 0.3s; }
+.accordion-item.is-open .chev { transform: rotate(180deg); color: var(--accent-2); }
+@media (max-width: 1024px) {
+  .route-title { font-size: clamp(20px, 3.5vw, 40px); margin-bottom: 60px; }
+  .chip-row { margin: 0 40px; }
+  .chip-card { flex: 0 0 160px; height: 230px; }
+  .tiles-grid { gap: 20px; }
+}
+@media (max-width: 768px) {
+  .route-hero { padding: calc(var(--hero-offset) + 80px) 0 40px; }
+  .route-title { font-size: clamp(18px, 5vw, 28px); margin-bottom: 40px; padding: 0 10px; line-height: 1.3; }
+  .chip-row { margin: 0; padding: 15px 16px 30px; gap: 12px; mask-image: none; -webkit-mask-image: none; }
+  .chip-card { flex: 0 0 140px; height: 200px; border-radius: 12px; }
+  .chip-card span { padding: 15px 10px; font-size: 13px; }
+  .scroll-btn { display: none; }
+  .hero { padding: 60px 0 50px; }
+  .hero-title { font-size: clamp(28px, 7vw, 36px); margin-bottom: 20px; }
+  .tiles-grid { grid-template-columns: 1fr; gap: 16px; margin-top: 32px; }
+  .tile { padding: 20px; }
+  .tile-title { font-size: 24px; }
+  .tile-sub { font-size: 12px; }
+  .tile-desc { font-size: 13px; }
+  .faq { padding: 50px 0; }
+  .section-title { font-size: 26px; margin-bottom: 30px !important; }
+  .accordion-btn { padding: 16px; font-size: 14px; }
+  .accordion-panel { font-size: 14px; }
+  .accordion-panel p { margin: 0 16px 16px; }
+}
+@media (max-width: 480px) {
+  .route-hero { padding: calc(var(--hero-offset) + 64px) 0 30px; }
+  .route-title { font-size: clamp(16px, 5vw, 24px); margin-bottom: 30px; }
+  .chip-row { gap: 10px; padding: 10px 12px 25px; }
+  .chip-card { flex: 0 0 120px; height: 170px; border-radius: 10px; }
+  .chip-card span { padding: 12px 8px; font-size: 11px; font-weight: 600; }
+  .hero { padding: 40px 0; }
+  .hero-title { font-size: clamp(24px, 6vw, 32px); }
+  .tiles-grid { gap: 12px; margin-top: 24px; }
+  .tile { padding: 16px; border-radius: 12px; }
+  .tile-title { font-size: 20px; }
+  .tile-desc { font-size: 12px; }
+  .faq { padding: 40px 0; }
+  .section-title { font-size: 22px; }
+  .accordion-item { border-radius: 10px; margin-bottom: 10px; }
+  .accordion-btn { padding: 14px; font-size: 13px; }
+  .accordion-panel p { margin: 0 14px 14px; font-size: 13px; }
+}
+@media (max-width: 360px) {
+  .chip-card { flex: 0 0 100px; height: 150px; }
+  .chip-card span { font-size: 10px; padding: 10px 6px; }
+  .hero-title { font-size: 22px; }
+  .tile-title { font-size: 18px; }
+  .section-title { font-size: 20px; }
+}
+@media (max-width: 768px) and (orientation: landscape) {
+  .route-hero { padding: calc(var(--hero-offset) + 40px) 0 30px; }
+  .chip-card { flex: 0 0 130px; height: 180px; }
+  .hero { padding: 40px 0; }
+  .tiles-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+}
+@media (hover: none) and (pointer: coarse) {
+  .chip-card:hover { transform: none; }
+  .tile:hover { transform: none; }
+  .chip-card:active { transform: scale(0.98); }
+  .tile:active { transform: scale(0.98); }
+}

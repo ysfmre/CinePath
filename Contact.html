@@ -16,80 +16,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/styles.css" />
-    <style>
-        body { margin: 0; background-color: var(--bg); color: #fff; font-family: 'Inter', sans-serif; }
-        main { padding-top: 0; min-height: 100vh; display: flex; flex-direction: column; }
-        .contact-section { padding-top: 130px; }
-
-        @media (max-width: 1024px) {
-            .contact-section { padding: 110px 0 80px; }
-            .contact-wrapper { gap: 50px; }
-            .contact-title { font-size: 42px; }
-            .contact-form-container { padding: 36px; }
-        }
-
-        @media (max-width: 900px) {
-            .contact-section { padding: 90px 0 60px; }
-            .contact-wrapper { grid-template-columns: 1fr; gap: 50px; }
-            .contact-info { text-align: center; }
-            .contact-desc { max-width: 100%; margin: 0 auto 40px; }
-            .contact-details { align-items: center; }
-            .contact-item { justify-content: center; }
-            .social-links { justify-content: center; }
-            .contact-form-container { max-width: 550px; margin: 0 auto; }
-            .contact-bg-glow { top: 30%; opacity: 0.4; }
-        }
-
-        @media (max-width: 768px) {
-            .contact-section { padding: 100px 0 50px; }
-            .contact-title { font-size: clamp(30px, 8vw, 38px); margin-bottom: 20px; }
-            .contact-badge { font-size: 11px; margin-bottom: 18px; }
-            .contact-desc { font-size: 16px; margin-bottom: 36px; }
-            .contact-details { gap: 26px; margin-bottom: 36px; }
-            .icon-box { width: 46px; height: 46px; font-size: 18px; }
-            .detail-title { font-size: 12px; }
-            .detail-link, .detail-text { font-size: 17px; }
-            .social-btn { padding: 11px 20px; font-size: 14px; }
-            .contact-form-container { padding: 28px 24px; border-radius: 20px; }
-            .form-grid { grid-template-columns: 1fr; gap: 0; }
-            .form-group { margin-bottom: 20px; }
-            .form-group label { font-size: 12px; margin-bottom: 8px; }
-            .form-group input, .form-group select, .form-group textarea { padding: 14px 16px; font-size: 15px; border-radius: 12px; }
-            .submit-btn { padding: 16px; font-size: 16px; border-radius: 12px; }
-        }
-
-        @media (max-width: 480px) {
-            .contact-section { padding: 85px 0 40px; }
-            .contact-title { font-size: clamp(26px, 7vw, 32px); }
-            .contact-badge { font-size: 10px; }
-            .contact-desc { font-size: 15px; }
-            .contact-details { gap: 22px; margin-bottom: 30px; }
-            .icon-box { width: 42px; height: 42px; font-size: 16px; border-radius: 12px; }
-            .detail-link, .detail-text { font-size: 15px; }
-            .social-links { flex-wrap: wrap; gap: 12px; }
-            .social-btn { padding: 10px 18px; font-size: 13px; }
-            .contact-form-container { padding: 22px 18px; border-radius: 16px; }
-            .form-group { margin-bottom: 18px; }
-            .form-group input, .form-group select, .form-group textarea { padding: 13px 14px; font-size: 14px; }
-            .submit-btn { padding: 14px; font-size: 15px; }
-        }
-
-        @media (max-width: 360px) {
-            .contact-title { font-size: 24px; }
-            .contact-desc { font-size: 14px; }
-            .detail-link, .detail-text { font-size: 14px; }
-            .contact-form-container { padding: 18px 16px; }
-            .form-group input, .form-group select, .form-group textarea { padding: 12px; font-size: 13px; }
-            .submit-btn { padding: 13px; font-size: 14px; }
-        }
-
-        @media (hover: none) and (pointer: coarse) {
-            .social-btn:hover { background: transparent; color: inherit; border-color: var(--stroke); }
-            .social-btn:active { background: #fff; color: #000; }
-            .submit-btn:hover { transform: none; }
-            .submit-btn:active { transform: scale(0.98); }
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/pages/contact.css" />
 </head>
 <body>
     <header class="site-header" data-header>
@@ -112,7 +39,7 @@
                     <span class="avatar-label" data-avatar-label>Log In</span>
                 </button>
             </div>
-            <button id="hamburgerBtn" class="hamburger-btn" aria-label="Toggle menu">
+            <button id="hamburgerBtn" class="hamburger-btn" type="button" aria-label="Toggle menu" aria-expanded="false">
                 <span class="hamburger-box">
                     <span class="hamburger-line"></span>
                     <span class="hamburger-line"></span>
@@ -166,7 +93,7 @@
         </a>
         
         <div class="mobile-nav-footer">
-            <p>© 2025 CinePath. All rights reserved.</p>
+            <p>© <span data-year></span> CinePath. All rights reserved.</p>
         </div>
     </nav>
 

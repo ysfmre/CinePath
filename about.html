@@ -14,40 +14,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/styles.css" />
-    <style>
-        :root { --bg-dark: #050505; --text-main: #ffffff; --text-muted: #a3a3a3; --accent: #e50914; --border-color: rgba(255, 255, 255, 0.1); }
-        body { background-color: var(--bg-dark); color: var(--text-main); overflow-x: hidden; }
-        .about-hero { position: relative; height: 80vh; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; margin-top: -80px; padding-top: 80px; }
-        .hero-bg { position: absolute; inset: 0; background-image: url('https://images.unsplash.com/photo-1478720568477-152d9b164e63?q=80&w=2000&auto=format&fit=crop'); background-size: cover; background-position: center; opacity: 0.6; z-index: -1; animation: zoomSlow 20s infinite alternate; }
-        .hero-overlay { position: absolute; inset: 0; background: radial-gradient(circle, rgba(5,5,5,0.2) 0%, var(--bg-dark) 90%); z-index: 0; }
-        .hero-content { position: relative; z-index: 1; max-width: 800px; padding: 0 20px; animation: fadeInUp 1s ease-out; }
-        .hero-badge { display: inline-block; padding: 6px 16px; border: 1px solid var(--accent); border-radius: 50px; color: var(--accent); font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; background: rgba(229, 9, 20, 0.1); }
-        .hero-title { font-size: clamp(40px, 5vw, 72px); font-weight: 800; line-height: 1.1; margin-bottom: 24px; letter-spacing: -0.02em; }
-        .hero-text { font-size: 18px; color: rgba(255,255,255,0.8); font-weight: 300; }
-        .mission-section { padding: 100px 20px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-        .mission-content h2 { font-size: 36px; margin-bottom: 24px; color: #fff; }
-        .mission-content p { color: var(--text-muted); margin-bottom: 20px; font-size: 16px; line-height: 1.6; }
-        .mission-image { position: relative; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        .mission-image img { width: 100%; display: block; transition: transform 0.5s; }
-        .mission-image:hover img { transform: scale(1.05); }
-        .stats-section { background: #0f0f10; padding: 80px 20px; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
-        .stats-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; text-align: center; }
-        .stat-item h3 { font-size: 48px; font-weight: 700; color: var(--text-main); margin: 0 0 10px 0; background: linear-gradient(to right, #fff, #888); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
-        .stat-item p { color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 14px; }
-        .cta-section { padding: 120px 20px; text-align: center; background: radial-gradient(circle at center, #1a0505 0%, var(--bg-dark) 70%); }
-        .cta-box { max-width: 700px; margin: 0 auto; }
-        .cta-btn { display: inline-block; background: var(--text-main); color: #000; padding: 16px 32px; border-radius: 50px; font-weight: 700; margin-top: 30px; transition: transform 0.2s, box-shadow 0.2s; }
-        .cta-btn:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(255,255,255,0.2); }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes zoomSlow { from { transform: scale(1); } to { transform: scale(1.1); } }
-
-        @media (max-width: 1024px) { .mission-section { gap: 50px; padding: 80px 20px; } .stats-grid { gap: 30px; } .cta-section { padding: 80px 20px; } }
-        @media (max-width: 900px) { .mission-section { grid-template-columns: 1fr; gap: 40px; padding: 60px 20px; } .mission-content { order: 1; } .mission-image { order: 2; max-width: 500px; margin: 0 auto; } .mission-content h2 { font-size: 30px; } }
-        @media (max-width: 768px) { .about-hero { height: 70vh; min-height: 500px; margin-top: -70px; padding-top: 70px; } .hero-title { font-size: clamp(28px, 7vw, 42px); margin-bottom: 20px; } .hero-text { font-size: 16px; line-height: 1.6; } .hero-badge { font-size: 11px; padding: 5px 12px; } .mission-section { grid-template-columns: 1fr; gap: 30px; padding: 50px 16px; } .mission-content h2 { font-size: 26px; margin-bottom: 18px; } .mission-content p { font-size: 15px; } .mission-image { border-radius: 16px; } .stats-section { padding: 50px 16px; } .stats-grid { gap: 30px; } .stat-item h3 { font-size: 36px; } .stat-item p { font-size: 12px; } .cta-section { padding: 60px 16px; } .cta-box h2 { font-size: 28px !important; } .cta-box p { font-size: 15px !important; } .cta-btn { padding: 14px 28px; font-size: 15px; } }
-        @media (max-width: 480px) { .about-hero { height: 65vh; min-height: 450px; } .hero-content { padding: 0 16px; } .hero-title { font-size: clamp(24px, 6vw, 32px); } .hero-text { font-size: 14px; } .hero-badge { font-size: 10px; letter-spacing: 1.5px; } .mission-section { padding: 40px 12px; gap: 24px; } .mission-content h2 { font-size: 22px; } .mission-content p { font-size: 14px; margin-bottom: 16px; } .mission-image { border-radius: 12px; } .stats-section { padding: 40px 12px; } .stats-grid { grid-template-columns: 1fr; gap: 24px; } .stat-item h3 { font-size: 32px; } .stat-item p { font-size: 11px; } .cta-section { padding: 50px 12px; } .cta-box h2 { font-size: 24px !important; } .cta-box p { font-size: 14px !important; line-height: 1.5; } .cta-btn { padding: 12px 24px; font-size: 14px; width: 100%; max-width: 280px; } }
-        @media (max-width: 360px) { .hero-title { font-size: 22px; } .mission-content h2 { font-size: 20px; } .stat-item h3 { font-size: 28px; } .cta-box h2 { font-size: 20px !important; } }
-        @media (hover: none) and (pointer: coarse) { .mission-image:hover img { transform: none; } .cta-btn:hover { transform: none; box-shadow: none; } .cta-btn:active { transform: scale(0.98); } }
-    </style>
+    <link rel="stylesheet" href="assets/css/pages/about.css" />
 </head>
 <body>
 
@@ -59,7 +26,7 @@
         <nav class="nav desktop-nav">
           <ul class="nav-list" data-nav-list>
             <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About Us</a></li>
+            <li><a href="about.html">About</a></li>
             <li><a href="explore.html">Explore</a></li>
             <li><a href="AI.html">CineAI</a></li>
             <li><a href="contact.html">Contact</a></li>
@@ -71,7 +38,7 @@
             <span class="avatar-label" data-avatar-label>Log In</span>
           </button>
         </div>
-        <button id="hamburgerBtn" class="hamburger-btn" aria-label="Menüyü aç">
+        <button id="hamburgerBtn" class="hamburger-btn" type="button" aria-label="Toggle menu" aria-expanded="false">
             <span class="hamburger-box">
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
@@ -125,7 +92,7 @@
         </a>
        
         <div class="mobile-nav-footer">
-            <p>© 2025 CinePath. All rights reserved.</p>
+            <p>© <span data-year></span> CinePath. All rights reserved.</p>
         </div>
     </nav>
 
@@ -194,7 +161,7 @@
         <div class="footer-col">
           <ul class="footer-links">
             <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About Us</a></li>
+            <li><a href="about.html">About</a></li>
             <li><a href="explore.html">Explore</a></li>
             <li><a href="AI.html">CineAI</a></li>
             <li><a href="Contact.html">Contact</a></li>

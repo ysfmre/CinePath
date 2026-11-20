@@ -1,0 +1,784 @@
+/* profil.html */
+:root {
+    --level-gradient: linear-gradient(90deg, #e50914 0%, #ff5f6d 100%);
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+.profile-banner {
+    height: 250px;
+    background: linear-gradient(to bottom, rgba(5, 5, 5, 0) 0%, rgba(5, 5, 5, 1) 100%), url('https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2000&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    margin-bottom: -60px;
+}
+
+.profile-layout {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+    position: relative;
+    z-index: 2;
+}
+
+.profile-card {
+    border-radius: 20px;
+    padding: 40px 30px;
+    text-align: center;
+    height: fit-content;
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-highlight), var(--glass-shadow);
+}
+
+.avatar-container {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 24px;
+}
+
+.profile-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--bg);
+    box-shadow: 0 0 0 2px var(--accent);
+}
+
+.user-name {
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 4px;
+    color: var(--text);
+}
+
+.user-handle {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 24px;
+    font-weight: 500;
+}
+
+.profile-details {
+    border-top: 1px solid var(--stroke);
+    padding-top: 24px;
+    margin-top: 24px;
+    text-align: left;
+}
+
+.detail-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.detail-row svg {
+    color: var(--accent);
+    opacity: 0.8;
+}
+
+.level-badge {
+    background: rgba(229, 9, 20, 0.1);
+    border: 1px solid rgba(229, 9, 20, 0.3);
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.content-area {
+    padding-top: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.gamification-card {
+    border-radius: 16px;
+    padding: 30px;
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-highlight), var(--glass-shadow);
+}
+
+.level-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.xp-text {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.progress-track {
+    width: 100%;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--level-gradient);
+    width: 0%;
+    transition: width 1s ease-out;
+    border-radius: 10px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.stat-box {
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    transition: transform 0.2s;
+    background: var(--glass-tint);
+    border: 1px solid var(--glass-border);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.stat-box:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+}
+
+.stat-value {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.photo-gallery-section {
+    border-radius: 16px;
+    padding: 30px;
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-highlight), var(--glass-shadow);
+}
+
+.gallery-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.gallery-header h3 {
+    margin: 0;
+    color: var(--text);
+}
+
+.add-photo-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.2s;
+}
+
+.add-photo-btn:hover {
+    background: #b20710;
+}
+
+.photos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.user-photo-card {
+    aspect-ratio: 1;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    border: 1px solid var(--stroke);
+    transition: transform 0.2s;
+}
+
+.user-photo-card:hover {
+    transform: scale(1.05);
+    z-index: 2;
+    border-color: var(--accent);
+}
+
+.user-photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.photo-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    padding: 10px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.user-photo-card:hover .photo-overlay {
+    opacity: 1;
+}
+
+.photo-location {
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    display: block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.delete-photo-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+    z-index: 10;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.user-photo-card:hover .delete-photo-btn {
+    display: flex;
+}
+
+.delete-photo-btn:hover {
+    background: #e50914;
+}
+
+.level-up-notification { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 3000; cursor: pointer; }
+.level-up-content { text-align: center; padding: 40px; background: linear-gradient(135deg, #1a1a1d 0%, #2d1f1f 100%); border: 2px solid #e50914; border-radius: 20px; }
+.level-up-icon { font-size: 60px; display: block; margin-bottom: 10px; }
+.level-up-content h3 { font-size: 32px; color: #e50914; margin: 0 0 10px 0; }
+.level-up-content p { font-size: 18px; color: #fff; margin: 0; }
+.level-up-content .new-title { font-size: 14px; color: #888; margin-top: 8px; }
+a.user-photo-card { display: block; }
+
+.upload-modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    background: rgba(0, 0, 0, 0.55);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+}
+
+.upload-content {
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+    background: var(--glass-bg-strong);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    backdrop-filter: blur(30px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-highlight), 0 30px 80px rgba(0, 0, 0, 0.6);
+    border-radius: 24px;
+}
+
+.upload-content h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--text);
+}
+
+.file-input-wrapper {
+    border: 2px dashed var(--stroke);
+    padding: 30px;
+    text-align: center;
+    border-radius: 12px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.file-input-wrapper:hover {
+    border-color: var(--accent);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.caption-input {
+    width: 100%;
+    color: var(--text);
+    padding: 12px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+}
+
+.upload-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-cancel {
+    flex: 1;
+    color: var(--text);
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    background: var(--glass-tint);
+    border: 1px solid var(--glass-border);
+}
+
+.btn-confirm {
+    flex: 1;
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-confirm:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@media (max-width: 1024px) {
+    .profile-layout {
+        grid-template-columns: 300px 1fr;
+        gap: 24px;
+        padding: 0 16px 50px;
+    }
+
+    .profile-card {
+        padding: 32px 24px;
+    }
+
+    .avatar-container {
+        width: 120px;
+        height: 120px;
+    }
+
+    .user-name {
+        font-size: 22px;
+    }
+
+    .gamification-card,
+    .photo-gallery-section {
+        padding: 24px;
+    }
+
+    .stat-value {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 900px) {
+
+    .profile-layout {
+        grid-template-columns: 1fr;
+        max-width: 600px;
+    }
+
+    .profile-banner {
+        height: 200px;
+        margin-bottom: -40px;
+    }
+
+    .profile-card {
+        margin-top: 0;
+        border-radius: 16px;
+    }
+
+    .content-area {
+        padding-top: 30px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+
+    .stat-box {
+        padding: 18px 12px;
+    }
+
+    .stat-value {
+        font-size: 24px;
+    }
+
+    .stat-label {
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .profile-banner {
+        height: 180px;
+        margin-bottom: -30px;
+    }
+
+    .profile-layout {
+        padding: 0 12px 40px;
+    }
+
+    .profile-card {
+        padding: 28px 20px;
+        border-radius: 14px;
+    }
+
+    .avatar-container {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 18px;
+    }
+
+    .profile-avatar {
+        border-width: 3px;
+    }
+
+    .user-name {
+        font-size: 20px;
+    }
+
+    .user-handle {
+        font-size: 13px;
+        margin-bottom: 18px;
+    }
+
+    .level-badge {
+        padding: 5px 14px;
+        font-size: 11px;
+    }
+
+    .profile-details {
+        padding-top: 18px;
+        margin-top: 18px;
+    }
+
+    .detail-row {
+        font-size: 13px;
+        margin-bottom: 12px;
+        gap: 10px;
+    }
+
+    .detail-row svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .content-area {
+        gap: 20px;
+    }
+
+    .gamification-card,
+    .photo-gallery-section {
+        padding: 20px;
+        border-radius: 14px;
+    }
+
+    .level-header strong {
+        font-size: 18px !important;
+    }
+
+    .xp-text {
+        font-size: 13px;
+    }
+
+    .progress-track {
+        height: 10px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .stat-box {
+        padding: 16px 10px;
+        border-radius: 12px;
+    }
+
+    .stat-value {
+        font-size: 22px;
+    }
+
+    .stat-label {
+        font-size: 9px;
+        letter-spacing: 0.5px;
+    }
+
+    .gallery-header h3 {
+        font-size: 16px;
+    }
+
+    .add-photo-btn {
+        padding: 8px 14px;
+        font-size: 13px;
+        border-radius: 8px;
+    }
+
+    .add-photo-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .photos-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+    }
+
+    .user-photo-card {
+        border-radius: 10px;
+    }
+
+    .photo-location {
+        font-size: 10px;
+    }
+
+    .profile button {
+        padding: 6px 14px !important;
+        font-size: 12px !important;
+    }
+
+    #adminBtn {
+        padding: 16px !important;
+        font-size: 15px !important;
+        border-radius: 12px !important;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .profile-banner {
+        height: 150px;
+        margin-bottom: -25px;
+    }
+
+    .profile-layout {
+        padding: 0 10px 30px;
+    }
+
+    .profile-card {
+        padding: 24px 16px;
+    }
+
+    .avatar-container {
+        width: 90px;
+        height: 90px;
+        margin-bottom: 16px;
+    }
+
+    .user-name {
+        font-size: 18px;
+    }
+
+    .user-handle {
+        font-size: 12px;
+        margin-bottom: 16px;
+    }
+
+    .level-badge {
+        font-size: 10px;
+        padding: 4px 12px;
+    }
+
+    .detail-row {
+        font-size: 12px;
+    }
+
+    .gamification-card,
+    .photo-gallery-section {
+        padding: 16px;
+        border-radius: 12px;
+    }
+
+    .level-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .level-header strong {
+        font-size: 16px !important;
+    }
+
+    .xp-text {
+        font-size: 12px;
+    }
+
+    .progress-track {
+        height: 8px;
+    }
+
+    .stats-grid {
+        gap: 8px;
+    }
+
+    .stat-box {
+        padding: 14px 8px;
+    }
+
+    .stat-value {
+        font-size: 20px;
+    }
+
+    .stat-label {
+        font-size: 8px;
+    }
+
+    .gallery-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .add-photo-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .photos-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .upload-content {
+        padding: 24px 20px;
+        border-radius: 14px;
+    }
+
+    .upload-content h3 {
+        font-size: 18px;
+    }
+
+    .file-input-wrapper {
+        padding: 24px;
+    }
+
+    .caption-input {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .upload-actions {
+        flex-direction: column;
+    }
+
+    .btn-cancel,
+    .btn-confirm {
+        padding: 11px;
+    }
+}
+
+@media (max-width: 360px) {
+    .profile-card {
+        padding: 20px 14px;
+    }
+
+    .avatar-container {
+        width: 80px;
+        height: 80px;
+    }
+
+    .user-name {
+        font-size: 16px;
+    }
+
+    .stat-value {
+        font-size: 18px;
+    }
+
+    .photos-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .stat-box:hover {
+        transform: none;
+    }
+
+    .stat-box:active {
+        transform: scale(0.98);
+    }
+
+    .user-photo-card:hover {
+        transform: none;
+    }
+
+    .user-photo-card:active {
+        transform: scale(0.98);
+    }
+
+    .photo-overlay {
+        opacity: 1;
+    }
+
+    .delete-photo-btn {
+        display: flex;
+    }
+}

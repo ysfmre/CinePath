@@ -18,6 +18,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="stylesheet" href="assets/css/pages/index.css" />
     <link rel="icon" href="assets/favicon/favicon.svg" type="image/svg+xml" />
 </head>
 
@@ -42,7 +43,7 @@
                     <span class="avatar-label" data-avatar-label>Log In</span>
                 </button>
             </div>
-            <button id="hamburgerBtn" class="hamburger-btn" aria-label="Toggle menu">
+            <button id="hamburgerBtn" class="hamburger-btn" type="button" aria-label="Toggle menu" aria-expanded="false">
                 <span class="hamburger-box">
                     <span class="hamburger-line"></span>
                     <span class="hamburger-line"></span>
@@ -96,12 +97,11 @@
         </a>
 
         <div class="mobile-nav-footer">
-            <p>© 2025 CinePath. All rights reserved.</p>
+            <p>© <span data-year></span> CinePath. All rights reserved.</p>
         </div>
     </nav>
 
-    <section class="route-hero"
-        style="background: linear-gradient(to bottom, rgba(10,10,11,0.3), var(--bg)), url('assets/istanbul-hero.jpg') center/cover no-repeat;">
+    <section class="route-hero">
         <div class="container" style="position: relative; z-index: 2;">
             <h2 class="route-title">THE MOVIE ENDS <span class="highlight">THE STORY BEGINS</span></h2>
             <div class="chip-row">
