@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self' https:; connect-src 'self' https://*.googleapis.com https://www.gstatic.com; frame-src https://cinepath-2c233.firebaseapp.com https://accounts.google.com https://apis.google.com; object-src 'none'; base-uri 'self'; form-action 'self' mailto:" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -42,27 +44,27 @@
             <form id="loginForm" data-auth="login">
                 <div class="form-group">
                     <div class="input-wrapper">
-                        <input type="email" id="email" class="form-input" placeholder="Email address" required>
+                        <input type="email" id="email" name="email" autocomplete="email" class="form-input" placeholder="Email address" required>
                         <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="input-wrapper">
-                        <input type="password" id="password" class="form-input" placeholder="Password" required>
+                        <input type="password" id="password" name="password" autocomplete="current-password" class="form-input" placeholder="Password" required>
                         <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                     </div>
                 </div>
 
                 <div class="form-options">
                     <label class="checkbox-wrapper">
-                        <input type="checkbox" name="remember">
+                        <input type="checkbox" name="remember" checked>
                         Remember me
                     </label>
-                    <a href="#" class="forgot-link" onclick="openForgotModal(event)">Forgot password?</a>
+                    <a href="#" class="forgot-link" id="forgotLink">Forgot password?</a>
                 </div>
 
-                <div class="error-message" data-error></div>
+                <div class="error-message" data-error role="alert" aria-live="polite"></div>
                 <button type="submit" class="btn-primary">Log In</button>
             </form>
 
@@ -74,100 +76,16 @@
                 <div class="fp-content">
                     <h3>Password Reset</h3>
                     <p>Enter your email address and we'll send you a reset link.</p>
-                    <input type="email" id="fpEmail" class="fp-input" placeholder="Your email address">
+                    <input type="email" id="fpEmail" autocomplete="email" class="fp-input" placeholder="Your email address">
                     <div class="fp-actions">
-                        <button class="btn-fp-cancel" onclick="closeForgotModal()">Cancel</button>
-                        <button class="btn-fp-send" onclick="sendResetLink()">Send Link</button>
+                        <button type="button" class="btn-fp-cancel" id="fpCancel">Cancel</button>
+                        <button type="button" class="btn-fp-send" id="fpSend">Send Link</button>
                     </div>
                     <div id="fpMessage" class="fp-message"></div>
                 </div>
             </div>
         </div>
     </div>
-
-    <script type="module">
-        import { loginUser, initAuthListener, resetPassword, loginWithGoogle } from './auth_manager.js';
-
-        initAuthListener();
-
-        const form = document.getElementById('loginForm');
-        const errorEl = document.querySelector('[data-error]');
-        const googleBtn = document.getElementById('googleBtn');
-
-        if (googleBtn) {
-            googleBtn.addEventListener('click', async () => {
-                const result = await loginWithGoogle();
-                if(result.success) {
-                    window.location.href = 'index.html';
-                } else {
-                    errorEl.textContent = "Google sign-in failed: " + result.error;
-                    errorEl.style.display = 'block';
-                }
-            });
-        }
-
-        if (form) {
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                const btn = form.querySelector('button[type="submit"]');
-                const originalText = btn.innerHTML;
-
-                btn.innerHTML = 'Logging in...';
-                btn.disabled = true;
-                errorEl.style.display = 'none';
-
-                const result = await loginUser(email, password);
-
-                if(result.success) {
-                    window.location.href = 'index.html';
-                } else {
-                    errorEl.textContent = result.error;
-                    errorEl.style.display = 'block';
-                    btn.innerHTML = originalText;
-                    btn.disabled = false;
-                }
-            });
-        }
-
-        window.openForgotModal = (e) => {
-            if(e) e.preventDefault();
-            document.getElementById('fpModal').style.display = 'flex';
-        };
-
-        window.closeForgotModal = () => {
-            document.getElementById('fpModal').style.display = 'none';
-            document.getElementById('fpMessage').style.display = 'none';
-            document.getElementById('fpEmail').value = '';
-        };
-
-        window.sendResetLink = async () => {
-            const email = document.getElementById('fpEmail').value;
-            const msgEl = document.getElementById('fpMessage');
-
-            if(!email) {
-                msgEl.textContent = "Please enter your email address.";
-                msgEl.className = "fp-message error";
-                msgEl.style.display = "block";
-                return;
-            }
-
-            msgEl.textContent = "Sending...";
-            msgEl.className = "fp-message";
-            msgEl.style.display = "block";
-
-            const result = await resetPassword(email);
-
-            if(result.success) {
-                msgEl.textContent = "Reset link sent! Check your email.";
-                msgEl.className = "fp-message success";
-                setTimeout(closeForgotModal, 3000);
-            } else {
-                msgEl.textContent = "Error: " + result.error;
-                msgEl.className = "fp-message error";
-            }
-        };
-    </script>
+    <script type="module" src="assets/js/pages/login.js"></script>
 </body>
 </html>

@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self' https:; connect-src 'self' https://*.googleapis.com https://www.gstatic.com; frame-src https://cinepath-2c233.firebaseapp.com https://accounts.google.com https://apis.google.com; object-src 'none'; base-uri 'self'; form-action 'self' mailto:" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -67,15 +69,10 @@
                 </ul>
             </nav>
             <div class="profile" data-profile>
-                <button class="avatar-btn" type="button" aria-haspopup="menu" aria-expanded="false" data-profile-btn>
+                <button class="avatar-btn" type="button" data-profile-btn>
                     <span class="avatar" data-avatar>👤</span>
                     <span class="avatar-label" data-avatar-label>Log In</span>
                 </button>
-                <div class="profile-menu" role="menu" data-profile-menu>
-                    <a role="menuitem" href="login.html" data-menu-login>Log In</a>
-                    <a role="menuitem" href="signup.html" data-menu-signup>Register</a>
-                    <a role="menuitem" href="#logout" data-menu-logout style="display:none">Log Out</a>
-                </div>
             </div>
             <button id="hamburgerBtn" class="hamburger-btn" aria-label="Toggle menu">
                 <span class="hamburger-box">
@@ -180,21 +177,20 @@
                                 <option value="Mugla">Mugla</option>
                             </select>
                         </div>
-                        <button id="askAiBtn" class="ai-btn" onclick="getRecommendation('manual')">
+                        <button type="button" id="askAiBtn" class="ai-btn">
                             <span>Get Recommendation</span>
                         </button>
                     </div>
 
                     <div class="action-area">
-                        <button id="manualSuggestBtn" style="display:none;"></button>
-                        <button id="personalSuggestBtn" class="ai-btn-secondary" onclick="getRecommendation('personal')">
+                        <button type="button" id="personalSuggestBtn" class="ai-btn-secondary">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                             Personalized Recommendation
                         </button>
                     </div>
 
                     <div id="aiResult" class="ai-result">
-                        <img id="aiPoster" src="" class="ai-poster" alt="Movie Poster">
+                        <img id="aiPoster" class="ai-poster" alt="Movie Poster">
                         <div class="result-content">
                             <h3 id="aiSuggestionTitle" class="ai-suggestion-text">Recommendation</h3>
                             <p id="aiReason" class="ai-reason">AI explanation...</p>
@@ -208,155 +204,7 @@
             </div>
         </section>
     </main>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const btn = document.getElementById('hamburgerBtn');
-            const menu = document.getElementById('mobileNavPanel');
-            const overlay = document.getElementById('mobileOverlay');
-
-            function toggleMenu() {
-                if (menu && overlay && btn) {
-                    menu.classList.toggle('open');
-                    overlay.classList.toggle('active');
-                    btn.classList.toggle('active');
-                    document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
-                }
-            }
-
-            if (btn) {
-                btn.addEventListener('click', toggleMenu);
-                if (overlay) overlay.addEventListener('click', toggleMenu);
-                if (menu) menu.querySelectorAll('a').forEach(l => l.addEventListener('click', toggleMenu));
-            }
-        });
-    </script>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { CONFIG } from './config.js';
-
-        const firebaseConfig = CONFIG.FIREBASE;
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-        const apiKey = CONFIG.GEMINI_API_KEY;
-
-        let allMovies = [];
-        let currentUser = null;
-
-        onAuthStateChanged(auth, (user) => { currentUser = user; });
-
-        async function fetchMovies() {
-            try {
-                const querySnapshot = await getDocs(collection(db, "contents"));
-                allMovies = [];
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    allMovies.push({
-                        id: doc.id,
-                        title: data.title,
-                        type: data.type,
-                        description: data.description,
-                        poster: data.poster,
-                        locations: data.locations ? data.locations.map(l => l.name).join(", ") : ""
-                    });
-                });
-            } catch (error) { console.error("Data error:", error); }
-        }
-        fetchMovies();
-
-        async function callGemini(prompt, isJson = false) {
-            let fullPrompt = prompt;
-            if (isJson) fullPrompt += " Answer ONLY as a valid JSON object. Do not include any other text.";
-
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-            const payload = { contents: [{ parts: [{ text: fullPrompt }] }] };
-
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) throw new Error("AI did not respond");
-            const data = await response.json();
-            const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-            
-            if (isJson) {
-                const cleanedText = text.replace(/```json/g, '').replace(/```/g, '').trim();
-                return JSON.parse(cleanedText);
-            }
-            return text;
-        }
-
-        window.getRecommendation = async function(mode) {
-            const resultDiv = document.getElementById('aiResult');
-            const personalBtn = document.getElementById('personalSuggestBtn');
-            const askBtn = document.getElementById('askAiBtn');
-
-            resultDiv.style.display = 'none';
-            if(askBtn) { askBtn.disabled = true; askBtn.innerHTML = "Thinking..."; }
-            if(personalBtn) personalBtn.disabled = true;
-
-            try {
-                if (allMovies.length === 0) throw new Error("Please sign up or log in");
-
-                const dbContext = JSON.stringify(allMovies.map(m => ({ id: m.id, t: m.title, d: m.description, l: m.locations })));
-                let prompt = "";
-
-                if (mode === 'manual') {
-                    const genreEl = document.getElementById('aiGenre');
-                    const locationEl = document.getElementById('aiLocation');
-                    const typeEl = document.getElementById('aiType');
-                    
-                    if (!genreEl || !locationEl || !typeEl) throw new Error("Form elements not found.");
-
-                    const genre = genreEl.value;
-                    const location = locationEl.value;
-                    const type = typeEl.value;
-                    
-                    let typeText = "movie or series";
-                    if(type === 'movie') typeText = "movies only";
-                    if(type === 'series') typeText = "series only";
-
-                    prompt = `Role: Film location guide. Task: Select ONE item from the JSON list below that best fits the user request ('${location}' location, '${genre}' genre, '${typeText}'). Output Format (JSON): { "id": "film_id", "reason": "Why did you choose this? (Short, English description)" }. Database: ${dbContext}`;
-
-                } else if (mode === 'personal') {
-                    if (!currentUser) { alert("Please login for personal recommendations."); throw new Error("Login required"); }
-
-                    const userDoc = await getDoc(doc(db, "users", currentUser.uid));
-                    const userData = userDoc.exists() ? userDoc.data() : {};
-                    const favorites = userData.favorites || [];
-                    const userContext = `Favorites (IDs): ${favorites.join(", ")}`;
-
-                    prompt = `Role: Personal film assistant. Task: Based on user's past data (${userContext}), suggest a NEW item from the database (${dbContext}) that THEY WOULD LIKE. Output Format (JSON): { "id": "film_id", "reason": "Based on your tastes..." }`;
-                }
-
-                const aiResponse = await callGemini(prompt, true);
-                const selectedMovie = allMovies.find(m => m.id === aiResponse.id);
-                
-                if (selectedMovie) {
-                    document.getElementById('aiSuggestionTitle').textContent = `${selectedMovie.title}`;
-                    document.getElementById('aiReason').textContent = aiResponse.reason;
-                    document.getElementById('aiPoster').src = selectedMovie.poster;
-                    document.getElementById('aiPoster').onerror = function() { this.src='https://placehold.co/200x300/111/FFF?text=No+Poster'; };
-                    document.getElementById('aiActionLink').href = `explore.html?id=${selectedMovie.id}`;
-                    resultDiv.style.display = 'grid';
-                } else {
-                    alert("AI made a suggestion but couldn't find it in the database.");
-                }
-
-            } catch (error) {
-                console.error(error);
-                if (error.message !== "Login required") alert("Error: " + error.message);
-            } finally {
-                if(askBtn) { askBtn.disabled = false; askBtn.innerHTML = "Get Recommendation"; }
-                if(personalBtn) personalBtn.disabled = false;
-            }
-        };
-    </script>
+    <script type="module" src="assets/js/layout.js"></script>
+    <script type="module" src="assets/js/pages/ai.js"></script>
 </body>
 </html>

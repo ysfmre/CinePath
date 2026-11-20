@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com https://apis.google.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self' https:; connect-src 'self' https://*.googleapis.com https://www.gstatic.com; frame-src https://cinepath-2c233.firebaseapp.com https://accounts.google.com https://apis.google.com; object-src 'none'; base-uri 'self'; form-action 'self' mailto:" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -529,7 +531,8 @@
             margin-right: 5px;
         }
 
-        .star {
+        .star, .fav-btn, .play-icon-left { font: inherit; padding: 0; }
+        .star { background: none; border: 0; line-height: 1;
             font-size: 18px;
             color: #444;
             cursor: pointer;
@@ -1194,9 +1197,9 @@
         <h1 style="text-align: center; font-size: 3rem; margin-bottom: 20px;">Explore</h1>
         <div class="toolbar-container">
             <div class="filter-group">
-                <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
-                <button class="filter-btn" onclick="setFilter('movie', this)">Movies</button>
-                <button class="filter-btn" onclick="setFilter('Tv Show', this)">Tv Show</button>
+                <button type="button" class="filter-btn active" data-filter="all">All</button>
+                <button type="button" class="filter-btn" data-filter="movie">Movies</button>
+                <button type="button" class="filter-btn" data-filter="show">Tv Show</button>
             </div>
             <div class="tools-group">
                 <div class="local-search-wrapper">
@@ -1205,10 +1208,9 @@
                         <circle cx="11" cy="11" r="8"></circle>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
-                    <input type="text" class="local-search-input" placeholder="Search movies or tv show..."
-                        oninput="setSearch(this.value)">
+                    <input type="search" id="searchInput" class="local-search-input" maxlength="80" placeholder="Search movies or tv show..." aria-label="Search">
                 </div>
-                <select class="sort-select" onchange="setSort(this.value)">
+                <select id="sortSelect" class="sort-select" aria-label="Sort">
                     <option value="newest">Newest (Year)</option>
                     <option value="oldest">Oldest (Year)</option>
                     <option value="az">A to Z</option>
@@ -1222,7 +1224,7 @@
 
     <div class="modal-overlay" id="detailModal">
         <div class="modal-content">
-            <button class="close-btn" onclick="closeModal()">×</button>
+            <button type="button" class="close-btn" id="modalClose" aria-label="Close">×</button>
             <div class="modal-image-container">
                 <div class="modal-poster-bg" id="mPosterBg"></div>
                 <img src="" alt="" class="modal-poster" id="mPoster">
@@ -1246,8 +1248,8 @@
                 <h3 style="margin-bottom: 20px;">Filming Locations</h3>
                 <div class="location-list" id="mLocations"></div>
                 <div class="modal-actions">
-                    <button id="startRouteBtn">SHOW ROUTE </button>
-                    <a id="spotifyBtn" href="#" target="_blank" style="display: none;">
+                    <button type="button" id="startRouteBtn">SHOW ROUTE</button>
+                    <a id="spotifyBtn" href="#" target="_blank" rel="noopener noreferrer" style="display: none;">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
                             <path
                                 d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
@@ -1259,11 +1261,10 @@
         </div>
     </div>
 
-    <div id="sceneVideoModal" class="video-modal-overlay" onclick="closeSceneVideo()">
-        <div class="video-wrapper" onclick="event.stopPropagation()">
-            <button class="close-video" onclick="closeSceneVideo()">×</button>
-            <video id="sceneVideoPlayer" class="video-player" controls>
-                <source src="" type="video/mp4">
+    <div id="sceneVideoModal" class="video-modal-overlay">
+        <div class="video-wrapper">
+            <button type="button" class="close-video" id="videoClose" aria-label="Close">×</button>
+            <video id="sceneVideoPlayer" class="video-player" controls playsinline>
                 Your browser does not support the video tag.
             </video>
         </div>
@@ -1272,328 +1273,8 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { initAuthListener, getUserRatingsForMovie, saveUserRating, getUserData, toggleFavorite } from './auth_manager.js';
-        import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { CONFIG } from './config.js';
-
-        const firebaseConfig = CONFIG.FIREBASE;
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-
-        let allContent = [];
-        let mapInstance = null;
-        let filterState = { type: 'all', search: '', sort: 'newest' };
-        let userFavorites = [];
-
-        async function fetchContent() {
-            const loader = document.getElementById('loader');
-            try {
-                const user = auth.currentUser;
-                if (user) {
-                    const userData = await getUserData(user.uid);
-                    if (userData && userData.favorites) userFavorites = userData.favorites;
-                }
-
-                const q = query(collection(db, "contents"), orderBy("createdAt", "desc"));
-                const querySnapshot = await getDocs(q);
-
-                allContent = [];
-                querySnapshot.forEach((doc) => allContent.push({ id: doc.id, ...doc.data() }));
-
-                loader.style.display = 'none';
-                updateView();
-
-                const urlParams = new URLSearchParams(window.location.search);
-                const targetId = urlParams.get('id');
-                if (targetId) {
-                    const targetMovie = allContent.find(m => m.id === targetId);
-                    if (targetMovie) openModal(targetMovie);
-                }
-            } catch (error) {
-                console.error("Error:", error);
-                loader.textContent = "Please sign up or log in";
-            }
-        }
-
-        function updateView() {
-            let result = [...allContent];
-            if (filterState.type !== 'all') result = result.filter(item => item.type === filterState.type);
-            if (filterState.search.trim() !== '') result = result.filter(item => item.title.toLowerCase().includes(filterState.search.toLowerCase()));
-
-            if (filterState.sort === 'newest') {
-                result.sort((a, b) => (parseInt(a.year) || 0) - (parseInt(b.year) || 0)).reverse();
-            } else if (filterState.sort === 'oldest') {
-                result.sort((a, b) => (parseInt(a.year) || 9999) - (parseInt(b.year) || 9999));
-            } else if (filterState.sort === 'az') {
-                result.sort((a, b) => a.title.localeCompare(b.title, 'tr'));
-            } else if (filterState.sort === 'za') {
-                result.sort((a, b) => b.title.localeCompare(a.title, 'tr'));
-            }
-
-            renderGrid(result);
-        }
-
-        function renderGrid(data) {
-            const grid = document.getElementById('contentGrid');
-            grid.innerHTML = "";
-            if (data.length === 0) { grid.innerHTML = "<p>No results found.</p>"; return; }
-
-            data.forEach(item => {
-                const locCount = item.locations ? item.locations.length : 0;
-                const ratingBadge = item.rating ? `<div class="rating-badge-card">★ ${item.rating}</div>` : '';
-                const yearBadge = item.year ? `<span class="year-meta-card">${item.year}</span>` : '';
-                const isFav = userFavorites.includes(item.id);
-                const heartClass = isFav ? 'active' : '';
-
-                const card = document.createElement('div');
-                card.className = 'movie-card';
-                card.onclick = (e) => {
-                    if (e.target.closest('.fav-btn')) return;
-                    openModal(item);
-                };
-
-                card.innerHTML = `
-                    <div class="poster-wrapper">
-                        <img src="${item.poster}" alt="${item.title}" class="poster-img" onerror="this.src='https://placehold.co/400x600?text=No+Image'">
-                        ${ratingBadge}
-                        <div class="fav-btn ${heartClass}" onclick="toggleFav('${item.id}', this)" title="Add to Favorites">
-                            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                        </div>
-                    </div>
-                    <div class="card-info">
-                        <div class="card-header">
-                            <h3 class="card-title">${item.title}</h3>
-                            ${yearBadge}
-                        </div>
-                        <div class="card-meta">
-                            <span>${item.type === 'movie' ? 'Movie' : 'Tv Show'}</span>
-                            <span class="loc-badge">${locCount} Locations</span>
-                        </div>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        window.toggleFav = async function (movieId, btnElement) {
-            const user = auth.currentUser;
-            if (!user) { alert("You must login to add to favorites."); return; }
-
-            btnElement.classList.toggle('active');
-            const result = await toggleFavorite(movieId);
-
-            if (result.success) {
-                if (result.action === 'added') userFavorites.push(movieId);
-                else userFavorites = userFavorites.filter(id => id !== movieId);
-            } else {
-                btnElement.classList.toggle('active');
-                console.error(result.error);
-            }
-        };
-
-        window.openModal = async function (item) {
-            const modal = document.getElementById('detailModal');
-            const routeBtn = document.getElementById('startRouteBtn');
-            const spotifyBtn = document.getElementById('spotifyBtn');
-            const mapDiv = document.getElementById('osm-map');
-
-            mapDiv.style.display = 'none';
-            routeBtn.textContent = "SHOW ROUTE ";
-            routeBtn.style.display = 'none';
-
-            document.getElementById('mPoster').src = item.poster;
-            document.getElementById('mPosterBg').style.backgroundImage = `url('${item.poster}')`;
-
-            document.getElementById('mTitle').textContent = item.title;
-            document.getElementById('mDesc').textContent = item.description;
-            document.getElementById('mType').textContent = item.type === 'movie' ? 'MOVIE' : 'TV SHOW';
-
-            const yearEl = document.getElementById('mYear');
-            const ratingBox = document.getElementById('mRatingBox');
-            const ratingVal = document.getElementById('mRatingVal');
-
-            if (item.year) {
-                yearEl.textContent = item.year;
-                yearEl.style.display = 'inline-block';
-            } else {
-                yearEl.style.display = 'none';
-            }
-
-            if (item.rating) {
-                ratingVal.textContent = item.rating;
-                ratingBox.style.display = 'flex';
-            } else {
-                ratingBox.style.display = 'none';
-            }
-
-            if (item.spotify && item.spotify.length > 5) {
-                spotifyBtn.href = item.spotify;
-                spotifyBtn.style.display = 'flex';
-            } else { spotifyBtn.style.display = 'none'; }
-
-            const locContainer = document.getElementById('mLocations');
-            locContainer.innerHTML = "";
-
-            const userRatings = await getUserRatingsForMovie(item.id);
-
-            if (item.locations && item.locations.length > 0) {
-                const sortedLocs = item.locations.sort((a, b) => (a.order || 0) - (b.order || 0));
-
-                sortedLocs.forEach((loc, index) => {
-                    const div = document.createElement('div');
-                    div.className = 'location-item';
-
-                    const hasVideo = loc.scene && loc.scene.length > 5;
-                    const playBtnHtml = hasVideo
-                        ? `<div class="play-icon-left" onclick="playSceneVideo('${loc.scene}')" title="Play Scene"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>`
-                        : `<div class="play-icon-left disabled"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>`;
-
-                    let html = `
-                        <div class="loc-header">
-                            ${playBtnHtml}
-                            <div class="loc-number">${index + 1}</div>
-                            <div style="flex:1; margin-left:15px;">
-                                <strong style="color:white; display:block;">${loc.name}</strong>
-                                <small style="color:#666;">${loc.lat.toFixed(4)}, ${loc.lng.toFixed(4)}</small>
-                            </div>
-                        </div>
-                    `;
-
-                    const currentRating = userRatings[index] || 0;
-                    let starsHtml = '';
-                    for (let i = 1; i <= 5; i++) {
-                        const filled = i <= currentRating ? 'filled' : '';
-                        starsHtml += `<span class="star ${filled}" data-val="${i}">★</span>`;
-                    }
-
-                    html += `
-                        <div class="rating-container" id="rating-${index}">
-                            <span class="rating-label">Your Rating:</span>
-                            ${starsHtml}
-                            <span class="user-only-msg">Login required!</span>
-                        </div>
-                    `;
-
-                    div.innerHTML = html;
-                    locContainer.appendChild(div);
-
-                    const stars = div.querySelectorAll('.star');
-                    stars.forEach(star => {
-                        star.onclick = async function () {
-                            if (!auth.currentUser) {
-                                div.querySelector('.user-only-msg').style.display = 'inline';
-                                setTimeout(() => div.querySelector('.user-only-msg').style.display = 'none', 2000);
-                                return;
-                            }
-                            const val = parseInt(this.getAttribute('data-val'));
-                            stars.forEach(s => {
-                                const sVal = parseInt(s.getAttribute('data-val'));
-                                if (sVal <= val) s.classList.add('filled');
-                                else s.classList.remove('filled');
-                            });
-                            await saveUserRating(item.id, index, val);
-                        };
-                    });
-                });
-
-                routeBtn.style.display = 'block';
-
-                routeBtn.onclick = function () {
-                    let url = "";
-                    if (sortedLocs.length === 1) {
-                        url = `https://www.google.com/maps/search/?api=1&query=${sortedLocs[0].lat},${sortedLocs[0].lng}`;
-                    } else {
-                        const origin = `${sortedLocs[0].lat},${sortedLocs[0].lng}`;
-                        const destination = `${sortedLocs[sortedLocs.length - 1].lat},${sortedLocs[sortedLocs.length - 1].lng}`;
-                        let waypoints = "";
-                        if (sortedLocs.length > 2) {
-                            const waypointsArr = sortedLocs.slice(1, sortedLocs.length - 1).map(l => `${l.lat},${l.lng}`);
-                            waypoints = `&waypoints=${waypointsArr.join('|')}`;
-                        }
-                        url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}${waypoints}&travelmode=driving`;
-                    }
-                    window.open(url, '_blank');
-                };
-
-                mapDiv.style.display = 'block';
-                if (mapInstance) { mapInstance.remove(); mapInstance = null; }
-                const startLat = sortedLocs[0].lat;
-                const startLng = sortedLocs[0].lng;
-                mapInstance = L.map('osm-map').setView([startLat, startLng], 13);
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' }).addTo(mapInstance);
-                const latlngs = [];
-                sortedLocs.forEach((loc, i) => {
-                    const point = [loc.lat, loc.lng];
-                    latlngs.push(point);
-                    L.marker(point).addTo(mapInstance).bindPopup(`<b>${i + 1}. ${loc.name}</b><br>${item.title}`);
-                });
-                if (latlngs.length > 1) {
-                    const polyline = L.polyline(latlngs, { color: '#e50914', weight: 4 }).addTo(mapInstance);
-                    mapInstance.fitBounds(polyline.getBounds());
-                }
-
-            } else {
-                locContainer.innerHTML = "<p style='color:#666;'>No location information available yet.</p>";
-            }
-            modal.style.display = 'flex';
-        }
-
-        window.closeModal = function () {
-            document.getElementById('detailModal').style.display = 'none';
-            if (mapInstance) { mapInstance.remove(); mapInstance = null; }
-        }
-
-        window.playSceneVideo = function (url) {
-            const modal = document.getElementById('sceneVideoModal');
-            const player = document.getElementById('sceneVideoPlayer');
-            player.src = url;
-            modal.style.display = 'flex';
-            setTimeout(() => { modal.classList.add('active'); player.play().catch(e => console.log("Auto play prevented")); }, 10);
-        }
-
-        window.closeSceneVideo = function () {
-            const modal = document.getElementById('sceneVideoModal');
-            const player = document.getElementById('sceneVideoPlayer');
-            modal.classList.remove('active');
-            player.pause();
-            setTimeout(() => { modal.style.display = 'none'; player.src = ""; }, 300);
-        }
-
-        window.setFilter = function (type, btn) {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            filterState.type = type;
-            updateView();
-        }
-        window.setSearch = function (val) { filterState.search = val; updateView(); }
-        window.setSort = function (val) { filterState.sort = val; updateView(); }
-
-        initAuthListener((user) => {
-            fetchContent();
-        });
-
-        document.getElementById('detailModal').addEventListener('click', (e) => {
-            if (e.target === document.getElementById('detailModal')) closeModal();
-        });
-
-        const hamburgerBtn = document.getElementById('hamburgerBtn');
-        const mobileNav = document.getElementById('mobileNav');
-        const mobileOverlay = document.getElementById('mobileOverlay');
-
-        function toggleMobileMenu() {
-            hamburgerBtn.classList.toggle('active');
-            mobileNav.classList.toggle('open');
-            mobileOverlay.classList.toggle('active');
-            document.body.style.overflow = mobileNav.classList.contains('open') ? 'hidden' : '';
-        }
-
-        hamburgerBtn.addEventListener('click', toggleMobileMenu);
-        mobileOverlay.addEventListener('click', toggleMobileMenu);
-    </script>
+    <script type="module" src="assets/js/layout.js"></script>
+    <script type="module" src="assets/js/pages/explore.js"></script>
 </body>
 
 </html>

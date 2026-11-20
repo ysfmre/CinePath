@@ -5,9 +5,17 @@ node_modules/
 .DS_Store
 Thumbs.db
 
-# Configuration & Secrets
-
+# Secrets — never commit private keys (config.js only holds the public Firebase web config)
 .env
+.env.*
+*.pem
+serviceAccount*.json
+*-firebase-adminsdk-*.json
+
+# Firebase CLI
+.firebase/
+firebase-debug.log
+firestore-debug.log
 
 # Editor directories
 .vscode/

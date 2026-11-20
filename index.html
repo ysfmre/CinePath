@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self' https:; connect-src 'self' https://*.googleapis.com https://www.gstatic.com; frame-src https://cinepath-2c233.firebaseapp.com https://accounts.google.com https://apis.google.com; object-src 'none'; base-uri 'self'; form-action 'self' mailto:" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -35,15 +37,10 @@
                 </ul>
             </nav>
             <div class="profile" data-profile>
-                <button class="avatar-btn" type="button" aria-haspopup="menu" aria-expanded="false" data-profile-btn>
+                <button class="avatar-btn" type="button" data-profile-btn>
                     <span class="avatar" data-avatar>👤</span>
                     <span class="avatar-label" data-avatar-label>Log In</span>
                 </button>
-                <div class="profile-menu" role="menu" data-profile-menu>
-                    <a role="menuitem" href="login.html" data-menu-login>Log In</a>
-                    <a role="menuitem" href="signup.html" data-menu-signup>Register</a>
-                    <a role="menuitem" href="#logout" data-menu-logout style="display:none">Log Out</a>
-                </div>
             </div>
             <button id="hamburgerBtn" class="hamburger-btn" aria-label="Toggle menu">
                 <span class="hamburger-box">
@@ -108,70 +105,70 @@
         <div class="container" style="position: relative; z-index: 2;">
             <h2 class="route-title">THE MOVIE ENDS <span class="highlight">THE STORY BEGINS</span></h2>
             <div class="chip-row">
-                <div class="chip-card" onclick="window.location.href='explore.html'">
+                <a class="chip-card" href="explore.html">
                     <img class="chip-img" src="assets/chips/muhtesem-yuzyil.jpg" alt="Muhteşem Yüzyıl">
                     <span>Muhteşem Yüzyıl</span>
-                </div>
-                <div class="chip-card" onclick="window.location.href='explore.html'">
+                </a>
+                <a class="chip-card" href="explore.html">
                     <img class="chip-img" src="assets/chips/leyla-ile-mecnun.jpg" alt="Leyla ile Mecnun">
                     <span>Leyla ile Mecnun</span>
-                </div>
-                <div class="chip-card" onclick="window.location.href='explore.html'">
+                </a>
+                <a class="chip-card" href="explore.html">
                     <img class="chip-img" src="assets/chips/aski-memnu.jpg" alt="Aşk-ı Memnu">
                     <span>Aşk-ı Memnu</span>
-                </div>
-                <div class="chip-card" onclick="window.location.href='explore.html'">
+                </a>
+                <a class="chip-card" href="explore.html">
                     <img class="chip-img" src="assets/chips/behzatc.jpg" alt="Behzat Ç.">
                     <span>Behzat Ç.</span>
-                </div>
-                <div class="chip-card" onclick="window.location.href='explore.html'">
+                </a>
+                <a class="chip-card" href="explore.html">
                     <img class="chip-img" src="assets/chips/ask-tesaduf.jpg" alt="Aşk Tesadüfleri Sever">
                     <span>Aşk Tesadüfleri Sever</span>
-                </div>
-                <div class="chip-card" onclick="window.location.href='explore.html'">
+                </a>
+                <a class="chip-card" href="explore.html">
                     <img class="chip-img" src="assets/chips/ezel.jpg" alt="Ezel">
                     <span>Ezel</span>
-                </div>
-                <div class="chip-card" onclick="window.location.href='explore.html'">
+                </a>
+                <a class="chip-card" href="explore.html">
                     <img class="chip-img" src="assets/chips/babam-ve-oglum.jpg" alt="Babam ve Oğlum">
                     <span>Babam ve Oğlum</span>
-                </div>
-                <div class="chip-card" onclick="window.location.href='explore.html'">
+                </a>
+                <a class="chip-card" href="explore.html">
                     <img class="chip-img" src="assets/chips/avrupa-yakasi.jpg" alt="Avrupa Yakası">
                     <span>Avrupa Yakası</span>
-                </div>
-                <div class="chip-card" onclick="window.location.href='explore.html'">
+                </a>
+                <a class="chip-card" href="explore.html">
                     <img class="chip-img" src="assets/chips/issiz-adam.jpg" alt="Issız Adam">
                     <span>Issız Adam</span>
-                </div>
-                <div class="chip-card" onclick="window.location.href='explore.html'">
+                </a>
+                <a class="chip-card" href="explore.html">
                     <img class="chip-img" src="assets/chips/kurtlar-vadisi.jpg" alt="Kurtlar Vadisi">
                     <span>Kurtlar Vadisi</span>
-                </div>
-                <div class="chip-card" onclick="window.location.href='explore.html'">
+                </a>
+                <a class="chip-card" href="explore.html">
                     <img class="chip-img" src="assets/chips/akasya-duragi.jpg" alt="Akasya Durağı">
                     <span>Akasya Durağı</span>
-                </div>
-                <div class="chip-card" onclick="window.location.href='explore.html'">
+                </a>
+                <a class="chip-card" href="explore.html">
                     <img class="chip-img" src="assets/chips/çukur.jpg" alt="Çukur">
                     <span>Çukur</span>
-                </div>
-                <div class="chip-card" onclick="window.location.href='explore.html'">
+                </a>
+                <a class="chip-card" href="explore.html">
                     <img class="chip-img" src="assets/chips/Kral-Kaybederse.jpg" alt="Kral Kaybederse">
                     <span>Kral Kaybederse</span>
-                </div>
-                <div class="chip-card" onclick="window.location.href='explore.html'">
+                </a>
+                <a class="chip-card" href="explore.html">
                     <img class="chip-img" src="assets/chips/esref-ruya.jpg" alt="Eşref Rüya">
                     <span>Eşref Rüya</span>
-                </div>
-                <div class="chip-card" onclick="window.location.href='explore.html'">
+                </a>
+                <a class="chip-card" href="explore.html">
                     <img class="chip-img" src="assets/chips/oyle-bir-gecer-zaman-ki.jpg" alt="Öyle Bir Geçer Zaman Ki">
                     <span>Öyle Bir Geçer Zaman Ki</span>
-                </div>
-                <div class="chip-card" onclick="window.location.href='explore.html'">
+                </a>
+                <a class="chip-card" href="explore.html">
                     <img class="chip-img" src="assets/chips/yaprak-dokumu.jpg" alt="Yaprak Dökümü">
                     <span>Yaprak Dökümü</span>
-                </div>
+                </a>
             </div>
         </div>
     </section>
@@ -287,34 +284,8 @@
             <p class="copyright">© <span id="year"></span> CinePath. All rights reserved.</p>
         </div>
     </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const btn = document.getElementById('hamburgerBtn');
-            const menu = document.getElementById('mobileNavPanel');
-            const overlay = document.getElementById('mobileOverlay');
-
-            function toggleMenu() {
-                menu.classList.toggle('open');
-                overlay.classList.toggle('active');
-                btn.classList.toggle('active');
-                document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
-            }
-
-            if (btn && menu && overlay) {
-                btn.addEventListener('click', toggleMenu);
-                overlay.addEventListener('click', toggleMenu);
-                menu.querySelectorAll('a').forEach(link => link.addEventListener('click', toggleMenu));
-            }
-
-            document.getElementById('year').textContent = new Date().getFullYear();
-        });
-    </script>
-    <script src="assets/js/app.js"></script>
-    <script type="module">
-        import { initAuthListener } from './auth_manager.js';
-        initAuthListener();
-    </script>
+    <script type="module" src="assets/js/layout.js"></script>
+    <script type="module" src="assets/js/pages/index.js"></script>
 </body>
 
 </html>
