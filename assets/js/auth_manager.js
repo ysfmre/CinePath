@@ -397,7 +397,7 @@ let aiModelPromise;
 export function getAiModel() {
     aiModelPromise ??= import(`${SDK_BASE}/firebase-ai.js`).then(({ getAI, getGenerativeModel, GoogleAIBackend }) =>
         getGenerativeModel(getAI(app, { backend: new GoogleAIBackend() }), {
-            model: "gemini-2.5-flash",
+            model: "gemini-3.8-flash",
             generationConfig: { responseMimeType: "application/json", temperature: 0.7, maxOutputTokens: 512 }
         })
     );
