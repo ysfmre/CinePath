@@ -1,0 +1,107 @@
+rules_version = '2';
+
+// CinePath Firestore Security Rules
+// Deploy with:  firebase deploy --only firestore:rules
+// The browser can be fully controlled by an attacker, so EVERY permission
+// the site relies on must be enforced here, not in JavaScript.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function isOwner(uid) { return signedIn() && request.auth.uid == uid; }
+    function isAdmin() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    function isShortString(v, max) { return v is string && v.size() <= max; }
+    function isCount(v) { return v is int && v >= 0 && v <= 1000000; }
+
+    // ---------- Public catalog (movies / series) ----------
+    match /contents/{contentId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && validContent(request.resource.data);
+      allow delete: if isAdmin();
+
+      function validContent(d) {
+        return d.keys().hasOnly(['title', 'type', 'poster', 'description', 'spotify', 'rating', 'year', 'locations', 'createdAt'])
+          && isShortString(d.title, 150) && d.title.size() > 0
+          && d.type in ['Movie', 'Tv Show']
+          && isShortString(d.poster, 1000)
+          && isShortString(d.description, 3000)
+          && isShortString(d.get('spotify', ''), 500)
+          && d.locations is list && d.locations.size() <= 100;
+      }
+    }
+
+    // ---------- User profiles ----------
+    match /users/{uid} {
+      allow read: if isOwner(uid);
+
+      // A user may create only their own profile, always as a normal "user".
+      allow create: if isOwner(uid)
+        && request.resource.data.keys().hasOnly(['uid', 'name', 'email', 'photoURL', 'createdAt', 'favorites', 'role',
+                                                 'level', 'xp', 'nextLevelXp', 'title', 'language', 'stats'])
+        && request.resource.data.uid == uid
+        && request.resource.data.role == 'user'
+        && request.resource.data.email == request.auth.token.get('email', '')
+        && request.resource.data.xp == 0
+        && request.resource.data.level == 1
+        && request.resource.data.favorites == []
+        && isShortString(request.resource.data.name, 80)
+        && isShortString(request.resource.data.photoURL, 2000)
+        && validStats(request.resource.data.stats);
+
+      // role, uid, email and createdAt can never be changed from the client.
+      allow update: if isOwner(uid)
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(['name', 'photoURL', 'favorites', 'xp', 'level', 'nextLevelXp', 'title', 'language', 'stats'])
+        && validProfileUpdate(request.resource.data);
+
+      // .get() with defaults keeps older profile documents (missing fields) editable.
+      function validProfileUpdate(d) {
+        return isShortString(d.get('name', ''), 80)
+          && isShortString(d.get('photoURL', ''), 2000)
+          && d.get('favorites', []) is list && d.get('favorites', []).size() <= 500
+          && isCount(d.get('xp', 0))
+          && d.get('level', 1) is int && d.get('level', 1) >= 1 && d.get('level', 1) <= 10
+          && validStats(d.get('stats', {}));
+      }
+
+      allow delete: if false;
+
+      function validStats(s) {
+        return s is map
+          && s.keys().hasOnly(['visitedLocations', 'reviews', 'photos'])
+          && isCount(s.get('visitedLocations', 0))
+          && isCount(s.get('reviews', 0))
+          && isCount(s.get('photos', 0));
+      }
+
+      // Per-movie location ratings: { "<locationIndex>": 1..5 }
+      match /ratings/{movieId} {
+        allow read, delete: if isOwner(uid);
+        allow create, update: if isOwner(uid) && request.resource.data.size() <= 100;
+      }
+
+      // Photos are stored inline as small, re-encoded JPEG data URLs.
+      match /user_photos/{photoId} {
+        allow read, delete: if isOwner(uid);
+        allow create: if isOwner(uid)
+          && request.resource.data.keys().hasOnly(['image', 'caption', 'locationName', 'createdAt'])
+          && request.resource.data.image is string
+          && request.resource.data.image.size() <= 716800
+          && request.resource.data.image.matches('^data:image/jpeg;base64,[A-Za-z0-9+/=]+$')
+          && isShortString(request.resource.data.caption, 200)
+          && isShortString(request.resource.data.locationName, 120)
+          && isShortString(request.resource.data.createdAt, 40);
+        allow update: if false;
+      }
+    }
+
+    // Everything else is closed.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

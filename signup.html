@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self' https:; connect-src 'self' https://*.googleapis.com https://www.gstatic.com; frame-src https://cinepath-2c233.firebaseapp.com https://accounts.google.com https://apis.google.com; object-src 'none'; base-uri 'self'; form-action 'self' mailto:" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -42,26 +44,26 @@
             <form id="signupForm" data-auth="signup">
                 <div class="form-group">
                     <div class="input-wrapper">
-                        <input type="text" id="name" class="form-input" placeholder="Full Name" required>
+                        <input type="text" id="name" name="name" autocomplete="name" maxlength="80" class="form-input" placeholder="Full Name" required>
                         <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="input-wrapper">
-                        <input type="email" id="email" class="form-input" placeholder="Email address" required>
+                        <input type="email" id="email" name="email" autocomplete="email" class="form-input" placeholder="Email address" required>
                         <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="input-wrapper">
-                        <input type="password" id="password" class="form-input" placeholder="Password (min. 6 characters)" minlength="6" required>
+                        <input type="password" id="password" name="password" autocomplete="new-password" class="form-input" placeholder="Password (min. 8 characters, letters + numbers)" minlength="8" required>
                         <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                     </div>
                 </div>
 
-                <div class="error-message" data-error></div>
+                <div class="error-message" data-error role="alert" aria-live="polite"></div>
                 <button type="submit" class="btn-primary">Create Account</button>
             </form>
 
@@ -70,69 +72,6 @@
             </div>
         </div>
     </div>
-
-    <script type="module">
-        import { registerUser, initAuthListener, loginWithGoogle } from './auth_manager.js';
-
-        initAuthListener();
-
-        const form = document.getElementById('signupForm');
-        const errorEl = document.querySelector('[data-error]');
-        const googleBtn = document.getElementById('googleBtn');
-
-        function validateEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(String(email).toLowerCase());
-        }
-
-        if(googleBtn) {
-            googleBtn.addEventListener('click', async () => {
-                const result = await loginWithGoogle();
-                if(result.success) {
-                    window.location.href = 'index.html';
-                } else {
-                    if(errorEl) {
-                        errorEl.textContent = "Google sign-in failed: " + result.error;
-                        errorEl.style.display = 'block';
-                    } else {
-                        alert("Google sign-in failed: " + result.error);
-                    }
-                }
-            });
-        }
-
-        if (form) {
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-
-                const name = document.getElementById('name').value;
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                const btn = form.querySelector('button[type="submit"]');
-                const originalText = btn.innerHTML;
-
-                if (!validateEmail(email)) {
-                    errorEl.textContent = "Please enter a valid email address";
-                    errorEl.style.display = 'block';
-                    return;
-                }
-
-                btn.innerHTML = 'Creating account...';
-                btn.disabled = true;
-                errorEl.style.display = 'none';
-
-                const result = await registerUser(email, password, name);
-
-                if(result.success) {
-                    window.location.href = 'index.html';
-                } else {
-                    errorEl.textContent = result.error;
-                    errorEl.style.display = 'block';
-                    btn.innerHTML = originalText;
-                    btn.disabled = false;
-                }
-            });
-        }
-    </script>
+    <script type="module" src="assets/js/pages/signup.js"></script>
 </body>
 </html>

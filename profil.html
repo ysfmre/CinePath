@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="utf-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com https://apis.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self' https:; connect-src 'self' https://*.googleapis.com https://www.gstatic.com; frame-src https://cinepath-2c233.firebaseapp.com https://accounts.google.com https://apis.google.com; object-src 'none'; base-uri 'self'; form-action 'self' mailto:" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -320,6 +322,14 @@
         .delete-photo-btn:hover {
             background: #e50914;
         }
+
+        .level-up-notification { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 3000; cursor: pointer; }
+        .level-up-content { text-align: center; padding: 40px; background: linear-gradient(135deg, #1a1a1d 0%, #2d1f1f 100%); border: 2px solid #e50914; border-radius: 20px; }
+        .level-up-icon { font-size: 60px; display: block; margin-bottom: 10px; }
+        .level-up-content h3 { font-size: 32px; color: #e50914; margin: 0 0 10px 0; }
+        .level-up-content p { font-size: 18px; color: #fff; margin: 0; }
+        .level-up-content .new-title { font-size: 14px; color: #888; margin-top: 8px; }
+        a.user-photo-card { display: block; }
 
         .upload-modal {
             position: fixed;
@@ -809,7 +819,7 @@
                 </ul>
             </nav>
             <div class="profile" style="margin-left: auto;">
-                <button onclick="logoutAction()"
+                <button type="button" data-logout
                     style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:#fff; padding:8px 20px; border-radius:50px; cursor:pointer; font-size:13px; font-weight:600; transition:0.2s;">Log
                     Out</button>
             </div>
@@ -865,7 +875,7 @@
                 <span class="mobile-link-subtitle">Get in touch</span>
             </span>
         </a>
-        <button onclick="logoutAction()" class="mobile-link"
+        <button type="button" data-logout class="mobile-link"
             style="background: linear-gradient(135deg, rgba(229, 9, 20, 0.2) 0%, rgba(225, 29, 72, 0.1) 100%); border-color: rgba(229, 9, 20, 0.4); width: 100%; cursor: pointer; font-family: inherit;">
 
             <span class="mobile-link-text">
@@ -909,7 +919,7 @@
                     </svg>
                     <span id="joinDate">Joined: 2024</span>
                 </div>
-                <button onclick="openPasswordModal()"
+                <button type="button" id="openPasswordBtn"
                     style="width:100%; margin-top:10px; background:rgba(255,255,255,0.05); border:1px solid var(--stroke); color:var(--text); padding:10px; border-radius:10px; cursor:pointer; font-size:13px; font-weight:600; transition:0.2s; display:flex; align-items:center; justify-content:center; gap:8px;">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
@@ -957,7 +967,7 @@
             <div class="photo-gallery-section">
                 <div class="gallery-header">
                     <h3 style="margin:0;"> My Memories</h3>
-                    <button class="add-photo-btn" onclick="openUploadModal()">
+                    <button type="button" class="add-photo-btn" id="openUploadBtn">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="3">
                             <path d="M12 5v14M5 12h14" />
@@ -985,6 +995,20 @@
         </div>
     </main>
 
+    <div class="upload-modal" id="uploadModal">
+        <div class="upload-content">
+            <h3>Share Photo</h3>
+            <label class="file-input-wrapper" for="photoInput">
+                <p id="fileName" style="color:#aaa;">Click to select photo</p>
+                <input type="file" id="photoInput" accept="image/jpeg,image/png,image/webp,image/gif" style="display:none;">
+            </label>
+            <input type="text" id="photoLocation" class="caption-input" maxlength="120" placeholder="Which Location? (e.g. Galata Tower)">
+            <input type="text" id="photoCaption" class="caption-input" maxlength="200" placeholder="Write a caption...">
+            <div class="upload-actions">
+                <button type="button" class="btn-cancel" id="cancelUploadBtn">Cancel</button>
+                <button type="button" class="btn-confirm" id="confirmUploadBtn" disabled>Upload</button>
+            </div>
+        </div>
     </div>
 
     <div class="upload-modal" id="passwordModal">
@@ -992,328 +1016,18 @@
             <h3>Update Password</h3>
             <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">For security reasons, please
                 enter your current password.</p>
-            <input type="password" id="currentPassword" class="caption-input" placeholder="Current Password">
-            <input type="password" id="newPassword" class="caption-input" placeholder="New Password">
-            <input type="password" id="confirmNewPassword" class="caption-input" placeholder="Confirm New Password">
+            <input type="password" id="currentPassword" class="caption-input" autocomplete="current-password" placeholder="Current Password">
+            <input type="password" id="newPassword" class="caption-input" autocomplete="new-password" minlength="8" placeholder="New Password (min. 8 characters)">
+            <input type="password" id="confirmNewPassword" class="caption-input" autocomplete="new-password" placeholder="Confirm New Password">
             <div class="upload-actions">
-                <button class="btn-cancel" onclick="closePasswordModal()">Cancel</button>
-                <button class="btn-confirm" id="confirmPasswordBtn" onclick="updatePasswordAction()">Update</button>
+                <button type="button" class="btn-cancel" id="cancelPasswordBtn">Cancel</button>
+                <button type="button" class="btn-confirm" id="confirmPasswordBtn">Update</button>
             </div>
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const btn = document.getElementById('hamburgerBtn');
-            const menu = document.getElementById('mobileNavPanel');
-            const overlay = document.getElementById('mobileOverlay');
-
-            function toggleMenu() {
-                menu.classList.toggle('open');
-                overlay.classList.toggle('active');
-                btn.classList.toggle('active');
-                document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
-            }
-
-            if (btn && menu && overlay) {
-                btn.addEventListener('click', toggleMenu);
-                overlay.addEventListener('click', toggleMenu);
-                menu.querySelectorAll('a, button').forEach(link => {
-                    link.addEventListener('click', toggleMenu);
-                });
-            }
-        });
-    </script>
-
-    <script type="module">
-        import { initAuthListener, getUserData, logoutUser, addUserPhoto, getUserPhotos, getMovieById, deleteUserPhoto, updateUserXP, updateUserPassword } from './auth_manager.js';
-
-        let currentUserUid = null;
-        let selectedFileBase64 = null;
-
-        function showLevelUpNotification(newLevel, newTitle) {
-            const notification = document.createElement('div');
-            notification.className = 'level-up-notification';
-            notification.innerHTML = `
-                <div class="level-up-content">
-                    <span class="level-up-icon">🎉</span>
-                    <h3>LEVEL UP!</h3>
-                    <p>You reached <strong>Level ${newLevel}</strong></p>
-                    <p class="new-title">${newTitle}</p>
-                </div>
-            `;
-            notification.style.cssText = `
-                position: fixed; inset: 0; background: rgba(0,0,0,0.9);
-                display: flex; align-items: center; justify-content: center; z-index: 3000;
-                animation: fadeIn 0.3s ease;
-            `;
-            notification.querySelector('.level-up-content').style.cssText = `
-                text-align: center; padding: 40px; background: linear-gradient(135deg, #1a1a1d 0%, #2d1f1f 100%);
-                border: 2px solid #e50914; border-radius: 20px; animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            `;
-            notification.querySelector('.level-up-icon').style.cssText = `font-size: 60px; display: block; margin-bottom: 10px;`;
-            notification.querySelector('h3').style.cssText = `font-size: 32px; color: #e50914; margin: 0 0 10px 0;`;
-            notification.querySelector('p').style.cssText = `font-size: 18px; color: #fff; margin: 0;`;
-            notification.querySelector('.new-title').style.cssText = `font-size: 14px; color: #888; margin-top: 8px;`;
-
-            document.body.appendChild(notification);
-            notification.onclick = () => notification.remove();
-            setTimeout(() => notification.remove(), 4000);
-        }
-
-        function updateXPDisplay(xp, nextXp, level, title) {
-            document.getElementById('currentXp').textContent = xp;
-            document.getElementById('nextXp').textContent = nextXp;
-            document.getElementById('userLevel').textContent = level;
-            document.getElementById('userTitle').textContent = title;
-            const percentage = (xp / nextXp) * 100;
-            document.getElementById('xpBar').style.width = `${percentage}%`;
-        }
-
-        async function refreshUserData() {
-            if (!currentUserUid) return;
-            const userData = await getUserData(currentUserUid);
-            if (userData) {
-                updateXPDisplay(
-                    userData.xp || 0,
-                    userData.nextLevelXp || 100,
-                    userData.level || 1,
-                    userData.title || "Novice Cinephile"
-                );
-                document.getElementById('statLoc').textContent = userData.stats?.visitedLocations || 0;
-                document.getElementById('statRev').textContent = userData.stats?.reviews || 0;
-                document.getElementById('statPhoto').textContent = userData.stats?.photos || 0;
-            }
-        }
-
-        window.logoutAction = () => { logoutUser(); };
-
-        const uploadModal = document.getElementById('uploadModal');
-        window.openUploadModal = () => uploadModal.style.display = 'flex';
-        window.closeUploadModal = () => {
-            uploadModal.style.display = 'none';
-            document.getElementById('photoInput').value = '';
-            selectedFileBase64 = null;
-            document.getElementById('fileName').textContent = "Click to select photo";
-            document.getElementById('confirmUploadBtn').disabled = true;
-        };
-
-        window.handleFileSelect = (input) => {
-            const file = input.files[0];
-            if (!file) return;
-            document.getElementById('fileName').textContent = file.name;
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = (event) => {
-                const img = new Image();
-                img.src = event.target.result;
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    const MAX_WIDTH = 800;
-                    const MAX_HEIGHT = 800;
-                    let width = img.width;
-                    let height = img.height;
-
-                    if (width > height) {
-                        if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
-                    } else {
-                        if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
-                    }
-
-                    canvas.width = width;
-                    canvas.height = height;
-                    ctx.drawImage(img, 0, 0, width, height);
-                    selectedFileBase64 = canvas.toDataURL('image/jpeg', 0.7);
-                    document.getElementById('confirmUploadBtn').disabled = false;
-                };
-            };
-        };
-
-        window.uploadPhotoAction = async () => {
-            if (!selectedFileBase64 || !currentUserUid) return;
-            const btn = document.getElementById('confirmUploadBtn');
-            const originalText = btn.textContent;
-            btn.textContent = "Saving...";
-            btn.disabled = true;
-            const locName = document.getElementById('photoLocation').value;
-            const caption = document.getElementById('photoCaption').value;
-            const result = await addUserPhoto(currentUserUid, { image: selectedFileBase64, locationName: locName, caption: caption });
-
-            if (result.success) {
-                closeUploadModal();
-                loadUserPhotos(currentUserUid);
-                await refreshUserData();
-                if (result.leveledUp) {
-                    const userData = await getUserData(currentUserUid);
-                    showLevelUpNotification(userData.level, userData.title);
-                }
-            } else {
-                alert("Error: " + result.error);
-            }
-            btn.textContent = originalText;
-            btn.disabled = false;
-        };
-
-        window.deletePhotoAction = async (photoId, event) => {
-            event.stopPropagation();
-            if (!confirm("Are you sure you want to delete this photo? You will lose 10 XP.")) return;
-            const card = event.target.closest('.user-photo-card');
-            if (card) card.style.opacity = '0.5';
-            const result = await deleteUserPhoto(currentUserUid, photoId);
-            if (result.success) {
-                if (card) card.remove();
-                await refreshUserData();
-            } else {
-                alert("Error deleting photo: " + result.error);
-                if (card) card.style.opacity = '1';
-            }
-        }
-
-        const passwordModal = document.getElementById('passwordModal');
-        window.openPasswordModal = () => passwordModal.style.display = 'flex';
-        window.closePasswordModal = () => {
-            passwordModal.style.display = 'none';
-            document.getElementById('currentPassword').value = '';
-            document.getElementById('newPassword').value = '';
-            document.getElementById('confirmNewPassword').value = '';
-        };
-
-        window.updatePasswordAction = async () => {
-            const currentPass = document.getElementById('currentPassword').value;
-            const newPass = document.getElementById('newPassword').value;
-            const confirmPass = document.getElementById('confirmNewPassword').value;
-
-            if (!currentPass || !newPass || !confirmPass) {
-                alert("Please fill in all fields.");
-                return;
-            }
-
-            if (newPass !== confirmPass) {
-                alert("Passwords do not match.");
-                return;
-            }
-
-            const btn = document.getElementById('confirmPasswordBtn');
-            const originalText = btn.textContent;
-            btn.textContent = "Updating...";
-            btn.disabled = true;
-
-            const result = await updateUserPassword(currentPass, newPass);
-
-            if (result.success) {
-                alert("Password updated successfully!");
-                closePasswordModal();
-            } else {
-                alert("Error updating password: " + result.error);
-            }
-
-            btn.textContent = originalText;
-            btn.disabled = false;
-        };
-
-        async function loadUserPhotos(uid) {
-            const photos = await getUserPhotos(uid);
-            const grid = document.getElementById('userPhotosGrid');
-            if (photos.length === 0) {
-                grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;'>No photos uploaded yet. Immortalize the places you visit!</p>";
-                return;
-            }
-            grid.innerHTML = "";
-            photos.forEach(photo => {
-                const div = document.createElement('div');
-                div.className = 'user-photo-card';
-                div.innerHTML = `
-                    <img src="${photo.image}" class="user-photo-img" loading="lazy">
-                    <button class="delete-photo-btn" onclick="deletePhotoAction('${photo.id}', event)">×</button>
-                    <div class="photo-overlay">
-                        <span class="photo-location">📍 ${photo.locationName}</span>
-                    </div>
-                `;
-                grid.appendChild(div);
-            });
-        }
-
-        async function loadFavorites(uid, favIds) {
-            const grid = document.getElementById('favoritesGrid');
-            if (!favIds || favIds.length === 0) {
-                grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;'>No favorites added yet.</p>";
-                return;
-            }
-            grid.innerHTML = '<p style="color:var(--text-muted); grid-column: 1/-1; text-align: center;">Loading...</p>';
-            let html = '';
-            for (const movieId of favIds) {
-                const movie = await getMovieById(movieId);
-                if (movie) {
-                    html += `
-                        <div class="user-photo-card" onclick="window.location.href='explore.html?id=${movie.id}'" style="aspect-ratio: 2/3;">
-                            <img src="${movie.poster}" class="user-photo-img" loading="lazy" style="width:100%; height:100%; object-fit:cover;" onerror="this.src='https://placehold.co/200x300/1a1a1d/FFF?text=No+Image'">
-                            <div class="photo-overlay">
-                                <span class="photo-location" style="font-size:12px;">${movie.title}</span>
-                            </div>
-                        </div>
-                    `;
-                }
-            }
-            if (html) grid.innerHTML = html;
-            else grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;'>Failed to load favorites.</p>";
-        }
-
-        async function loadProfile(user) {
-            currentUserUid = user.uid;
-            const dbData = await getUserData(user.uid);
-            const name = dbData?.name || user.displayName || "User";
-            const email = dbData?.email || user.email;
-
-            if (email === "admin@gmail.com") {
-                const adminBtn = document.getElementById('adminBtn');
-                if (adminBtn) adminBtn.style.display = 'block';
-            }
-
-            const photo = dbData?.photoURL || user.photoURL || `https://ui-avatars.com/api/?name=${name}&background=111&color=fff&size=256`;
-            const level = dbData?.level || 1;
-            const xp = dbData?.xp || 0;
-            const nextXp = dbData?.nextLevelXp || 100;
-            const title = dbData?.title || "Novice Cinephile";
-            const stats = dbData?.stats || { visitedLocations: 0, reviews: 0, photos: 0 };
-
-            let joined = "New Member";
-            if (dbData?.createdAt) {
-                const dateObj = dbData.createdAt.toDate ? dbData.createdAt.toDate() : new Date(dbData.createdAt);
-                joined = "Joined: " + dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
-            }
-
-            document.getElementById('displayName').textContent = name;
-            document.getElementById('displayEmail').textContent = email;
-            document.getElementById('joinDate').textContent = joined;
-            document.getElementById('currentAvatar').src = photo;
-            document.getElementById('userLevel').textContent = level;
-            document.getElementById('userTitle').textContent = title;
-            document.getElementById('currentXp').textContent = xp;
-            document.getElementById('nextXp').textContent = nextXp;
-            document.getElementById('statLoc').textContent = stats.visitedLocations;
-            document.getElementById('statRev').textContent = stats.reviews;
-            document.getElementById('statPhoto').textContent = stats.photos;
-            const percentage = (xp / nextXp) * 100;
-            document.getElementById('xpBar').style.width = `${percentage}%`;
-
-            loadUserPhotos(user.uid);
-            if (dbData && dbData.favorites) {
-                loadFavorites(user.uid, dbData.favorites);
-            } else {
-                const grid = document.getElementById('favoritesGrid');
-                if (grid) grid.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;'>No favorites added yet.</p>";
-            }
-        }
-
-        initAuthListener((user) => {
-            if (user) {
-                loadProfile(user);
-            } else {
-                window.location.href = 'login.html';
-            }
-        });
-    </script>
+    <script type="module" src="assets/js/layout.js"></script>
+    <script type="module" src="assets/js/pages/profile.js"></script>
 </body>
 
 </html>
