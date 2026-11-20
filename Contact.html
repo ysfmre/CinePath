@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-i18n-loading>
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com https://apis.google.com https://www.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self' https:; connect-src 'self' https://*.googleapis.com https://www.gstatic.com https://www.google.com; frame-src https://www.google.com https://cinepath-2c233.firebaseapp.com https://accounts.google.com https://apis.google.com; object-src 'none'; base-uri 'self'; form-action 'self' mailto:" />
@@ -9,87 +9,15 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="theme-color" content="#0a0a0b" />
-    <title>Contact — CinePath</title>
+    <title data-i18n="meta.contact">Contact — CinePath</title>
     <meta name="description" content="Get in touch with the CinePath team." />
     <link rel="icon" href="assets/favicon/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/styles.css" />
-    <style>
-        body { margin: 0; background-color: var(--bg); color: #fff; font-family: 'Inter', sans-serif; }
-        main { padding-top: 0; min-height: 100vh; display: flex; flex-direction: column; }
-        .contact-section { padding-top: 130px; }
-
-        @media (max-width: 1024px) {
-            .contact-section { padding: 110px 0 80px; }
-            .contact-wrapper { gap: 50px; }
-            .contact-title { font-size: 42px; }
-            .contact-form-container { padding: 36px; }
-        }
-
-        @media (max-width: 900px) {
-            .contact-section { padding: 90px 0 60px; }
-            .contact-wrapper { grid-template-columns: 1fr; gap: 50px; }
-            .contact-info { text-align: center; }
-            .contact-desc { max-width: 100%; margin: 0 auto 40px; }
-            .contact-details { align-items: center; }
-            .contact-item { justify-content: center; }
-            .social-links { justify-content: center; }
-            .contact-form-container { max-width: 550px; margin: 0 auto; }
-            .contact-bg-glow { top: 30%; opacity: 0.4; }
-        }
-
-        @media (max-width: 768px) {
-            .contact-section { padding: 100px 0 50px; }
-            .contact-title { font-size: clamp(30px, 8vw, 38px); margin-bottom: 20px; }
-            .contact-badge { font-size: 11px; margin-bottom: 18px; }
-            .contact-desc { font-size: 16px; margin-bottom: 36px; }
-            .contact-details { gap: 26px; margin-bottom: 36px; }
-            .icon-box { width: 46px; height: 46px; font-size: 18px; }
-            .detail-title { font-size: 12px; }
-            .detail-link, .detail-text { font-size: 17px; }
-            .social-btn { padding: 11px 20px; font-size: 14px; }
-            .contact-form-container { padding: 28px 24px; border-radius: 20px; }
-            .form-grid { grid-template-columns: 1fr; gap: 0; }
-            .form-group { margin-bottom: 20px; }
-            .form-group label { font-size: 12px; margin-bottom: 8px; }
-            .form-group input, .form-group select, .form-group textarea { padding: 14px 16px; font-size: 15px; border-radius: 12px; }
-            .submit-btn { padding: 16px; font-size: 16px; border-radius: 12px; }
-        }
-
-        @media (max-width: 480px) {
-            .contact-section { padding: 85px 0 40px; }
-            .contact-title { font-size: clamp(26px, 7vw, 32px); }
-            .contact-badge { font-size: 10px; }
-            .contact-desc { font-size: 15px; }
-            .contact-details { gap: 22px; margin-bottom: 30px; }
-            .icon-box { width: 42px; height: 42px; font-size: 16px; border-radius: 12px; }
-            .detail-link, .detail-text { font-size: 15px; }
-            .social-links { flex-wrap: wrap; gap: 12px; }
-            .social-btn { padding: 10px 18px; font-size: 13px; }
-            .contact-form-container { padding: 22px 18px; border-radius: 16px; }
-            .form-group { margin-bottom: 18px; }
-            .form-group input, .form-group select, .form-group textarea { padding: 13px 14px; font-size: 14px; }
-            .submit-btn { padding: 14px; font-size: 15px; }
-        }
-
-        @media (max-width: 360px) {
-            .contact-title { font-size: 24px; }
-            .contact-desc { font-size: 14px; }
-            .detail-link, .detail-text { font-size: 14px; }
-            .contact-form-container { padding: 18px 16px; }
-            .form-group input, .form-group select, .form-group textarea { padding: 12px; font-size: 13px; }
-            .submit-btn { padding: 13px; font-size: 14px; }
-        }
-
-        @media (hover: none) and (pointer: coarse) {
-            .social-btn:hover { background: transparent; color: inherit; border-color: var(--stroke); }
-            .social-btn:active { background: #fff; color: #000; }
-            .submit-btn:hover { transform: none; }
-            .submit-btn:active { transform: scale(0.98); }
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/pages/contact.css" />
+    <link rel="stylesheet" href="assets/css/i18n.css" />
 </head>
 <body>
     <header class="site-header" data-header>
@@ -99,20 +27,21 @@
             </a>
             <nav class="nav desktop-nav">
                 <ul class="nav-list" data-nav-list>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="explore.html">Explore</a></li>
-                    <li><a href="AI.html">CineAI</a></li>
-                    <li><a href="Contact.html">Contact</a></li>
+                    <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                    <li><a href="about.html" data-i18n="nav.about">About</a></li>
+                    <li><a href="explore.html" data-i18n="nav.explore">Explore</a></li>
+                    <li><a href="AI.html" data-i18n="nav.cineai">CineAI</a></li>
+                    <li><a href="Contact.html" data-i18n="nav.contact">Contact</a></li>
                 </ul>
             </nav>
+            <div data-lang-switcher></div>
             <div class="profile" data-profile>
                 <button class="avatar-btn" type="button" data-profile-btn>
-                    <span class="avatar" data-avatar>👤</span>
-                    <span class="avatar-label" data-avatar-label>Log In</span>
+                    <span class="avatar" data-avatar><svg class="avatar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
+                    <span class="avatar-label" data-avatar-label data-i18n="nav.login">Log In</span>
                 </button>
             </div>
-            <button id="hamburgerBtn" class="hamburger-btn" aria-label="Toggle menu">
+            <button id="hamburgerBtn" class="hamburger-btn" type="button" aria-label="Toggle menu" data-i18n-attr="aria-label:nav.menu" aria-expanded="false">
                 <span class="hamburger-box">
                     <span class="hamburger-line"></span>
                     <span class="hamburger-line"></span>
@@ -126,47 +55,47 @@
     <nav id="mobileNavPanel" class="mobile-nav-panel">
         <div class="mobile-nav-header">
             <div class="mobile-nav-brand"><span class="brand-accent">CINE</span>PATH</div>
-              <div class="mobile-nav-tagline">DIscover FIlm LocatIons</div>
+              <div class="mobile-nav-tagline" data-i18n="nav.tagline">Discover film locations</div>
         </div>
         <a href="index.html" class="mobile-link">
             
             <span class="mobile-link-text">
-                <span class="mobile-link-title">Home</span>
-                <span class="mobile-link-subtitle">Back to homepage</span>
+                <span class="mobile-link-title" data-i18n="nav.home">Home</span>
+                <span class="mobile-link-subtitle" data-i18n="nav.homeSub">Back to homepage</span>
             </span>
         </a>
         <a href="explore.html" class="mobile-link">
             
             <span class="mobile-link-text">
-                <span class="mobile-link-title">Explore</span>
-                <span class="mobile-link-subtitle">Browse all locations</span>
+                <span class="mobile-link-title" data-i18n="nav.explore">Explore</span>
+                <span class="mobile-link-subtitle" data-i18n="nav.exploreSub">Browse all locations</span>
             </span>
         </a>
         <a href="about.html" class="mobile-link">
             
             <span class="mobile-link-text">
-                <span class="mobile-link-title">About Us</span>
-                <span class="mobile-link-subtitle">Learn about CinePath</span>
+                <span class="mobile-link-title" data-i18n="nav.aboutUs">About Us</span>
+                <span class="mobile-link-subtitle" data-i18n="nav.aboutSub">Learn about CinePath</span>
             </span>
         </a>
         
         <a href="AI.html" class="mobile-link">
             
             <span class="mobile-link-text">
-                <span class="mobile-link-title">CineAI</span>
-                <span class="mobile-link-subtitle">AI recommendations</span>
+                <span class="mobile-link-title" data-i18n="nav.cineai">CineAI</span>
+                <span class="mobile-link-subtitle" data-i18n="nav.cineaiSub">AI recommendations</span>
             </span>
         </a>
         <a href="Contact.html" class="mobile-link">
             
             <span class="mobile-link-text">
-                <span class="mobile-link-title">Contact</span>
-                <span class="mobile-link-subtitle">Get in touch</span>
+                <span class="mobile-link-title" data-i18n="nav.contact">Contact</span>
+                <span class="mobile-link-subtitle" data-i18n="nav.contactSub">Get in touch</span>
             </span>
         </a>
         
         <div class="mobile-nav-footer">
-            <p>© 2025 CinePath. All rights reserved.</p>
+            <p>© <span data-year></span> CinePath. <span data-i18n="footer.rights">All rights reserved.</span></p>
         </div>
     </nav>
 
@@ -176,19 +105,19 @@
             <div class="container">
                 <div class="contact-wrapper">
                     <div class="contact-info">
-                        <span class="contact-badge">Contact</span>
-                        <h2 class="contact-title">Be part of the story.</h2>
-                        <p class="contact-desc">To add a new location to the CinePath platform, report an error, or just say hello, please contact us.</p>
+                        <span class="contact-badge" data-i18n="contact.badge">Contact</span>
+                        <h2 class="contact-title" data-i18n="contact.title">Be part of the story.</h2>
+                        <p class="contact-desc" data-i18n="contact.desc">To add a new location to the CinePath platform, report an error, or just say hello, please contact us.</p>
                         <div class="contact-details">
                             <div class="contact-item">
                                 <div>
-                                    <h4 class="detail-title">Email</h4>
+                                    <h4 class="detail-title" data-i18n="contact.email">Email</h4>
                                     <a href="mailto:cinepathcontact@gmail.com" class="detail-link">cinepathcontact@gmail.com</a>
                                 </div>
                             </div>
                         </div>
                         <div class="social-links">
-                            <a href="https://www.instagram.com/cinepathofficial" class="social-btn">Instagram</a>
+                            <a href="https://www.instagram.com/cinepathofficial" class="social-btn" target="_blank" rel="noopener noreferrer">Instagram</a>
                         </div>
                     </div>
 
@@ -196,29 +125,29 @@
                         <form class="contact-form" id="contactForm">
                             <div class="form-grid">
                                 <div class="form-group">
-                                    <label for="name">Full Name</label>
-                                    <input type="text" id="name" name="name" maxlength="80" autocomplete="name" required placeholder="Your name">
+                                    <label for="name" data-i18n="contact.name">Full Name</label>
+                                    <input type="text" id="name" name="name" maxlength="80" autocomplete="name" required placeholder="Your name" data-i18n-attr="placeholder:contact.namePlaceholder">
                                 </div>
                                 <div class="form-group">
-                                    <label for="email">Email</label>
+                                    <label for="email" data-i18n="contact.email">Email</label>
                                     <input type="email" id="email" name="email" maxlength="120" autocomplete="email" required placeholder="you@example.com">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="subject">Subject</label>
+                                <label for="subject" data-i18n="contact.subject">Subject</label>
                                 <select id="subject" name="subject">
-                                    <option value="suggestion">Location Suggestion</option>
-                                    <option value="bug">Bug Report</option>
-                                    <option value="partnership">Partnership</option>
-                                    <option value="other">Other</option>
+                                    <option value="suggestion" data-i18n="contact.subjectSuggestion">Location Suggestion</option>
+                                    <option value="bug" data-i18n="contact.subjectBug">Bug Report</option>
+                                    <option value="partnership" data-i18n="contact.subjectPartnership">Partnership</option>
+                                    <option value="other" data-i18n="contact.subjectOther">Other</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="message">Message</label>
-                                <textarea id="message" name="message" rows="4" maxlength="1500" required placeholder="Your message..."></textarea>
+                                <label for="message" data-i18n="contact.message">Message</label>
+                                <textarea id="message" name="message" rows="4" maxlength="1500" required placeholder="Your message..." data-i18n-attr="placeholder:contact.messagePlaceholder"></textarea>
                             </div>
                             <button type="submit" class="submit-btn">
-                                <span>Send Message</span>
+                                <span data-i18n="contact.send">Send Message</span>
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                             </button>
                         </form>
@@ -232,21 +161,31 @@
         <div class="container footer-grid">
             <div class="footer-brand">
                 <a href="index.html" class="brand brand-sm"><span class="brand-accent">CINE</span>PATH</a>
-                <p style="margin-top: 14px; line-height: 1.7;">Turkey's AI-powered location archive for film and TV series enthusiasts.</p>
+                <p data-i18n="footer.tagline">Turkey's AI-powered location archive for film and TV series enthusiasts.</p>
+                <a class="footer-social" href="https://www.instagram.com/cinepathofficial/" target="_blank" rel="noopener noreferrer" aria-label="CinePath on Instagram">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+                    @cinepathofficial
+                </a>
             </div>
-            <div class="footer-col">
+            <nav class="footer-col" aria-label="Product" data-i18n-attr="aria-label:footer.product">
+                <h3 class="footer-title" data-i18n="footer.product">Product</h3>
                 <ul class="footer-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="explore.html">Explore</a></li>
-                    <li><a href="AI.html">CineAI</a></li>
-                    <li><a href="Contact.html">Contact</a></li>
-                    <li><a href="https://www.instagram.com/cinepathofficial/">Instagram</a></li>
+                    <li><a href="explore.html" data-i18n="nav.explore">Explore</a></li>
+                    <li><a href="AI.html" data-i18n="nav.cineai">CineAI</a></li>
+                    <li><a href="signup.html" data-i18n="footer.createAccount">Create account</a></li>
                 </ul>
-            </div>
+            </nav>
+            <nav class="footer-col" aria-label="Company" data-i18n-attr="aria-label:footer.company">
+                <h3 class="footer-title" data-i18n="footer.company">Company</h3>
+                <ul class="footer-links">
+                    <li><a href="about.html" data-i18n="nav.about">About</a></li>
+                    <li><a href="Contact.html" data-i18n="nav.contact">Contact</a></li>
+                    <li><a href="mailto:cinepathcontact@gmail.com" data-i18n="footer.email">E-mail us</a></li>
+                </ul>
+            </nav>
         </div>
         <div class="container footer-bottom">
-            <p class="copyright">© <span id="year"></span> CinePath. All rights reserved.</p>
+            <p class="copyright">© <span id="year"></span> CinePath. <span data-i18n="footer.rights">All rights reserved.</span></p>
         </div>
     </footer>
     <script type="module" src="assets/js/layout.js"></script>

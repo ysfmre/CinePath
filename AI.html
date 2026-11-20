@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-i18n-loading>
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com https://apis.google.com https://www.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; media-src 'self' https:; connect-src 'self' https://*.googleapis.com https://www.gstatic.com https://www.google.com; frame-src https://www.google.com https://cinepath-2c233.firebaseapp.com https://accounts.google.com https://apis.google.com; object-src 'none'; base-uri 'self'; form-action 'self' mailto:" />
@@ -9,49 +9,14 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="theme-color" content="#0a0a0b" />
-    <title>AI Route Wizard — CinePath</title>
+    <title data-i18n="meta.ai">CineAI — CinePath</title>
     <link rel="icon" href="assets/favicon/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/styles.css" />
-    <style>
-        body { margin: 0; background-color: var(--bg); color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
-        main { padding-top: 90px; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
-
-        .ai-section { padding: 50px 24px; background: linear-gradient(180deg, var(--bg) 0%, #0f0f11 100%); position: relative; overflow: hidden; flex: 1; display: flex; align-items: center; }
-        .ai-container { background: rgba(18, 18, 20, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 28px; padding: 56px; max-width: 1000px; width: 100%; margin: 0 auto; position: relative; z-index: 2; backdrop-filter: blur(24px); box-shadow: 0 50px 120px rgba(0, 0, 0, 0.5); }
-        .ai-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 800px; height: 800px; background: radial-gradient(circle, rgba(124, 58, 237, 0.1) 0%, transparent 60%); z-index: 1; pointer-events: none; }
-        .ai-header { text-align: center; margin-bottom: 52px; }
-        .ai-badge { background: linear-gradient(135deg, #7c3aed 0%, #db2777 100%); color: white; padding: 8px 18px; border-radius: 50px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 22px; display: inline-block; box-shadow: 0 8px 25px rgba(219, 39, 119, 0.35); }
-        .ai-title { font-size: 46px; font-weight: 800; margin-bottom: 16px; background: linear-gradient(135deg, #fff 0%, #888 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; letter-spacing: -0.03em; }
-        .ai-desc { color: var(--muted); font-size: 18px; max-width: 620px; margin: 0 auto; line-height: 1.7; }
-        .ai-form { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 22px; align-items: end; margin-bottom: 28px; }
-        .ai-input-group label { display: block; color: #bbb; font-size: 14px; margin-bottom: 10px; font-weight: 600; }
-        .ai-select { width: 100%; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.12); color: #fff; padding: 18px; border-radius: 14px; font-size: 15px; appearance: none; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .ai-select:focus { border-color: #7c3aed; outline: none; box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.2); }
-        .ai-btn { background: linear-gradient(135deg, #7c3aed 0%, #db2777 100%); color: white; border: none; padding: 18px 36px; border-radius: 14px; font-weight: 700; font-size: 16px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; justify-content: center; gap: 10px; white-space: nowrap; height: 58px; }
-        .ai-btn:hover { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(219, 39, 119, 0.4); }
-        .ai-btn:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
-        .action-area { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 24px; }
-        .ai-btn-secondary { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; padding: 18px; border-radius: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; height: 58px; }
-        .ai-btn-secondary:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.25); transform: translateY(-2px); }
-        .ai-result { margin-top: 48px; background: rgba(15, 15, 17, 0.8); border-radius: 22px; padding: 32px; display: none; grid-template-columns: 130px 1fr; gap: 32px; align-items: start; border: 1px solid rgba(124, 58, 237, 0.3); animation: fadeIn 0.5s ease-out; }
-        .ai-poster { width: 130px; height: 195px; object-fit: cover; border-radius: 14px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5); }
-        .ai-suggestion-text { font-size: 26px; color: #fff; margin: 0 0 12px 0; font-weight: 700; letter-spacing: -0.02em; }
-        .ai-reason { color: #bbb; font-size: 16px; line-height: 1.7; margin-bottom: 28px; }
-        .ai-action-btn { background: #fff; color: #000; padding: 14px 28px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); border: none; display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
-        .ai-action-btn:hover { background: #f0f0f0; transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (max-width: 1024px) { .ai-container { padding: 48px 40px; max-width: 900px; } .ai-title { font-size: 40px; } .ai-desc { font-size: 17px; } .ai-form { grid-template-columns: 1fr 1fr; gap: 18px; } .ai-form .ai-input-group:nth-child(3) { grid-column: 1 / -1; } .ai-form .ai-btn { grid-column: 1 / -1; width: 100%; } }
-        @media (max-width: 900px) { main { padding-top: 75px; } .ai-section { padding: 36px 18px; } .ai-container { padding: 40px 32px; border-radius: 22px; } .ai-header { margin-bottom: 44px; } .ai-title { font-size: 36px; } .ai-form { grid-template-columns: 1fr; gap: 18px; } .ai-form .ai-input-group:nth-child(3) { grid-column: auto; } .action-area { grid-template-columns: 1fr; gap: 14px; } .ai-btn { width: 100%; justify-content: center; } .ai-result { grid-template-columns: 1fr; text-align: center; justify-items: center; gap: 24px; padding: 28px; } .ai-poster { width: 120px; height: 180px; } .ai-glow { width: 500px; height: 500px; } }
-        @media (max-width: 768px) { main { padding-top: 65px; } .ai-section { padding: 24px 14px; } .ai-container { padding: 32px 24px; border-radius: 20px; } .ai-header { margin-bottom: 36px; } .ai-badge { font-size: 10px; padding: 7px 14px; letter-spacing: 1.5px; } .ai-title { font-size: clamp(28px, 7vw, 36px); margin-bottom: 14px; } .ai-desc { font-size: 15px; line-height: 1.6; } .ai-input-group label { font-size: 13px; margin-bottom: 8px; } .ai-select { padding: 16px; font-size: 15px; border-radius: 12px; } .ai-btn { padding: 16px 28px; font-size: 15px; border-radius: 12px; height: 54px; } .ai-btn-secondary { padding: 16px; font-size: 14px; height: 54px; border-radius: 12px; } .ai-result { margin-top: 36px; padding: 24px; border-radius: 18px; } .ai-suggestion-text { font-size: 22px; } .ai-reason { font-size: 15px; margin-bottom: 24px; } .ai-action-btn { padding: 12px 22px; font-size: 14px; } .desktop-nav { display: none !important; } .hamburger-btn { display: flex; } .ai-glow { width: 400px; height: 400px; opacity: 0.5; } }
-        @media (max-width: 480px) { main { padding-top: 55px; } .ai-section { padding: 18px 12px; } .ai-container { padding: 28px 20px; border-radius: 18px; } .ai-header { margin-bottom: 28px; } .ai-badge { font-size: 9px; padding: 6px 12px; } .ai-title { font-size: clamp(24px, 6vw, 30px); } .ai-desc { font-size: 14px; } .ai-form { gap: 16px; margin-bottom: 22px; } .ai-input-group label { font-size: 12px; } .ai-select { padding: 14px; font-size: 14px; } .ai-btn { padding: 14px 24px; font-size: 14px; height: 52px; } .ai-btn-secondary { padding: 14px; font-size: 13px; height: 52px; } .ai-btn-secondary svg { width: 18px; height: 18px; } .action-area { margin-top: 18px; gap: 12px; } .ai-result { margin-top: 28px; padding: 20px; gap: 18px; } .ai-poster { width: 100px; height: 150px; border-radius: 12px; } .ai-suggestion-text { font-size: 20px; } .ai-reason { font-size: 14px; line-height: 1.6; margin-bottom: 20px; } .ai-action-btn { padding: 11px 18px; font-size: 13px; border-radius: 10px; } .mobile-nav-panel { width: 270px; padding: 75px 18px 18px; } .mobile-link { padding: 16px; font-size: 15px; } .ai-glow { width: 300px; height: 300px; } }
-        @media (max-width: 360px) { .ai-container { padding: 24px 16px; } .ai-title { font-size: 22px; } .ai-desc { font-size: 13px; } .ai-select { padding: 12px; font-size: 13px; } .ai-btn, .ai-btn-secondary { height: 48px; font-size: 13px; } .ai-poster { width: 85px; height: 127px; } .ai-suggestion-text { font-size: 18px; } }
-        @media (max-width: 768px) and (orientation: landscape) { main { padding-top: 55px; } .ai-section { padding: 18px; } .ai-header { margin-bottom: 28px; } .ai-form { grid-template-columns: 1fr 1fr; } .ai-form .ai-input-group:nth-child(3), .ai-form .ai-btn { grid-column: auto; } .action-area { grid-template-columns: 1fr 1fr; } .ai-result { grid-template-columns: 100px 1fr; text-align: left; justify-items: start; } }
-        @media (hover: none) and (pointer: coarse) { .ai-btn:hover, .ai-btn-secondary:hover, .ai-action-btn:hover { transform: none; box-shadow: none; } .ai-btn:active, .ai-btn-secondary:active { transform: scale(0.98); } }
-    </style>
+    <link rel="stylesheet" href="assets/css/pages/ai.css" />
+    <link rel="stylesheet" href="assets/css/i18n.css" />
 </head>
 <body>
     <header class="site-header" data-header>
@@ -61,20 +26,21 @@
             </a>
             <nav class="nav desktop-nav">
                 <ul class="nav-list" data-nav-list>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="explore.html">Explore</a></li>
-                    <li><a href="AI.html">CineAI</a></li>
-                    <li><a href="Contact.html">Contact</a></li>
+                    <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                    <li><a href="about.html" data-i18n="nav.about">About</a></li>
+                    <li><a href="explore.html" data-i18n="nav.explore">Explore</a></li>
+                    <li><a href="AI.html" data-i18n="nav.cineai">CineAI</a></li>
+                    <li><a href="Contact.html" data-i18n="nav.contact">Contact</a></li>
                 </ul>
             </nav>
+            <div data-lang-switcher></div>
             <div class="profile" data-profile>
                 <button class="avatar-btn" type="button" data-profile-btn>
-                    <span class="avatar" data-avatar>👤</span>
-                    <span class="avatar-label" data-avatar-label>Log In</span>
+                    <span class="avatar" data-avatar><svg class="avatar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>
+                    <span class="avatar-label" data-avatar-label data-i18n="nav.login">Log In</span>
                 </button>
             </div>
-            <button id="hamburgerBtn" class="hamburger-btn" aria-label="Toggle menu">
+            <button id="hamburgerBtn" class="hamburger-btn" type="button" aria-label="Toggle menu" data-i18n-attr="aria-label:nav.menu" aria-expanded="false">
                 <span class="hamburger-box">
                     <span class="hamburger-line"></span>
                     <span class="hamburger-line"></span>
@@ -88,47 +54,47 @@
     <nav id="mobileNavPanel" class="mobile-nav-panel">
         <div class="mobile-nav-header">
             <div class="mobile-nav-brand"><span class="brand-accent">CINE</span>PATH</div>
-            <div class="mobile-nav-tagline">DIscover FIlm LocatIons</div>
+            <div class="mobile-nav-tagline" data-i18n="nav.tagline">Discover film locations</div>
         </div>
         <a href="index.html" class="mobile-link">
             
             <span class="mobile-link-text">
-                <span class="mobile-link-title">Home</span>
-                <span class="mobile-link-subtitle">Back to homepage</span>
+                <span class="mobile-link-title" data-i18n="nav.home">Home</span>
+                <span class="mobile-link-subtitle" data-i18n="nav.homeSub">Back to homepage</span>
             </span>
         </a>
         <a href="explore.html" class="mobile-link">
             
             <span class="mobile-link-text">
-                <span class="mobile-link-title">Explore</span>
-                <span class="mobile-link-subtitle">Browse all locations</span>
+                <span class="mobile-link-title" data-i18n="nav.explore">Explore</span>
+                <span class="mobile-link-subtitle" data-i18n="nav.exploreSub">Browse all locations</span>
             </span>
         </a>
         <a href="about.html" class="mobile-link">
             
             <span class="mobile-link-text">
-                <span class="mobile-link-title">About Us</span>
-                <span class="mobile-link-subtitle">Learn about CinePath</span>
+                <span class="mobile-link-title" data-i18n="nav.aboutUs">About Us</span>
+                <span class="mobile-link-subtitle" data-i18n="nav.aboutSub">Learn about CinePath</span>
             </span>
         </a>
         
         <a href="AI.html" class="mobile-link">
             
             <span class="mobile-link-text">
-                <span class="mobile-link-title">CineAI</span>
-                <span class="mobile-link-subtitle">AI recommendations</span>
+                <span class="mobile-link-title" data-i18n="nav.cineai">CineAI</span>
+                <span class="mobile-link-subtitle" data-i18n="nav.cineaiSub">AI recommendations</span>
             </span>
         </a>
         <a href="Contact.html" class="mobile-link">
             
             <span class="mobile-link-text">
-                <span class="mobile-link-title">Contact</span>
-                <span class="mobile-link-subtitle">Get in touch</span>
+                <span class="mobile-link-title" data-i18n="nav.contact">Contact</span>
+                <span class="mobile-link-subtitle" data-i18n="nav.contactSub">Get in touch</span>
             </span>
         </a>
         
         <div class="mobile-nav-footer">
-            <p>© 2025 CinePath. All rights reserved.</p>
+            <p>© <span data-year></span> CinePath. <span data-i18n="footer.rights">All rights reserved.</span></p>
         </div>
     </nav>
 
@@ -137,66 +103,66 @@
             <div class="ai-glow"></div>
             <div class="container ai-container">
                 <div class="ai-header">
-                    <span class="ai-badge">Beta • Gemini AI Powered</span>
-                    <h1 class="ai-title">Smart Route Wizard</h1>
-                    <p class="ai-desc">Indecisive? Let our AI find the perfect movie route for you from our database in seconds.</p>
+                    <span class="ai-badge" data-i18n="ai.badge">Beta • Gemini AI Powered</span>
+                    <h1 class="ai-title" data-i18n="ai.title">Smart Route Wizard</h1>
+                    <p class="ai-desc" data-i18n="ai.desc">Indecisive? Let our AI find the perfect movie route for you from our database in seconds.</p>
                 </div>
 
                 <div class="ai-content-wrapper">
                     <div class="ai-form">
                         <div class="ai-input-group">
-                            <label>Content Type</label>
+                            <label for="aiType" data-i18n="ai.typeLabel">Content Type</label>
                             <select id="aiType" class="ai-select">
-                                <option value="both">Any</option>
-                                <option value="movie">Movies Only</option>
-                                <option value="series">Series Only</option>
+                                <option value="both" data-i18n="ai.typeAny">Any</option>
+                                <option value="movie" data-i18n="ai.typeMovies">Movies Only</option>
+                                <option value="series" data-i18n="ai.typeSeries">Series Only</option>
                             </select>
                         </div>
                         <div class="ai-input-group">
-                            <label>Mood / Genre</label>
+                            <label for="aiGenre" data-i18n="ai.genreLabel">Mood / Genre</label>
                             <select id="aiGenre" class="ai-select">
-                                <option value="comedy">Comedy</option>
-                                <option value="drama">Drama</option>
-                                <option value="action">Action</option>
-                                <option value="romantic">Romance</option>
-                                <option value="nostalgic">Nostalgic Classics</option>
-                                <option value="historical">Historical</option>
+                                <option value="comedy" data-i18n="ai.genreComedy">Comedy</option>
+                                <option value="drama" data-i18n="ai.genreDrama">Drama</option>
+                                <option value="action" data-i18n="ai.genreAction">Action</option>
+                                <option value="romantic" data-i18n="ai.genreRomance">Romance</option>
+                                <option value="nostalgic" data-i18n="ai.genreNostalgic">Nostalgic Classics</option>
+                                <option value="historical" data-i18n="ai.genreHistorical">Historical</option>
                             </select>
                         </div>
                         <div class="ai-input-group">
-                            <label>Location</label>
+                            <label for="aiLocation" data-i18n="ai.locationLabel">Location</label>
                             <select id="aiLocation" class="ai-select">
-                                <option value="Istanbul">Istanbul</option>
-                                <option value="Izmir">Izmir</option>
-                                <option value="Ankara">Ankara</option>
-                                <option value="Cappadocia">Cappadocia</option>
-                                <option value="Mardin">Mardin</option>
-                                <option value="Kars">Kars</option>
-                                <option value="Gaziantep">Gaziantep</option>
-                                <option value="Adana">Adana</option>
-                                <option value="Mugla">Mugla</option>
+                                <option value="Istanbul" data-i18n="city.istanbul">Istanbul</option>
+                                <option value="Izmir" data-i18n="city.izmir">Izmir</option>
+                                <option value="Ankara" data-i18n="city.ankara">Ankara</option>
+                                <option value="Cappadocia" data-i18n="city.cappadocia">Cappadocia</option>
+                                <option value="Mardin" data-i18n="city.mardin">Mardin</option>
+                                <option value="Kars" data-i18n="city.kars">Kars</option>
+                                <option value="Gaziantep" data-i18n="city.gaziantep">Gaziantep</option>
+                                <option value="Adana" data-i18n="city.adana">Adana</option>
+                                <option value="Mugla" data-i18n="city.mugla">Mugla</option>
                             </select>
                         </div>
                         <button type="button" id="askAiBtn" class="ai-btn">
-                            <span>Get Recommendation</span>
+                            <span id="askAiLabel" data-i18n="ai.ask">Get Recommendation</span>
                         </button>
                     </div>
 
                     <div class="action-area">
                         <button type="button" id="personalSuggestBtn" class="ai-btn-secondary">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                            Personalized Recommendation
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            <span data-i18n="ai.personal">Personalized Recommendation</span>
                         </button>
                     </div>
 
                     <div id="aiResult" class="ai-result">
-                        <img id="aiPoster" class="ai-poster" alt="Movie Poster">
+                        <img id="aiPoster" class="ai-poster" alt="Movie Poster" data-i18n-attr="alt:ai.posterAlt">
                         <div class="result-content">
                             <h3 id="aiSuggestionTitle" class="ai-suggestion-text">Recommendation</h3>
                             <p id="aiReason" class="ai-reason">AI explanation...</p>
                             <a id="aiActionLink" href="#" class="ai-action-btn">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M14 10l6.1-6.1M9 21H3v-6M10 14l-6.1 6.1"/></svg>
-                                View Route Details
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 3h6v6M14 10l6.1-6.1M9 21H3v-6M10 14l-6.1 6.1"/></svg>
+                                <span data-i18n="ai.viewRoute">View Route Details</span>
                             </a>
                         </div>
                     </div>
