@@ -14,6 +14,7 @@ const videoPlayer = $("sceneVideoPlayer");
 let allContent = [];
 let favorites = new Set();
 let mapInstance = null;
+let mapMarkers = [];
 let currentItemId = null;
 const filterState = { type: "all", search: "", sort: "newest" };
 
@@ -27,6 +28,7 @@ const validLocations = (item) =>
         .sort((a, b) => (a.order || 0) - (b.order || 0));
 
 const HEART_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
+const NAV_SVG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/></svg>';
 const PLAY_SVG = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
 
 // ---------------- Grid ----------------
@@ -183,10 +185,11 @@ function renderLocation(item, loc, index, currentRating) {
         <div class="loc-header">
             <button type="button" class="play-icon-left ${video ? "" : "disabled"}" ${video ? 'title="Play Scene"' : "disabled"}>${PLAY_SVG}</button>
             <div class="loc-number">${index + 1}</div>
-            <div style="flex:1; margin-left:15px;">
-                <strong style="color:white; display:block;">${escapeHtml(loc.name)}</strong>
-                <small style="color:#666;">${loc.lat.toFixed(4)}, ${loc.lng.toFixed(4)}</small>
-            </div>
+            <button type="button" class="loc-info" title="Show on map">
+                <strong>${escapeHtml(loc.name)}</strong>
+                <small>${loc.lat.toFixed(4)}, ${loc.lng.toFixed(4)}</small>
+            </button>
+            <a class="loc-go-btn" target="_blank" rel="noopener noreferrer" title="Get directions to this location">${NAV_SVG}<span>Go</span></a>
         </div>
         <div class="rating-container">
             <span class="rating-label">Your Rating:</span>
@@ -195,6 +198,8 @@ function renderLocation(item, loc, index, currentRating) {
         </div>`;
 
     if (video) div.querySelector(".play-icon-left").addEventListener("click", () => playSceneVideo(video));
+    div.querySelector(".loc-go-btn").href = buildDirectionsUrl(loc);
+    div.querySelector(".loc-info").addEventListener("click", () => focusLocation(index));
 
     const starEls = div.querySelectorAll(".star");
     const paint = (val) => starEls.forEach((s) => s.classList.toggle("filled", Number(s.dataset.val) <= val));
@@ -212,6 +217,20 @@ function renderLocation(item, loc, index, currentRating) {
         if (!result.success) paint(previous);
     }));
     return div;
+}
+
+/** Directions from the visitor's current position to a single location. */
+function buildDirectionsUrl(loc) {
+    return `https://www.google.com/maps/dir/?${new URLSearchParams({ api: "1", destination: `${loc.lat},${loc.lng}` })}`;
+}
+
+/** Zoom the in-page map to one location and open its popup. */
+function focusLocation(index) {
+    const marker = mapMarkers[index];
+    if (!mapInstance || !marker) return;
+    mapInstance.setView(marker.getLatLng(), 16, { animate: true });
+    marker.openPopup();
+    document.getElementById("osm-map").scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
 function buildRouteUrl(locs) {
@@ -232,12 +251,9 @@ function renderMap(item, locs) {
     if (mapInstance) mapInstance.remove();
     mapInstance = L.map("osm-map").setView([locs[0].lat, locs[0].lng], 13);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: "&copy; OpenStreetMap" }).addTo(mapInstance);
-    const points = locs.map((loc, i) => {
-        const point = [loc.lat, loc.lng];
-        L.marker(point).addTo(mapInstance)
-            .bindPopup(`<b>${i + 1}. ${escapeHtml(loc.name)}</b><br>${escapeHtml(item.title)}`);
-        return point;
-    });
+    mapMarkers = locs.map((loc, i) => L.marker([loc.lat, loc.lng]).addTo(mapInstance)
+        .bindPopup(`<b>${i + 1}. ${escapeHtml(loc.name)}</b><br>${escapeHtml(item.title)}`));
+    const points = locs.map((loc) => [loc.lat, loc.lng]);
     if (points.length > 1) {
         mapInstance.fitBounds(L.polyline(points, { color: "#e50914", weight: 4 }).addTo(mapInstance).getBounds());
     }
@@ -247,6 +263,7 @@ function closeModal() {
     modal.style.display = "none";
     currentItemId = null;
     if (mapInstance) { mapInstance.remove(); mapInstance = null; }
+    mapMarkers = [];
 }
 
 function playSceneVideo(url) {
