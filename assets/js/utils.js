@@ -53,6 +53,7 @@ const AUTH_ERRORS = {
     "auth/account-exists-with-different-credential": "An account already exists with this e-mail using a different sign-in method.",
     "auth/requires-recent-login": "Please log in again and retry.",
     "auth/no-password-provider": "This account signs in with Google and has no password to change.",
+    "auth/firebase-app-check-token-is-invalid": "Sign-in is temporarily unavailable (security check failed). Please try again later.",
     "permission-denied": "You don't have permission to do that."
 };
 

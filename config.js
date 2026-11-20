@@ -12,3 +12,7 @@ export const FIREBASE_CONFIG = Object.freeze({
     messagingSenderId: "781626702698",
     appId: "1:781626702698:web:66ac7f1ce955cbf8f40313"
 });
+
+// Public reCAPTCHA Enterprise (Fraud Defense) site key used by Firebase App Check.
+// Required by Firebase AI Logic. Only works on the domains registered for the key.
+export const RECAPTCHA_ENTERPRISE_SITE_KEY = "6LchFiouAAAAABJpfFo9CNodVos7U3NExZJqPl7_";
