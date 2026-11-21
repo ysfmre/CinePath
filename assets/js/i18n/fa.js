@@ -173,7 +173,6 @@ export default {
     "footer.product": "محصول",
     "footer.rights": "همهٔ حقوق محفوظ است.",
     "footer.tagline": "آرشیو لوکیشن‌های فیلم و سریال ترکیه، با هوش مصنوعی، برای علاقه‌مندان سینما.",
-    "home.ctaAi": "از CineAI بپرسید",
     "home.ctaBrowse": "مرور لوکیشن‌ها",
     "home.ctaExplore": "کاوش لوکیشن‌ها",
     "home.ctaSignup": "ساخت حساب رایگان",

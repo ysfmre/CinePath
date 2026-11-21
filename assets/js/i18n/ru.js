@@ -177,7 +177,6 @@ export default {
     "footer.product": "Продукт",
     "footer.rights": "Все права защищены.",
     "footer.tagline": "Архив мест съёмок Турции на базе ИИ для поклонников кино и сериалов.",
-    "home.ctaAi": "Спросить CineAI",
     "home.ctaBrowse": "Смотреть места",
     "home.ctaExplore": "Исследовать места",
     "home.ctaSignup": "Создать бесплатный аккаунт",

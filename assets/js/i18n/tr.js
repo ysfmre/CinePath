@@ -173,7 +173,6 @@ export default {
     "footer.product": "Ürün",
     "footer.rights": "Tüm hakları saklıdır.",
     "footer.tagline": "Film ve dizi tutkunları için Türkiye'nin yapay zekâ destekli mekân arşivi.",
-    "home.ctaAi": "CineAI'ye sor",
     "home.ctaBrowse": "Konumlara göz at",
     "home.ctaExplore": "Konumları keşfet",
     "home.ctaSignup": "Ücretsiz hesap oluştur",

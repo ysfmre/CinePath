@@ -173,7 +173,6 @@ export default {
     "footer.product": "Producto",
     "footer.rights": "Todos los derechos reservados.",
     "footer.tagline": "El archivo de localizaciones con IA de Turquía para amantes del cine y las series.",
-    "home.ctaAi": "Pregunta a CineAI",
     "home.ctaBrowse": "Ver localizaciones",
     "home.ctaExplore": "Explorar localizaciones",
     "home.ctaSignup": "Crear cuenta gratuita",

@@ -173,7 +173,6 @@ export default {
     "footer.product": "Produit",
     "footer.rights": "Tous droits réservés.",
     "footer.tagline": "L'archive de lieux de tournage de Turquie, propulsée par l'IA, pour les fans de films et de séries.",
-    "home.ctaAi": "Demander à CineAI",
     "home.ctaBrowse": "Parcourir les lieux",
     "home.ctaExplore": "Explorer les lieux",
     "home.ctaSignup": "Créer un compte gratuit",

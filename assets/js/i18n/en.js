@@ -173,7 +173,6 @@ export default {
     "footer.product": "Product",
     "footer.rights": "All rights reserved.",
     "footer.tagline": "Turkey's AI-powered location archive for film and TV series enthusiasts.",
-    "home.ctaAi": "Ask CineAI",
     "home.ctaBrowse": "Browse locations",
     "home.ctaExplore": "Explore locations",
     "home.ctaSignup": "Create free account",

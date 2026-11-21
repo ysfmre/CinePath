@@ -173,7 +173,6 @@ export default {
     "footer.product": "Produkt",
     "footer.rights": "Alle Rechte vorbehalten.",
     "footer.tagline": "Das KI-gestützte Drehort-Archiv der Türkei für Film- und Serienfans.",
-    "home.ctaAi": "CineAI fragen",
     "home.ctaBrowse": "Drehorte ansehen",
     "home.ctaExplore": "Drehorte entdecken",
     "home.ctaSignup": "Kostenloses Konto erstellen",
