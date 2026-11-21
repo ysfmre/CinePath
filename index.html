@@ -19,8 +19,8 @@
         rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="stylesheet" href="assets/css/pages/index.css" />
-    <link rel="preload" as="image" href="assets/istanbul-hero.webp" type="image/webp" media="(min-width: 769px)" fetchpriority="high" />
-    <link rel="preload" as="image" href="assets/istanbul-hero-mobile.webp" type="image/webp" media="(max-width: 768px)" fetchpriority="high" />
+    <link rel="preload" as="image" href="assets/hero/01-cappadocia.webp" type="image/webp" media="(min-width: 769px)" fetchpriority="high" />
+    <link rel="preload" as="image" href="assets/hero/01-cappadocia-m.webp" type="image/webp" media="(max-width: 768px)" fetchpriority="high" />
     <link rel="icon" href="assets/favicon/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="assets/css/i18n.css" />
 </head>
@@ -106,7 +106,17 @@
     </nav>
 
     <section class="home-hero">
-        <div class="hero-media" aria-hidden="true"></div>
+        <div class="hero-media" aria-hidden="true">
+            <div class="hero-slide is-active" data-slide="01-cappadocia"></div>
+            <div class="hero-slide" data-slide="02-pamukkale"></div>
+            <div class="hero-slide" data-slide="03-ephesus"></div>
+            <div class="hero-slide" data-slide="04-aspendos"></div>
+            <div class="hero-slide" data-slide="05-burdur"></div>
+            <div class="hero-slide" data-slide="06-yedigoller"></div>
+            <div class="hero-slide" data-slide="07-nemrut"></div>
+            <div class="hero-slide" data-slide="08-mardin"></div>
+            <div class="hero-slide" data-slide="09-istanbul"></div>
+        </div>
         <div class="container hero-inner">
             <h1 class="hero-heading" data-i18n-html="home.heading">The movie ends.<br><span class="highlight">The story begins.</span></h1>
             <p class="hero-lead" data-i18n="home.lead">Find the real streets, mansions and shores behind Turkey's most loved films and series, then let CinePath plan your route between them.</p>
@@ -118,6 +128,17 @@
                 <li><strong>100+</strong><span data-i18n="home.statTitles">Films &amp; series</span></li>
                 <li><strong data-i18n="home.statFree">Free</strong><span data-i18n="home.statFreeSub">Core features</span></li>
             </ul>
+        </div>
+        <div class="container hero-slider-ui">
+            <p class="hero-credit" aria-live="polite">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                <span class="hero-credit-place" data-i18n="place.cappadocia">Cappadocia, Nevşehir</span>
+                <span class="hero-credit-sep" aria-hidden="true">·</span>
+                <span><span data-i18n="hero.photo">Photo</span>: <a class="hero-credit-author" href="https://commons.wikimedia.org/wiki/File:Hot_air_balloon_ride_at_sunrise_in_Cappadocia.JPG" target="_blank" rel="noopener noreferrer">Wolfgang Moroder</a></span>
+                <span class="hero-credit-sep" aria-hidden="true">·</span>
+                <a class="hero-credit-license" href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 3.0</a>
+            </p>
+            <div class="hero-dots" role="group" aria-label="Background photos" data-i18n-attr="aria-label:hero.slides"></div>
         </div>
     </section>
 
