@@ -67,7 +67,7 @@ function initHeroSlider(hero) {
         });
     }
 
-    // indicators (+ pause button, WCAG 2.2.2)
+    // indicators
     const dots = HERO_SLIDES.map((slide, i) => {
         const b = document.createElement("button");
         b.type = "button";
@@ -77,15 +77,10 @@ function initHeroSlider(hero) {
         dotsHost.appendChild(b);
         return b;
     });
-    const pauseBtn = document.createElement("button");
-    pauseBtn.type = "button";
-    pauseBtn.className = "hero-pause";
-    pauseBtn.innerHTML = '<svg class="icon-pause" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg><svg class="icon-play" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></svg>';
-    dotsHost.appendChild(pauseBtn);
     dotsHost.style.setProperty("--slide-ms", `${DURATION}ms`);
 
     let current = 0;
-    let stopped = reducedMotion;
+    const stopped = reducedMotion; // no auto-advance when the visitor asked for reduced motion
     let timer = 0;
     let visible = true;
 
@@ -108,8 +103,6 @@ function initHeroSlider(hero) {
         dots[current].setAttribute("aria-current", "true");
         renderCredit(current);
         dotsHost.classList.toggle("is-paused", stopped);
-        pauseBtn.setAttribute("aria-pressed", String(stopped));
-        pauseBtn.setAttribute("aria-label", t(stopped ? "common.play" : "common.pause"));
     }
 
     async function go(i) {
@@ -126,7 +119,6 @@ function initHeroSlider(hero) {
         timer = setTimeout(async () => { await go(current + 1); restart(); }, DURATION);
     }
 
-    pauseBtn.addEventListener("click", () => { stopped = !stopped; render(); restart(); });
     document.addEventListener("visibilitychange", restart);
     new IntersectionObserver(([e]) => { visible = e.isIntersecting; restart(); }).observe(hero);
     mobile.addEventListener("change", () => { loaded.clear(); slideEls.forEach((el, i) => { if (i > 0) el.style.backgroundImage = ""; }); load(current); });
@@ -143,7 +135,7 @@ function initHeroSlider(hero) {
  * - The cards are duplicated once, and the position wraps around the width of one set,
  *   so the loop never "jumps back" visibly.
  * - Pauses while hovered, focused, touched/dragged, off-screen or in a background tab,
- *   and resumes shortly after; the pause button stops it for good (WCAG 2.2.2).
+ *   and resumes shortly after.
  * - Never auto-plays when the visitor asked the OS for reduced motion.
  * - Works in right-to-left pages, where scrollLeft runs from 0 to negative values.
  */
@@ -151,8 +143,6 @@ function initCarousel(row) {
     const SPEED = 40;          // px per second
     const RESUME_DELAY = 2500; // ms after the last interaction
     const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const toggle = document.querySelector(".carousel-toggle");
-    const arrows = [...document.querySelectorAll(".carousel-btn[data-dir]")];
 
     // Second copy of the cards for a seamless loop (hidden from assistive tech and keyboard).
     const originals = [...row.children];
@@ -180,39 +170,17 @@ function initCarousel(row) {
     };
 
     // ---- play / pause state ----
-    let stoppedByUser = reducedMotion;
+    const stoppedByUser = reducedMotion;
     let holdUntil = 0;        // temporary pause after an interaction
     let hovered = false, focused = false, pressed = false, visible = true;
     const hold = () => { holdUntil = performance.now() + RESUME_DELAY; };
     const playing = () => !stoppedByUser && !hovered && !focused && !pressed && visible && !document.hidden && performance.now() > holdUntil;
-    const renderToggle = () => {
-        if (!toggle) return;
-        toggle.setAttribute("aria-pressed", String(stoppedByUser));
-        const key = stoppedByUser ? "common.play" : "common.pause";
-        toggle.setAttribute("data-i18n-attr", `aria-label:${key}`);
-        toggle.setAttribute("aria-label", t(key));
-    };
-    toggle?.addEventListener("click", () => { stoppedByUser = !stoppedByUser; holdUntil = 0; renderToggle(); });
-    renderToggle();
-
-    // ---- arrow animation (eased, handled in the same frame loop) ----
-    let anim = null;
-    const ease = (x) => 1 - Math.pow(1 - x, 3);
-    arrows.forEach((btn) => btn.addEventListener("click", () => {
-        // physical direction: -1 = left, +1 = right; in RTL "right" means going back
-        const logical = Number(btn.dataset.dir) * (rtl() ? -1 : 1);
-        const distance = logical * Math.max(row.clientWidth * 0.8, 240);
-        if (reducedMotion) { write(pos + distance); hold(); return; }
-        anim = { from: pos, by: distance, start: performance.now(), duration: 550 };
-        hold();
-    }));
 
     // ---- user scrolling (touch swipe, trackpad, mouse drag) ----
     row.addEventListener("scroll", () => {
         if (Math.abs(row.scrollLeft - lastWritten) < 1.5) return; // our own write
         pos = readPos();
         lastWritten = row.scrollLeft;
-        anim = null;
         hold();
     }, { passive: true });
     row.addEventListener("wheel", hold, { passive: true });
@@ -226,7 +194,7 @@ function initCarousel(row) {
     // Mouse drag-to-scroll (touch devices scroll natively). A drag must not open a card.
     let startX = 0, startPos = 0, dragged = false;
     row.addEventListener("pointerdown", (e) => {
-        pressed = true; anim = null;
+        pressed = true;
         if (e.pointerType !== "mouse" || e.button !== 0) return;
         dragged = false; startX = e.clientX; startPos = pos;
         row.dataset.mouseDown = "1";
@@ -255,11 +223,7 @@ function initCarousel(row) {
     const frame = (now) => {
         const dt = Math.min(now - last, 100) / 1000;
         last = now;
-        if (anim) {
-            const x = Math.min((now - anim.start) / anim.duration, 1);
-            write(anim.from + anim.by * ease(x));
-            if (x >= 1) anim = null;
-        } else if (playing()) {
+        if (playing()) {
             write(pos + SPEED * dt);
         }
         requestAnimationFrame(frame);
