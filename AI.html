@@ -98,74 +98,119 @@
         </div>
     </nav>
 
-    <main>
-        <section class="ai-section">
-            <div class="ai-glow"></div>
-            <div class="container ai-container">
-                <div class="ai-header">
-                    <span class="ai-badge" data-i18n="ai.badge">Beta • Gemini AI Powered</span>
-                    <h1 class="ai-title" data-i18n="ai.title">Smart Route Wizard</h1>
-                    <p class="ai-desc" data-i18n="ai.desc">Indecisive? Let our AI find the perfect movie route for you from our database in seconds.</p>
+    <main class="ai-page">
+        <section class="ai-hero">
+            <div class="ai-aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div class="container ai-hero-inner">
+                <span class="ai-badge"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l1.9 5.6 5.6 1.9-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.9L12 2.5zM19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15z"/></svg><span data-i18n="ai.badge">Beta • Gemini AI Powered</span></span>
+                <h1 class="ai-title" data-i18n="ai.title">Smart Route Wizard</h1>
+                <p class="ai-desc" data-i18n="ai.desc">Indecisive? Let our AI find the perfect movie route for you from our database in seconds.</p>
+            </div>
+        </section>
+
+        <section class="container ai-studio">
+            <div class="ai-panel glass" data-mode="manual">
+                <div class="ai-tabs" role="tablist" aria-label="Recommendation mode" data-i18n-attr="aria-label:ai.modesLabel">
+                    <span class="ai-tab-indicator" aria-hidden="true"></span>
+                    <button type="button" class="ai-tab" role="tab" id="tabManual" aria-selected="true" aria-controls="panelManual">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>
+                        <span data-i18n="ai.modeManual">Pick a mood</span>
+                    </button>
+                    <button type="button" class="ai-tab" role="tab" id="tabPersonal" aria-selected="false" aria-controls="panelPersonal" tabindex="-1">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                        <span data-i18n="ai.modePersonal">Just for me</span>
+                    </button>
                 </div>
 
-                <div class="ai-content-wrapper">
-                    <div class="ai-form">
-                        <div class="ai-input-group">
-                            <label for="aiType" data-i18n="ai.typeLabel">Content Type</label>
-                            <select id="aiType" class="ai-select">
-                                <option value="both" data-i18n="ai.typeAny">Any</option>
-                                <option value="movie" data-i18n="ai.typeMovies">Movies Only</option>
-                                <option value="series" data-i18n="ai.typeSeries">Series Only</option>
-                            </select>
+                <form id="panelManual" class="ai-form" role="tabpanel" aria-labelledby="tabManual">
+                    <fieldset class="ai-field">
+                        <legend data-i18n="ai.typeLabel">Content Type</legend>
+                        <div class="ai-chips ai-segment">
+                            <label class="ai-chip"><input type="radio" name="type" value="both" checked><span data-i18n="ai.typeAny">Any</span></label>
+                            <label class="ai-chip"><input type="radio" name="type" value="movie"><span data-i18n="ai.typeMovies">Movies Only</span></label>
+                            <label class="ai-chip"><input type="radio" name="type" value="series"><span data-i18n="ai.typeSeries">Series Only</span></label>
                         </div>
-                        <div class="ai-input-group">
-                            <label for="aiGenre" data-i18n="ai.genreLabel">Mood / Genre</label>
-                            <select id="aiGenre" class="ai-select">
-                                <option value="comedy" data-i18n="ai.genreComedy">Comedy</option>
-                                <option value="drama" data-i18n="ai.genreDrama">Drama</option>
-                                <option value="action" data-i18n="ai.genreAction">Action</option>
-                                <option value="romantic" data-i18n="ai.genreRomance">Romance</option>
-                                <option value="nostalgic" data-i18n="ai.genreNostalgic">Nostalgic Classics</option>
-                                <option value="historical" data-i18n="ai.genreHistorical">Historical</option>
-                            </select>
+                    </fieldset>
+                    <fieldset class="ai-field">
+                        <legend data-i18n="ai.genreLabel">Mood / Genre</legend>
+                        <div class="ai-chips">
+                            <label class="ai-chip"><input type="radio" name="genre" value="comedy" checked><span data-i18n="ai.genreComedy">Comedy</span></label>
+                            <label class="ai-chip"><input type="radio" name="genre" value="drama"><span data-i18n="ai.genreDrama">Drama</span></label>
+                            <label class="ai-chip"><input type="radio" name="genre" value="action"><span data-i18n="ai.genreAction">Action</span></label>
+                            <label class="ai-chip"><input type="radio" name="genre" value="romantic"><span data-i18n="ai.genreRomance">Romance</span></label>
+                            <label class="ai-chip"><input type="radio" name="genre" value="nostalgic"><span data-i18n="ai.genreNostalgic">Nostalgic Classics</span></label>
+                            <label class="ai-chip"><input type="radio" name="genre" value="historical"><span data-i18n="ai.genreHistorical">Historical</span></label>
                         </div>
-                        <div class="ai-input-group">
-                            <label for="aiLocation" data-i18n="ai.locationLabel">Location</label>
-                            <select id="aiLocation" class="ai-select">
-                                <option value="Istanbul" data-i18n="city.istanbul">Istanbul</option>
-                                <option value="Izmir" data-i18n="city.izmir">Izmir</option>
-                                <option value="Ankara" data-i18n="city.ankara">Ankara</option>
-                                <option value="Cappadocia" data-i18n="city.cappadocia">Cappadocia</option>
-                                <option value="Mardin" data-i18n="city.mardin">Mardin</option>
-                                <option value="Kars" data-i18n="city.kars">Kars</option>
-                                <option value="Gaziantep" data-i18n="city.gaziantep">Gaziantep</option>
-                                <option value="Adana" data-i18n="city.adana">Adana</option>
-                                <option value="Mugla" data-i18n="city.mugla">Mugla</option>
-                            </select>
+                    </fieldset>
+                    <fieldset class="ai-field">
+                        <legend data-i18n="ai.locationLabel">Location</legend>
+                        <div class="ai-chips">
+                            <label class="ai-chip"><input type="radio" name="location" value="Istanbul" checked><span data-i18n="city.istanbul">Istanbul</span></label>
+                            <label class="ai-chip"><input type="radio" name="location" value="Izmir"><span data-i18n="city.izmir">Izmir</span></label>
+                            <label class="ai-chip"><input type="radio" name="location" value="Ankara"><span data-i18n="city.ankara">Ankara</span></label>
+                            <label class="ai-chip"><input type="radio" name="location" value="Cappadocia"><span data-i18n="city.cappadocia">Cappadocia</span></label>
+                            <label class="ai-chip"><input type="radio" name="location" value="Mardin"><span data-i18n="city.mardin">Mardin</span></label>
+                            <label class="ai-chip"><input type="radio" name="location" value="Kars"><span data-i18n="city.kars">Kars</span></label>
+                            <label class="ai-chip"><input type="radio" name="location" value="Gaziantep"><span data-i18n="city.gaziantep">Gaziantep</span></label>
+                            <label class="ai-chip"><input type="radio" name="location" value="Adana"><span data-i18n="city.adana">Adana</span></label>
+                            <label class="ai-chip"><input type="radio" name="location" value="Mugla"><span data-i18n="city.mugla">Mugla</span></label>
                         </div>
-                        <button type="button" id="askAiBtn" class="ai-btn">
-                            <span id="askAiLabel" data-i18n="ai.ask">Get Recommendation</span>
-                        </button>
-                    </div>
+                    </fieldset>
+                    <button type="submit" id="askAiBtn" class="ai-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l1.9 5.6 5.6 1.9-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.9L12 2.5zM19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15z"/></svg>
+                        <span id="askAiLabel" data-i18n="ai.ask">Get Recommendation</span>
+                    </button>
+                </form>
 
-                    <div class="action-area">
-                        <button type="button" id="personalSuggestBtn" class="ai-btn-secondary">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                            <span data-i18n="ai.personal">Personalized Recommendation</span>
-                        </button>
-                    </div>
+                <div id="panelPersonal" class="ai-personal" role="tabpanel" aria-labelledby="tabPersonal" hidden>
+                    <span class="ai-personal-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                    </span>
+                    <h2 data-i18n="ai.personalTitle">Inspired by your favourites</h2>
+                    <p data-i18n="ai.personalText">CineAI looks at the titles you saved and finds something new you will probably love.</p>
+                    <button type="button" id="personalSuggestBtn" class="ai-btn">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l1.9 5.6 5.6 1.9-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.9L12 2.5zM19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15z"/></svg>
+                        <span id="personalLabel" data-i18n="ai.personal">Personalized Recommendation</span>
+                    </button>
+                </div>
 
-                    <div id="aiResult" class="ai-result">
-                        <img id="aiPoster" class="ai-poster" alt="Movie Poster" data-i18n-attr="alt:ai.posterAlt">
-                        <div class="result-content">
-                            <h3 id="aiSuggestionTitle" class="ai-suggestion-text">Recommendation</h3>
-                            <p id="aiReason" class="ai-reason">AI explanation...</p>
-                            <a id="aiActionLink" href="#" class="ai-action-btn">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 3h6v6M14 10l6.1-6.1M9 21H3v-6M10 14l-6.1 6.1"/></svg>
+                <p id="aiLoginHint" class="ai-login-hint" hidden>
+                    <span data-i18n="ai.loginHint">Sign in to get recommendations from CineAI.</span>
+                    <a href="login.html?next=AI.html" data-i18n="nav.login">Log In</a>
+                </p>
+            </div>
+
+            <div id="aiResult" class="ai-result glass" aria-live="polite" hidden>
+                <div class="ai-loading">
+                    <div class="ai-skel ai-skel-poster"></div>
+                    <div class="ai-loading-lines">
+                        <p class="ai-loading-text"><span class="ai-dots" aria-hidden="true"><i></i><i></i><i></i></span><span data-i18n="ai.thinkingLong">CineAI is browsing the catalog for you…</span></p>
+                        <div class="ai-skel ai-skel-line"></div>
+                        <div class="ai-skel ai-skel-line"></div>
+                        <div class="ai-skel ai-skel-line"></div>
+                    </div>
+                </div>
+                <div class="ai-answer">
+                    <div class="ai-poster-wrap"><img id="aiPoster" class="ai-poster" alt="Poster" data-i18n-attr="alt:ai.posterAlt" width="200" height="300"></div>
+                    <div class="ai-answer-body">
+                        <span class="section-eyebrow ai-pick"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l1.9 5.6 5.6 1.9-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.9L12 2.5zM19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15z"/></svg><span data-i18n="ai.pick">CineAI's pick</span></span>
+                        <h2 id="aiSuggestionTitle" class="ai-suggestion-text"></h2>
+                        <p id="aiReason" class="ai-reason"></p>
+                        <div class="ai-actions">
+                            <a id="aiActionLink" href="explore.html" class="ai-action-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.99-5.54 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.54 20.19 4 14.99 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
                                 <span data-i18n="ai.viewRoute">View Route Details</span>
                             </a>
+                            <button type="button" id="aiAgainBtn" class="ai-again-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><path d="M21 3v5h-5"/></svg>
+                                <span data-i18n="ai.again">Suggest another</span>
+                            </button>
                         </div>
                     </div>
+                </div>
+                <div class="ai-error" role="alert">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+                    <p id="aiErrorText"></p>
                 </div>
             </div>
         </section>
