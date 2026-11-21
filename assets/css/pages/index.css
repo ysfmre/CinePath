@@ -49,7 +49,10 @@
     position: absolute;
     inset: 0;
     z-index: -2;
-    background: url("../../istanbul-hero.jpg") center 40% / cover no-repeat;
+    /* Photo: Istanbul historic peninsula from the Bosphorus — Unsplash (free Unsplash License),
+       https://images.unsplash.com/photo-1589561454226-796a8aa89b05 */
+    background: url("../../istanbul-hero.jpg") center 45% / cover no-repeat;
+    background-image: image-set(url("../../istanbul-hero.webp") type("image/webp"), url("../../istanbul-hero.jpg") type("image/jpeg"));
     transform-origin: 60% 40%;
     animation: heroZoom 28s ease-in-out infinite alternate;
 }
@@ -307,11 +310,16 @@
     .faq-intro { position: static; }
 }
 @media (max-width: 768px) {
+    .hero-media {
+        background-image: url("../../istanbul-hero-mobile.jpg");
+        background-image: image-set(url("../../istanbul-hero-mobile.webp") type("image/webp"), url("../../istanbul-hero-mobile.jpg") type("image/jpeg"));
+        background-position: center;
+    }
     .home-hero { --hero-offset: calc(var(--header-height) + 8px + var(--safe-top)); min-height: auto; padding: calc(var(--hero-offset) + 48px) 0 48px; text-align: center; }
     .home-hero::after {
         background:
             radial-gradient(ellipse 80% 40% at 50% 35%, rgba(229, 9, 20, 0.2), transparent 70%),
-            linear-gradient(180deg, rgba(11, 11, 12, 0.7) 0%, rgba(11, 11, 12, 0.55) 50%, var(--bg) 100%);
+            linear-gradient(180deg, rgba(11, 11, 12, 0.72) 0%, rgba(11, 11, 12, 0.66) 50%, var(--bg) 100%);
     }
     .hero-heading, .hero-lead { margin-inline: auto; }
     .hero-actions { justify-content: center; }
