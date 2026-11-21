@@ -102,7 +102,6 @@
         <section class="ai-hero">
             <div class="ai-aurora" aria-hidden="true"><span></span><span></span><span></span></div>
             <div class="container ai-hero-inner">
-                <span class="ai-badge"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l1.9 5.6 5.6 1.9-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.9L12 2.5zM19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15z"/></svg><span data-i18n="ai.badge">Beta • Gemini AI Powered</span></span>
                 <h1 class="ai-title" data-i18n="ai.title">Smart Route Wizard</h1>
                 <p class="ai-desc" data-i18n="ai.desc">Indecisive? Let our AI find the perfect movie route for you from our database in seconds.</p>
             </div>
@@ -157,19 +156,14 @@
                         </div>
                     </fieldset>
                     <button type="submit" id="askAiBtn" class="ai-btn">
-                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l1.9 5.6 5.6 1.9-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.9L12 2.5zM19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15z"/></svg>
                         <span id="askAiLabel" data-i18n="ai.ask">Get Recommendation</span>
                     </button>
                 </form>
 
                 <div id="panelPersonal" class="ai-personal" role="tabpanel" aria-labelledby="tabPersonal" hidden>
-                    <span class="ai-personal-icon" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-                    </span>
                     <h2 data-i18n="ai.personalTitle">Inspired by your favourites</h2>
                     <p data-i18n="ai.personalText">CineAI looks at the titles you saved and finds something new you will probably love.</p>
                     <button type="button" id="personalSuggestBtn" class="ai-btn">
-                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l1.9 5.6 5.6 1.9-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.9L12 2.5zM19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15z"/></svg>
                         <span id="personalLabel" data-i18n="ai.personal">Personalized Recommendation</span>
                     </button>
                 </div>
@@ -193,7 +187,7 @@
                 <div class="ai-answer">
                     <div class="ai-poster-wrap"><img id="aiPoster" class="ai-poster" alt="Poster" data-i18n-attr="alt:ai.posterAlt" width="200" height="300"></div>
                     <div class="ai-answer-body">
-                        <span class="section-eyebrow ai-pick"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l1.9 5.6 5.6 1.9-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.9L12 2.5zM19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15z"/></svg><span data-i18n="ai.pick">CineAI's pick</span></span>
+                        <span class="section-eyebrow ai-pick"><span data-i18n="ai.pick">CineAI's pick</span></span>
                         <h2 id="aiSuggestionTitle" class="ai-suggestion-text"></h2>
                         <p id="aiReason" class="ai-reason"></p>
                         <div class="ai-actions">
