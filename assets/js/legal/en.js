@@ -35,7 +35,6 @@ export default {
 <li><strong>Google Fonts</strong> (fonts)</li>
 <li><strong>Google Firebase</strong> (accounts, database, the CineAI feature)</li>
 <li><strong>OpenStreetMap</strong> (map images on the Explore page)</li>
-<li><strong>ui-avatars.com</strong> (an image made from your initials for members without a profile photo)</li>
 <li><strong>External links such as Spotify or YouTube:</strong> you only go to those sites when you click, and their own cookie policies apply.</li>
 </ul>
 
@@ -179,7 +178,6 @@ export default {
 <tr><td>Google — Firebase (Authentication, Cloud Firestore, App Check)</td><td>Account, usage, image and security data</td><td>Hosting, database, authentication and security</td></tr>
 <tr><td>Google — Firebase AI Logic / Gemini</td><td>Your CineAI filters; in “Just for me” mode, your favourite titles. No name, e-mail or photos.</td><td>Generating AI recommendations</td></tr>
 <tr><td>Google — reCAPTCHA Enterprise</td><td>IP address, device/browser details, interaction signals</td><td>Preventing bots and abuse</td></tr>
-<tr><td>ui-avatars.com</td><td>Your name (if you have no profile photo)</td><td>Showing an image of your initials on your profile</td></tr>
 <tr><td>Google Fonts, OpenStreetMap</td><td>IP address and browser details (technically, when pages load)</td><td>Showing fonts and map images</td></tr>
 <tr><td>Competent public authorities and courts</td><td>The data requested</td><td>Meeting legal obligations</td></tr>
 </tbody></table></div>

@@ -2,7 +2,7 @@ import {
     onUserChange, getUserData, logoutUser, addUserPhoto, getUserPhotos,
     deleteUserPhoto, getContentsByIds, updateUserPassword, deleteAccount, MAX_PHOTO_BYTES
 } from "../auth_manager.js";
-import { escapeHtml, safeUrl, withFallback, friendlyError, PLACEHOLDER_POSTER } from "../utils.js";
+import { escapeHtml, safeUrl, withFallback, friendlyError, initialsAvatar, PLACEHOLDER_POSTER } from "../utils.js";
 import { t, lang } from "../i18n.js";
 
 const levelTitle = (level) => t(`level.${Math.min(Math.max(Number(level) || 1, 1), 10)}`);
@@ -43,7 +43,7 @@ async function loadProfile(user) {
     // Admin access is decided by the Firestore role (and enforced by security rules), not by e-mail.
     $("adminBtn").style.display = data.role === "admin" ? "block" : "none";
 
-    const fallbackAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=111&color=fff&size=256`;
+    const fallbackAvatar = initialsAvatar(name);
     const avatar = withFallback($("currentAvatar"), fallbackAvatar);
     avatar.referrerPolicy = "no-referrer";
     avatar.src = safeUrl(data.photoURL || user.photoURL, { fallback: fallbackAvatar });

@@ -35,7 +35,6 @@ export default {
 <li><strong>Google Fonts</strong> (yazı tipleri)</li>
 <li><strong>Google Firebase</strong> (üyelik, veritabanı, CineAI yapay zekâ özelliği)</li>
 <li><strong>OpenStreetMap</strong> (Keşfet sayfasındaki harita görselleri)</li>
-<li><strong>ui-avatars.com</strong> (profil fotoğrafı olmayan üyeler için adın baş harflerinden oluşturulan görsel)</li>
 <li><strong>Spotify, YouTube vb. dış bağlantılar:</strong> Yalnızca siz tıkladığınızda ilgili siteye gidersiniz. O sitelerin kendi çerez politikaları geçerlidir.</li>
 </ul>
 
@@ -179,7 +178,6 @@ export default {
 <tr><td>Google — Firebase (Authentication, Cloud Firestore, App Check)</td><td>Hesap, kullanım, görsel kayıt ve işlem güvenliği verileri</td><td>Barındırma, veritabanı, kimlik doğrulama ve güvenlik hizmetleri</td></tr>
 <tr><td>Google — Firebase AI Logic / Gemini</td><td>CineAI filtreleriniz, “Bana özel” modunda favori yapım adlarınız. Ad, e-posta veya fotoğraf gönderilmez.</td><td>Yapay zekâ önerisi üretilmesi</td></tr>
 <tr><td>Google — reCAPTCHA Enterprise</td><td>IP adresi, cihaz/tarayıcı bilgileri, etkileşim sinyalleri</td><td>Bot ve kötüye kullanımın önlenmesi</td></tr>
-<tr><td>ui-avatars.com</td><td>Adınız (profil fotoğrafınız yoksa)</td><td>Profilinizde baş harflerinizden oluşan görselin gösterilmesi</td></tr>
 <tr><td>Google Fonts, OpenStreetMap</td><td>IP adresi ve tarayıcı bilgileri (sayfa yüklenirken teknik olarak)</td><td>Yazı tiplerinin ve harita görsellerinin gösterilmesi</td></tr>
 <tr><td>Yetkili kamu kurum ve kuruluşları, yargı mercileri</td><td>Talep edilen veriler</td><td>Kanuni yükümlülüklerin yerine getirilmesi</td></tr>
 </tbody></table></div>
