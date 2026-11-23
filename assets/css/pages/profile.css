@@ -400,6 +400,25 @@ a.user-photo-card { display: block; }
     font-weight: bold;
 }
 
+.btn-danger { background: #b91c1c; }
+.delete-text { margin: 0 0 16px; color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+.delete-confirm { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 18px; color: var(--text); font-size: 14px; line-height: 1.5; cursor: pointer; }
+.delete-confirm input { flex: none; width: 18px; height: 18px; margin: 1px 0 0; accent-color: #dc2626; }
+.delete-account-btn {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 10px;
+    background: transparent;
+    color: #f87171;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+.delete-account-btn:hover { background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.55); }
+
 .btn-confirm:disabled {
     opacity: 0.5;
     cursor: not-allowed;

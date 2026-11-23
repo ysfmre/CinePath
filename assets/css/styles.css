@@ -320,7 +320,7 @@ button { font-family: inherit; }
   color: #8a8a92;
   font-size: 14px;
 }
-.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
 .site-footer .brand { color: var(--text); }
 .footer-brand p { max-width: 340px; margin: 14px 0 18px; line-height: 1.7; }
 .footer-social {
@@ -364,7 +364,7 @@ button { font-family: inherit; }
   .avatar-label { display: none; }
   .hamburger-btn { display: flex !important; }
   .site-footer { padding-top: 40px; }
-  .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px 20px; }
+  .footer-grid { grid-template-columns: repeat(3, 1fr); gap: 28px 20px; }
   .footer-brand { grid-column: 1 / -1; }
 }
 @media (max-width: 480px) {

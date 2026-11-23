@@ -68,7 +68,8 @@ service cloud.firestore {
           && validStats(d.get('stats', {}));
       }
 
-      allow delete: if false;
+      // Users may erase their own profile ("Delete my account").
+      allow delete: if isOwner(uid);
 
       function validStats(s) {
         return s is map

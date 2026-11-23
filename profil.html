@@ -146,6 +146,7 @@
                     </svg>
                     <span data-i18n="profile.updatePassword">Update Password</span>
                 </button>
+                <button type="button" id="openDeleteBtn" class="delete-account-btn" data-i18n="profile.deleteAccount">Delete my account</button>
             </div>
         </aside>
 
@@ -234,6 +235,23 @@
             <div class="upload-actions">
                 <button type="button" class="btn-cancel" id="cancelPasswordBtn" data-i18n="common.cancel">Cancel</button>
                 <button type="button" class="btn-confirm" id="confirmPasswordBtn" data-i18n="profile.update">Update</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="upload-modal" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
+        <div class="upload-content">
+            <h3 id="deleteTitle" data-i18n="profile.deleteTitle">Delete your account?</h3>
+            <p class="delete-text" data-i18n="profile.deleteText">Your profile, photos, ratings, favourites and level will be permanently deleted. This cannot be undone.</p>
+            <input type="password" id="deletePassword" class="caption-input" autocomplete="current-password" placeholder="Current Password" data-i18n-attr="placeholder:profile.currentPassword">
+            <p class="delete-text delete-google" id="deleteGoogleHint" data-i18n="profile.deleteGoogle">To confirm, you will be asked to sign in with Google once more.</p>
+            <label class="delete-confirm">
+                <input type="checkbox" id="deleteConfirm">
+                <span data-i18n="profile.deleteConfirm">I understand that my account cannot be recovered.</span>
+            </label>
+            <div class="upload-actions">
+                <button type="button" class="btn-cancel" id="cancelDeleteBtn" data-i18n="common.cancel">Cancel</button>
+                <button type="button" class="btn-confirm btn-danger" id="confirmDeleteBtn" disabled data-i18n="profile.deleteForever">Delete permanently</button>
             </div>
         </div>
     </div>

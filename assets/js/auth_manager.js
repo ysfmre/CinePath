@@ -17,7 +17,9 @@ import {
     sendPasswordResetEmail,
     updatePassword,
     EmailAuthProvider,
-    reauthenticateWithCredential
+    reauthenticateWithCredential,
+    reauthenticateWithPopup,
+    deleteUser
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 import {
     getFirestore,
@@ -136,6 +138,34 @@ export async function updateUserPassword(currentPassword, newPassword) {
         }
         await reauthenticateWithCredential(user, EmailAuthProvider.credential(user.email, currentPassword));
         await updatePassword(user, newPassword);
+        return ok();
+    } catch (error) { return fail(error); }
+}
+
+/**
+ * Permanently delete the signed-in user's account (KVKK / GDPR right to erasure):
+ * photos, ratings and profile in Firestore first (they need the session), then the login itself.
+ * Firebase requires a recent sign-in, so the user confirms with their password or Google first.
+ */
+export async function deleteAccount(currentPassword) {
+    try {
+        const user = auth.currentUser;
+        if (!user) throw Object.assign(new Error("Not signed in"), { code: "auth/requires-recent-login" });
+        if (user.providerData.some((p) => p.providerId === "password")) {
+            await reauthenticateWithCredential(user, EmailAuthProvider.credential(user.email, currentPassword));
+        } else {
+            await reauthenticateWithPopup(user, new GoogleAuthProvider());
+        }
+        for (const sub of ["user_photos", "ratings"]) {
+            const snap = await getDocs(collection(db, "users", user.uid, sub));
+            for (let i = 0; i < snap.docs.length; i += 400) {
+                const batch = writeBatch(db);
+                snap.docs.slice(i, i + 400).forEach((d) => batch.delete(d.ref));
+                await batch.commit();
+            }
+        }
+        await deleteDoc(doc(db, "users", user.uid));
+        await deleteUser(user);
         return ok();
     } catch (error) { return fail(error); }
 }

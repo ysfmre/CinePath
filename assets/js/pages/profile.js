@@ -1,6 +1,6 @@
 import {
     onUserChange, getUserData, logoutUser, addUserPhoto, getUserPhotos,
-    deleteUserPhoto, getContentsByIds, updateUserPassword, MAX_PHOTO_BYTES
+    deleteUserPhoto, getContentsByIds, updateUserPassword, deleteAccount, MAX_PHOTO_BYTES
 } from "../auth_manager.js";
 import { escapeHtml, safeUrl, withFallback, friendlyError, PLACEHOLDER_POSTER } from "../utils.js";
 import { t, lang } from "../i18n.js";
@@ -58,6 +58,8 @@ async function loadProfile(user) {
 
     const isPasswordUser = user.providerData.some((p) => p.providerId === "password");
     $("openPasswordBtn").style.display = isPasswordUser ? "flex" : "none";
+    $("deletePassword").hidden = !isPasswordUser;
+    $("deleteGoogleHint").hidden = isPasswordUser;
 
     loadUserPhotos(user.uid);
     loadFavorites(data.favorites || []);
@@ -260,6 +262,38 @@ $("confirmPasswordBtn").addEventListener("click", async () => {
     }
 });
 
+// ---------------- Delete account ----------------
+
+const deleteModal = $("deleteModal");
+let deleting = false;
+function closeDeleteModal() {
+    deleteModal.style.display = "none";
+    $("deletePassword").value = "";
+    $("deleteConfirm").checked = false;
+    $("confirmDeleteBtn").disabled = true;
+}
+$("deleteConfirm").addEventListener("change", (e) => { $("confirmDeleteBtn").disabled = !e.target.checked; });
+
+$("confirmDeleteBtn").addEventListener("click", async () => {
+    const needsPassword = !$("deletePassword").hidden;
+    const password = $("deletePassword").value;
+    if (needsPassword && !password) return alert(t("profile.fillAll"));
+    const btn = $("confirmDeleteBtn");
+    btn.disabled = true;
+    btn.textContent = t("profile.deleting");
+    deleting = true;
+    const result = await deleteAccount(password);
+    if (result.success) {
+        alert(t("profile.deleted"));
+        window.location.replace("index.html");
+        return;
+    }
+    deleting = false;
+    btn.textContent = t("profile.deleteForever");
+    btn.disabled = !$("deleteConfirm").checked;
+    alert(friendlyError(result.error, "err.deleteAccount"));
+});
+
 // ---------------- Wiring ----------------
 
 document.querySelectorAll("[data-logout]").forEach((b) => b.addEventListener("click", logoutUser));
@@ -267,11 +301,12 @@ $("openUploadBtn").addEventListener("click", () => { uploadModal.style.display =
 $("cancelUploadBtn").addEventListener("click", closeUploadModal);
 $("openPasswordBtn").addEventListener("click", () => { passwordModal.style.display = "flex"; });
 $("cancelPasswordBtn").addEventListener("click", closePasswordModal);
-[uploadModal, passwordModal].forEach((m) => m.addEventListener("click", (e) => {
-    if (e.target === m) m === uploadModal ? closeUploadModal() : closePasswordModal();
-}));
+$("openDeleteBtn").addEventListener("click", () => { deleteModal.style.display = "flex"; });
+$("cancelDeleteBtn").addEventListener("click", closeDeleteModal);
+const closers = new Map([[uploadModal, closeUploadModal], [passwordModal, closePasswordModal], [deleteModal, closeDeleteModal]]);
+closers.forEach((close, m) => m.addEventListener("click", (e) => { if (e.target === m && !deleting) close(); }));
 
 onUserChange((user) => {
     if (user) loadProfile(user);
-    else window.location.replace("login.html?next=profil.html");
+    else if (!deleting) window.location.replace("login.html?next=profil.html");
 });

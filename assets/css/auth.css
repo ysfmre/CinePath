@@ -564,3 +564,10 @@ body {
 @media (max-width: 600px) { .auth-lang { top: 16px; inset-inline-end: 16px; } }
 
 .brand-logo { direction: ltr; unicode-bidi: isolate; }
+
+/* Terms acceptance + legal links */
+.terms-check { margin: 4px 0 6px; align-items: flex-start; line-height: 1.5; }
+.terms-check input { flex: none; margin-top: 1px; }
+.terms-check a, .legal-hint a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+.legal-hint { margin: 0 0 16px; color: var(--text-muted, #a1a1aa); font-size: 13px; line-height: 1.5; }
+.legal-hint-center { margin: 18px 0 0; text-align: center; }
