@@ -1,7 +1,6 @@
 import { loginUser, loginWithGoogle, resetPassword, authReady } from "../auth_manager.js";
 import { friendlyError, showMessage } from "../utils.js";
 import { t } from "../i18n.js";
-import "../cookie-notice.js";
 
 const form = document.getElementById("loginForm");
 const errorEl = form.querySelector("[data-error]");

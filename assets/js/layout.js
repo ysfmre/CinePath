@@ -1,7 +1,6 @@
 // Shared page chrome: mobile navigation, footer year and header profile button.
 // Firebase is loaded separately at the end, so the menu keeps working even if it can't load.
 import { t } from "./i18n.js"; // also applies translations + renders the language switcher
-import "./cookie-notice.js";
 
 const menuBtn = document.getElementById("hamburgerBtn");
 const menu = document.querySelector(".mobile-nav-panel");
