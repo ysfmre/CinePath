@@ -560,7 +560,17 @@ body {
 }
 
 /* Language switcher (top-right on login / sign-up) */
-.auth-lang { position: fixed; top: 24px; inset-inline-end: 24px; z-index: 20; }
-@media (max-width: 600px) { .auth-lang { top: 16px; inset-inline-end: 16px; } }
+/* .lang-switcher (i18n.css, loaded later) sets position: relative, so this needs the extra class */
+.auth-lang.lang-switcher { position: fixed; top: 24px; inset-inline-end: 24px; z-index: 20; }
+@media (max-width: 600px) { .auth-lang.lang-switcher { top: 16px; inset-inline-end: 16px; } }
 
 .brand-logo { direction: ltr; unicode-bidi: isolate; }
+
+/* Date of birth */
+.field-label { display: block; margin: 0 0 8px 4px; color: rgba(255, 255, 255, 0.75); font-size: 13px; font-weight: 600; }
+.field-hint { margin: 8px 0 0 4px; color: rgba(255, 255, 255, 0.5); font-size: 12.5px; }
+[dir="rtl"] .field-label, [dir="rtl"] .field-hint { margin-inline: 4px 0; }
+.form-date { color-scheme: dark; position: relative; }
+/* One calendar icon is enough: the native picker button covers the whole field (click anywhere to open it) */
+.form-date::-webkit-calendar-picker-indicator { position: absolute; inset: 0; width: auto; height: auto; opacity: 0; cursor: pointer; }
+.form-date:invalid:not(:focus) { color: #666; }

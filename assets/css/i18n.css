@@ -32,6 +32,8 @@ html[lang="fa"] * { letter-spacing: normal !important; }
 .lang-flag { display: block; flex-shrink: 0; width: 22px; height: 16px; object-fit: cover; border-radius: 4px; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15); }
 .lang-caret { opacity: 0.6; transition: transform 0.2s; }
 .lang-btn[aria-expanded="true"] .lang-caret { transform: rotate(180deg); }
+/* pages without styles.css (login / sign-up) need this too */
+.lang-menu[hidden] { display: none; }
 .lang-menu {
     position: absolute;
     top: calc(100% + 10px);

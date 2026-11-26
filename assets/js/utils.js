@@ -27,6 +27,28 @@ export function safeUrl(value, { allowDataImage = false, fallback = "" } = {}) {
 export const PLACEHOLDER_POSTER = "https://placehold.co/400x600/1a1a1d/FFF?text=No+Image";
 
 /** Swap a broken <img> to a placeholder exactly once (no inline onerror needed). */
+/**
+ * Profile picture made from the user's initials, drawn locally as an SVG data URL
+ * (no name is sent to any third-party avatar service).
+ */
+export function initialsAvatar(name) {
+    // first letter (or digit) of the first and last word, ignoring punctuation such as quotes or "<"
+    const words = String(name || "").split(/\s+/).map((w) => w.match(/[\p{L}\p{N}]/u)?.[0]).filter(Boolean);
+    const letters = (words.length > 1 ? [words[0], words[words.length - 1]] : words)
+        .join("")
+        .toLocaleUpperCase() || "?";
+    // Pick a stable accent colour from the name so different members look different.
+    let hash = 0;
+    for (const ch of String(name || "")) hash = (hash * 31 + ch.codePointAt(0)) >>> 0;
+    const hue = hash % 360;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="hsl(${hue},55%,32%)"/><stop offset="1" stop-color="#111114"/></linearGradient></defs>
+<rect width="256" height="256" fill="url(#g)"/>
+<text x="50%" y="50%" dy=".35em" text-anchor="middle" fill="#fff" font-family="Inter,Vazirmatn,system-ui,sans-serif" font-size="104" font-weight="700">${escapeHtml(letters)}</text>
+</svg>`;
+    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+}
+
 export function withFallback(img, fallback = PLACEHOLDER_POSTER) {
     img.addEventListener("error", () => { if (img.src !== fallback) img.src = fallback; }, { once: true });
     return img;
@@ -34,6 +56,8 @@ export function withFallback(img, fallback = PLACEHOLDER_POSTER) {
 
 const AUTH_ERRORS = {
     "auth/invalid-credential": "err.invalid-credential",
+    "auth/under-age": "err.under-age",
+    "auth/signup-required": "err.signup-required",
     "auth/invalid-login-credentials": "err.invalid-credential",
     "auth/wrong-password": "err.invalid-credential",
     "auth/user-not-found": "err.invalid-credential",
