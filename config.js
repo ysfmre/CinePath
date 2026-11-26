@@ -21,4 +21,4 @@ export const RECAPTCHA_ENTERPRISE_SITE_KEY = "6LchFiouAAAAABJpfFo9CNodVos7U3NExZ
 // Messages are delivered to the e-mail address the key was created for (cinepathcontact@gmail.com).
 // The key is public by design: it can only send to that one inbox. Leave empty to fall back to
 // opening the visitor's mail app.
-export const CONTACT_FORM_ACCESS_KEY = "";
+export const CONTACT_FORM_ACCESS_KEY = "af7477d6-aebe-4294-abcc-23a05b34a454";
