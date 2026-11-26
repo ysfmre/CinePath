@@ -16,3 +16,9 @@ export const FIREBASE_CONFIG = Object.freeze({
 // Public reCAPTCHA Enterprise (Fraud Defense) site key used by Firebase App Check.
 // Required by Firebase AI Logic. Only works on the domains registered for the key.
 export const RECAPTCHA_ENTERPRISE_SITE_KEY = "6LchFiouAAAAABJpfFo9CNodVos7U3NExZJqPl7_";
+
+// Web3Forms access key for the contact form (https://web3forms.com).
+// Messages are delivered to the e-mail address the key was created for (cinepathcontact@gmail.com).
+// The key is public by design: it can only send to that one inbox. Leave empty to fall back to
+// opening the visitor's mail app.
+export const CONTACT_FORM_ACCESS_KEY = "";
