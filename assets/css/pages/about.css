@@ -60,7 +60,7 @@
 
 /* ---------- Shared section bits ---------- */
 .about-section { padding: 96px 0; }
-.about-head { max-width: 640px; margin-bottom: 40px; }
+.about-head { max-width: 640px; margin: 0 auto 40px; text-align: center; }
 .about-h2 { margin: 0 0 18px; font-size: clamp(28px, 3.4vw, 42px); font-weight: 800; line-height: 1.1; letter-spacing: -0.025em; }
 
 /* Scroll reveal (only when JS is running and motion is allowed) */
@@ -78,6 +78,8 @@
 .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin: 0; padding: 0; list-style: none; }
 .stat-card {
     position: relative;
+    justify-items: center;
+    text-align: center;
     display: grid;
     gap: 6px;
     padding: 30px 28px;
@@ -90,7 +92,7 @@
 .stat-number {
     direction: ltr;
     unicode-bidi: isolate;
-    justify-self: start;
+    justify-self: center;
     font-size: clamp(44px, 5vw, 64px);
     font-weight: 800;
     line-height: 1;
@@ -131,7 +133,7 @@
     .about-hero { --hero-offset: calc(var(--header-height) + 8px + var(--safe-top)); min-height: 74vh; padding: calc(var(--hero-offset) + 60px) 0 56px; }
     .about-hero-media { background-image: url("../../about/hero-m.jpg"); background-image: image-set(url("../../about/hero-m.webp") type("image/webp"), url("../../about/hero-m.jpg") type("image/jpeg")); background-position: center; }
     .about-section { padding: 64px 0; }
-    .about-head { margin-bottom: 28px; }
+    .about-head { margin: 0 auto 28px; }
     .stats-grid { grid-template-columns: 1fr; }
     .stat-card { padding: 22px; }
     .story-content .story-lead { font-size: 17px; }
