@@ -154,7 +154,9 @@
 .hero-credit-sep { opacity: 0.5; }
 .hero-credit a { color: inherit; text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.3); text-underline-offset: 2px; }
 .hero-credit a:hover { color: #fff; }
-.hero-dots { display: flex; flex-shrink: 0; align-items: center; gap: 6px; }
+/* indicators on the start (left) side, photo credit on the end (right) side */
+.hero-dots { order: -1; display: flex; flex-shrink: 0; align-items: center; gap: 6px; }
+.hero-credit { margin-inline-start: auto; }
 .hero-dot {
     position: relative;
     width: 22px;
@@ -378,6 +380,8 @@
         background-image: image-set(url("../../hero/01-cappadocia-m.webp") type("image/webp"), url("../../hero/01-cappadocia-m.jpg") type("image/jpeg"));
     }
     .hero-slider-ui { flex-direction: column; align-items: center; gap: 12px; bottom: 16px; }
+    .hero-dots { order: 0; }
+    .hero-credit { margin-inline-start: 0; }
     .hero-credit { justify-content: center; text-align: center; font-size: 11px; }
     .home-hero { --hero-offset: calc(var(--header-height) + 8px + var(--safe-top)); min-height: auto; padding: calc(var(--hero-offset) + 48px) 0 132px; text-align: center; }
     .home-hero::after {
