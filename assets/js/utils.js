@@ -56,6 +56,8 @@ export function withFallback(img, fallback = PLACEHOLDER_POSTER) {
 
 const AUTH_ERRORS = {
     "auth/invalid-credential": "err.invalid-credential",
+    "auth/under-age": "err.under-age",
+    "auth/signup-required": "err.signup-required",
     "auth/invalid-login-credentials": "err.invalid-credential",
     "auth/wrong-password": "err.invalid-credential",
     "auth/user-not-found": "err.invalid-credential",

@@ -16,6 +16,12 @@ service cloud.firestore {
     }
     function isShortString(v, max) { return v is string && v.size() <= max; }
     function isCount(v) { return v is int && v >= 0 && v <= 1000000; }
+    // Members must be 18+. 18 years are at least 6574 days (the exact birthday is checked on sign-up).
+    function isAdult(b) {
+      return b is timestamp
+        && b > timestamp.date(1900, 1, 1)
+        && b <= request.time - duration.value(6574, 'd');
+    }
 
     // ---------- Catalog (movies / series): members only ----------
     match /contents/{contentId} {
@@ -41,7 +47,8 @@ service cloud.firestore {
       // A user may create only their own profile, always as a normal "user".
       allow create: if isOwner(uid)
         && request.resource.data.keys().hasOnly(['uid', 'name', 'email', 'photoURL', 'createdAt', 'favorites', 'role',
-                                                 'level', 'xp', 'nextLevelXp', 'title', 'language', 'stats'])
+                                                 'level', 'xp', 'nextLevelXp', 'title', 'language', 'stats', 'birthDate'])
+        && isAdult(request.resource.data.birthDate)
         && request.resource.data.uid == uid
         && request.resource.data.role == 'user'
         && request.resource.data.email == request.auth.token.get('email', '')
@@ -52,7 +59,7 @@ service cloud.firestore {
         && isShortString(request.resource.data.photoURL, 2000)
         && validStats(request.resource.data.stats);
 
-      // role, uid, email and createdAt can never be changed from the client.
+      // role, uid, email, createdAt and birthDate can never be changed from the client.
       allow update: if isOwner(uid)
         && request.resource.data.diff(resource.data).affectedKeys()
              .hasOnly(['name', 'photoURL', 'favorites', 'xp', 'level', 'nextLevelXp', 'title', 'language', 'stats'])

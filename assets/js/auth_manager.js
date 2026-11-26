@@ -19,7 +19,8 @@ import {
     EmailAuthProvider,
     reauthenticateWithCredential,
     reauthenticateWithPopup,
-    deleteUser
+    deleteUser,
+    getAdditionalUserInfo
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 import {
     getFirestore,
@@ -64,9 +65,10 @@ export const authReady = new Promise((resolve) => {
     const unsubscribe = onAuthStateChanged(auth, (user) => { unsubscribe(); resolve(user); });
 });
 
-function newUserDoc(user, name) {
+function newUserDoc(user, name, birthDate) {
     return {
         uid: user.uid,
+        birthDate, // Date → Firestore timestamp; firestore.rules require 18+
         name: String(name || "CinePath Member").slice(0, 80),
         email: user.email || "",
         photoURL: user.photoURL || "",
@@ -82,18 +84,36 @@ function newUserDoc(user, name) {
     };
 }
 
-async function ensureUserDoc(user, name) {
-    const ref = doc(db, "users", user.uid);
-    const snap = await getDoc(ref);
-    if (!snap.exists()) await setDoc(ref, newUserDoc(user, name || user.displayName));
-}
+// ---- Age limit: members must be 18 or older ----
+export const MIN_AGE = 18;
 
-export async function registerUser(email, password, fullName) {
+/** Age in whole years on today's (local) date for a "YYYY-MM-DD" birth date, or NaN if invalid. */
+export function ageOn(birthIso, today = new Date()) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(birthIso || ""));
+    if (!m) return NaN;
+    const [y, mo, d] = m.slice(1).map(Number);
+    const date = new Date(Date.UTC(y, mo - 1, d));
+    if (date.getUTCFullYear() !== y || date.getUTCMonth() !== mo - 1 || date.getUTCDate() !== d || y < 1900) return NaN;
+    let age = today.getFullYear() - y;
+    if (today.getMonth() + 1 < mo || (today.getMonth() + 1 === mo && today.getDate() < d)) age--;
+    return age;
+}
+/** "YYYY-MM-DD" → Date at UTC midnight (what is stored in the profile). */
+const birthDateValue = (iso) => new Date(`${iso}T00:00:00Z`);
+const err = (code) => Object.assign(new Error(code), { code });
+
+export async function registerUser(email, password, fullName, birthIso) {
     try {
+        if (!(ageOn(birthIso) >= MIN_AGE)) throw err("auth/under-age");
         const { user } = await createUserWithEmailAndPassword(auth, email.trim(), password);
         const name = fullName.trim().slice(0, 80);
-        await updateProfile(user, { displayName: name });
-        await setDoc(doc(db, "users", user.uid), newUserDoc(user, name));
+        try {
+            await updateProfile(user, { displayName: name });
+            await setDoc(doc(db, "users", user.uid), newUserDoc(user, name, birthDateValue(birthIso)));
+        } catch (error) {
+            await deleteUser(user).catch(() => {}); // don't leave a login without a profile behind
+            throw error;
+        }
         return ok({ user });
     } catch (error) { return fail(error); }
 }
@@ -102,18 +122,31 @@ export async function loginUser(email, password, remember = true) {
     try {
         await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
         const { user } = await signInWithEmailAndPassword(auth, email.trim(), password);
-        // Accounts created while the old rules blocked profile writes have no users/{uid} doc yet.
-        await ensureUserDoc(user);
         return ok({ user });
     } catch (error) { return fail(error); }
 }
 
-export async function loginWithGoogle() {
+/**
+ * Google sign-in. A Google account without a CinePath profile can only become a member
+ * through the sign-up page, where the date of birth is asked (pass birthIso there).
+ * From the login page such an account is signed out again (and removed if it was just created).
+ */
+export async function loginWithGoogle({ birthIso } = {}) {
     try {
+        if (birthIso !== undefined && !(ageOn(birthIso) >= MIN_AGE)) throw err("auth/under-age");
         const provider = new GoogleAuthProvider();
         provider.setCustomParameters({ prompt: "select_account" });
-        const { user } = await signInWithPopup(auth, provider);
-        await ensureUserDoc(user);
+        const result = await signInWithPopup(auth, provider);
+        const { user } = result;
+        const ref = doc(db, "users", user.uid);
+        if (!(await getDoc(ref)).exists()) {
+            if (birthIso === undefined) {
+                if (getAdditionalUserInfo(result)?.isNewUser) await deleteUser(user).catch(() => {});
+                await signOut(auth);
+                throw err("auth/signup-required");
+            }
+            await setDoc(ref, newUserDoc(user, user.displayName, birthDateValue(birthIso)));
+        }
         return ok({ user });
     } catch (error) { return fail(error); }
 }
